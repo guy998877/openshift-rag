@@ -1,0 +1,926 @@
+[
+  {
+    "id": "cpmso-config-options",
+    "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "cpmso-config-options"
+    ]
+  },
+  {
+    "id": "oadp-creating-alerting-rule",
+    "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-creating-alerting-rule"
+    ]
+  },
+  {
+    "id": "olm-arch-olm-operator",
+    "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+    "topic": "operators",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "olm-arch-olm-operator"
+    ]
+  },
+  {
+    "id": "nodes-nodes-working-master-schedulable",
+    "query": "How do I configure control plane nodes to be schedulable in OpenShift?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-nodes-working-master-schedulable",
+      "nodes-nodes-working-evacuating"
+    ]
+  },
+  {
+    "id": "velero-obtaining-by-accessing-binary",
+    "query": "How do I set an alias to access the Velero binary in my cluster's Velero deployment?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "velero-obtaining-by-accessing-binary"
+    ]
+  },
+  {
+    "id": "nodes-descheduler-installing",
+    "query": "How do I change the descheduler from predictive mode to automatic mode in my OpenShift cluster?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-descheduler-installing"
+    ]
+  },
+  {
+    "id": "nodes-nodes-rebooting-affinity",
+    "query": "How do I configure pod anti-affinity to ensure workloads are spread across nodes before rebooting a node?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-nodes-rebooting-affinity"
+    ]
+  },
+  {
+    "id": "nodes-scheduler-profiles-configuring",
+    "query": "How do I configure the scheduler to use the HighNodeUtilization profile in my OpenShift cluster?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-scheduler-profiles-configuring"
+    ]
+  },
+  {
+    "id": "nodes-cma-autoscaling-custom-metrics-access",
+    "query": "How do I create a custom query for performance metrics in the OpenShift Container Platform web console?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-cma-autoscaling-custom-metrics-access"
+    ]
+  },
+  {
+    "id": "storage-persistent-storage-fsgroup",
+    "query": "How can I reduce pod timeouts when using a storage volume with many files in OpenShift?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "storage-persistent-storage-fsGroup",
+      "storage-persistent-storage-iscsi-enforcing-disk-quota",
+      "storage-persistent-storage-volume-format"
+    ]
+  },
+  {
+    "id": "odc-discovering-and-identifying-operator-backed-bindable-ser",
+    "query": "How can I identify which Operator-backed services are bindable in the Developer Catalog?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "odc-discovering-and-identifying-operator-backed-bindable-services"
+    ]
+  },
+  {
+    "id": "accessing-windows-node",
+    "query": "How can I access a Windows node in my OpenShift cluster?",
+    "topic": "support",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "accessing-windows-node"
+    ]
+  },
+  {
+    "id": "nodes-pods-configmap-overview",
+    "query": "How can I use a ConfigMap to store and manage configuration data for my applications in OpenShift?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-pods-configmap-overview"
+    ]
+  },
+  {
+    "id": "admission-webhook-types",
+    "query": "How can I configure a mutating admission webhook to modify pod specifications in my OpenShift cluster?",
+    "topic": "architecture",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "admission-webhook-types"
+    ]
+  },
+  {
+    "id": "oadp-configuring-aws-md5sum",
+    "query": "How do I configure the Backup Storage Location to use a specific checksum algorithm in the Data Protection Application?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-configuring-aws-md5sum"
+    ]
+  },
+  {
+    "id": "persistent-storage-csi-snapshots-operator",
+    "query": "What custom resource definitions (CRDs) does the CSI Snapshot Controller Operator create during OpenShift Container Platform installation?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-azure-file-static-provisioning-procedure",
+      "persistent-storage-csi-group-snapshots-overview"
+    ]
+  },
+  {
+    "id": "impersonation-project-creation",
+    "query": "How do I create a project request on behalf of a different user in OpenShift?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "impersonation-project-creation"
+    ]
+  },
+  {
+    "id": "oadp-backingup-persistent-volumes",
+    "query": "How do I configure the `VolumeSnapshotClass` CR to enable CSI snapshots for backing up persistent volumes?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-backingup-persistent-volumes"
+    ]
+  },
+  {
+    "id": "updating-role-arn-oadp-rosa-sts",
+    "query": "How do I update the IAM role ARN in the OADP Operator subscription if I provided an incorrect ARN during installation?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "updating-role-arn-oadp-rosa-sts"
+    ]
+  },
+  {
+    "id": "olm-preparing-multitenant-operators",
+    "query": "How do I create a separate namespace for a tenant Operator in a multitenant cluster?",
+    "topic": "operators",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "olm-preparing-multitenant-operators"
+    ]
+  },
+  {
+    "id": "odc-creating-a-visual-connection-between-components",
+    "query": "How do I create a visual connection between my Spring PetClinic application and the Crunchy PostgreSQL database in OpenShift?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "odc-creating-a-visual-connection-between-components"
+    ]
+  },
+  {
+    "id": "storage-persistent-storage-iscsi-enforcing-disk-quota",
+    "query": "How can I use LUN partitions to enforce disk quotas for persistent storage in my OpenShift cluster?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "storage-persistent-storage-iscsi-enforcing-disk-quota",
+      "storage-persistent-storage-fsGroup",
+      "storage-persistent-storage-volume-format"
+    ]
+  },
+  {
+    "id": "oadp-ssec-encrypted-backups",
+    "query": "How do I configure server-side encryption with customer-provided keys (SSE-C) for backup data in AWS S3 using OADP?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-ssec-encrypted-backups"
+    ]
+  },
+  {
+    "id": "cpmso-feat-config-update",
+    "query": "How do I update the control plane configuration in my OpenShift cluster?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "cpmso-feat-config-update"
+    ]
+  },
+  {
+    "id": "persistent-storage-csi-azure-file-static-provisioning-proced",
+    "query": "How do I create a secret for my Azure storage account to use with static provisioning in OpenShift?",
+    "topic": "storage",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "persistent-storage-csi-azure-file-static-provisioning-procedure",
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-group-snapshots-overview"
+    ]
+  },
+  {
+    "id": "oadp-pod-crash-set-resource-request-velero",
+    "query": "How do I set CPU and memory resource requests for a Velero pod in the oadp_v1alpha1_dpa.yaml file?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-pod-crash-set-resource-request-velero"
+    ]
+  },
+  {
+    "id": "applications-create-using-cli-source-code",
+    "query": "How do I create an application from a private remote Git repository in OpenShift?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "applications-create-using-cli-source-code"
+    ]
+  },
+  {
+    "id": "oauth-delete-tokens",
+    "query": "How do I delete a user-owned OAuth access token that is no longer needed?",
+    "topic": "authentication",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oauth-delete-tokens"
+    ]
+  },
+  {
+    "id": "lvms-about-lvmcluster-cr",
+    "query": "How do I configure the device classes for an LVM volume group in the LVMCluster custom resource?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "lvms-about-lvmcluster-cr"
+    ]
+  },
+  {
+    "id": "machineset-aws-existing-placement-group",
+    "query": "How do I configure a machine set to deploy Elastic Fabric Adapter instances within a specific AWS placement group?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "machineset-aws-existing-placement-group"
+    ]
+  },
+  {
+    "id": "create-a-containerruntimeconfig-crd",
+    "query": "How do I change the log level for the CRI-O runtime on a specific machine config pool in OpenShift?",
+    "topic": "machine_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "create-a-containerruntimeconfig-crd"
+    ]
+  },
+  {
+    "id": "external-auth-providers",
+    "query": "What identity providers are supported for direct authentication in OpenShift?",
+    "topic": "authentication",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "external-auth-providers"
+    ]
+  },
+  {
+    "id": "persistent-storage-csi-group-snapshots-overview",
+    "query": "What are the three new API objects introduced for managing CSI volume group snapshots in OpenShift?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "persistent-storage-csi-group-snapshots-overview",
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-azure-file-static-provisioning-procedure"
+    ]
+  },
+  {
+    "id": "machine-user-infra-machines-pxe",
+    "query": "How do I confirm that my PXE or iPXE installation for the RHCOS images is correct?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "machine-user-infra-machines-pxe"
+    ]
+  },
+  {
+    "id": "deployments-deploymentconfigs",
+    "query": "What capabilities does a `DeploymentConfig` object provide for managing application deployments in OpenShift?",
+    "topic": "applications",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "deployments-deploymentconfigs"
+    ]
+  },
+  {
+    "id": "updating-control-plane-only-update",
+    "query": "What steps should I follow to perform a Control Plane Only update in OpenShift Container Platform?",
+    "topic": "updating",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "updating-control-plane-only-update"
+    ]
+  },
+  {
+    "id": "upgrade-manual",
+    "query": "How do I schedule an individual upgrade for my OpenShift Container Platform cluster using the OpenShift Cluster Manager?",
+    "topic": "upgrading",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "upgrade-manual"
+    ]
+  },
+  {
+    "id": "storage-ephemeral-storage-monitoring",
+    "query": "How do I check the ephemeral storage usage in the `/var/lib` directory?",
+    "topic": "storage",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "storage-ephemeral-storage-monitoring",
+      "storage-ephemeral-storage-manage"
+    ]
+  },
+  {
+    "id": "nodes-cluster-overcommit-configure-nodes",
+    "query": "What parameters does OpenShift Container Platform set to manage memory overcommitment on nodes?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-cluster-overcommit-configure-nodes",
+      "nodes-cluster-overcommit-about"
+    ]
+  },
+  {
+    "id": "nodes-edge-remote-workers-power",
+    "query": "What happens to the pods on a remote worker node if it loses power and how does OpenShift handle their recovery?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-edge-remote-workers-power"
+    ]
+  },
+  {
+    "id": "scheduling-virtual-hardware-update-on-vsphere",
+    "query": "How can I schedule a virtual hardware update to occur during the reboot of nodes in an OpenShift Container Platform update?",
+    "topic": "updating",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "scheduling-virtual-hardware-update-on-vsphere"
+    ]
+  },
+  {
+    "id": "machineset-manually-scaling",
+    "query": "How do I manually scale a compute machine set in my OpenShift cluster?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "machineset-manually-scaling"
+    ]
+  },
+  {
+    "id": "olm-operatorgroups-static",
+    "query": "How can I create a static Operator group to manage Prometheus resources across multiple namespaces?",
+    "topic": "operators",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "olm-operatorgroups-static"
+    ]
+  },
+  {
+    "id": "restore-determine-state-etcd-member",
+    "query": "How can I determine if my etcd member's machine is not running or if the node is not ready?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "restore-determine-state-etcd-member"
+    ]
+  },
+  {
+    "id": "deployments-blue-green",
+    "query": "How do I set up a blue-green deployment for my application in OpenShift?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "deployments-blue-green"
+    ]
+  },
+  {
+    "id": "admission-webhooks-about",
+    "query": "What are the roles of mutating and validating admission plugins in the OpenShift admission process?",
+    "topic": "architecture",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "admission-webhooks-about"
+    ]
+  },
+  {
+    "id": "machine-feature-aws-throughput-capi",
+    "query": "How do I configure the throughput for gp3 storage volumes in my AWS cluster?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "machine-feature-aws-throughput-capi"
+    ]
+  },
+  {
+    "id": "service-account-auto-secret-removed",
+    "query": "What happens to the image pull secrets when I disable the integrated OpenShift image registry on my cluster?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "service-account-auto-secret-removed"
+    ]
+  },
+  {
+    "id": "nodes-pods-priority-preempt-about",
+    "query": "How does the scheduler handle pod preemption when a higher-priority pod needs to be scheduled on a node that is waiting for a lower-priority pod to terminate?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-pods-priority-preempt-about"
+    ]
+  },
+  {
+    "id": "persistent-storage-csi-vsphere-stor-policy",
+    "query": "What storage policy does the vSphere CSI Driver Operator use in OpenShift Container Platform?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "persistent-storage-csi-vsphere-stor-policy",
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-azure-file-static-provisioning-procedure"
+    ]
+  },
+  {
+    "id": "cpmso-activating",
+    "query": "How do I activate the control plane machine set custom resource after verifying its configuration?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "cpmso-activating"
+    ]
+  },
+  {
+    "id": "storage-ephemeral-storage-manage",
+    "query": "How can I set quotas for ephemeral storage in my OpenShift project?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "storage-ephemeral-storage-manage",
+      "storage-ephemeral-storage-monitoring"
+    ]
+  },
+  {
+    "id": "storage-persistent-storage-volume-format",
+    "query": "What happens if a persistent volume is not formatted with the specified file system before being used in OpenShift Container Platform?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "storage-persistent-storage-volume-format",
+      "storage-persistent-storage-fsGroup",
+      "storage-persistent-storage-iscsi-enforcing-disk-quota"
+    ]
+  },
+  {
+    "id": "persistent-storage-csi-efs-sts",
+    "query": "How do I obtain a role Amazon Resource Name (ARN) for configuring the AWS EFS CSI Driver Operator with OpenShift Container Platform using AWS Security Token Service?",
+    "topic": "storage",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "persistent-storage-csi-efs-sts",
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-azure-file-static-provisioning-procedure"
+    ]
+  },
+  {
+    "id": "multi-architecture-modify-machine-set-aws",
+    "query": "How do I add 64-bit x86 compute machines to my multi-architecture AWS cluster that currently has 64-bit ARM control plane machines?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "multi-architecture-modify-machine-set-aws"
+    ]
+  },
+  {
+    "id": "update-updating-all-the-olm-operators",
+    "query": "How do I approve and update all the OLM Operators during a multi-version upgrade?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "update-updating-all-the-olm-operators"
+    ]
+  },
+  {
+    "id": "identity-provider-about-basic-authentication",
+    "query": "How does OpenShift Container Platform validate user credentials when using basic authentication?",
+    "topic": "authentication",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "identity-provider-about-basic-authentication"
+    ]
+  },
+  {
+    "id": "overriding-default-node-ip-selection-logic",
+    "query": "How do I create a hint file to override the default node IP selection logic in OpenShift?",
+    "topic": "support",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "overriding-default-node-ip-selection-logic"
+    ]
+  },
+  {
+    "id": "nodes-cluster-resource-configure",
+    "query": "How do I configure the Cluster Resource Override Operator to control overcommit for my OpenShift cluster?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-cluster-resource-configure",
+      "nodes-cluster-resource-override-deploy-console"
+    ]
+  },
+  {
+    "id": "managed-cluster-notification-view-in-hcc",
+    "query": "How can I view the cluster notifications for my OpenShift cluster using the Red Hat Hybrid Cloud Console?",
+    "topic": "support",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "managed-cluster-notification-view-in-hcc"
+    ]
+  },
+  {
+    "id": "templates-rails-writing-application",
+    "query": "How do I create a new Rails application with PostgreSQL as the database?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "templates-rails-writing-application"
+    ]
+  },
+  {
+    "id": "oadp-using-enable-api-group-versions",
+    "query": "How do I configure Velero to back up all Kubernetes API group versions supported on my cluster?",
+    "topic": "backup_and_restore",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "oadp-using-enable-api-group-versions"
+    ]
+  },
+  {
+    "id": "templates-marking-as-bindable",
+    "query": "How do I prevent end users from binding against services provisioned from a specific template?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "templates-marking-as-bindable"
+    ]
+  },
+  {
+    "id": "nodes-control-plane-osp-migrating",
+    "query": "How do I manually migrate a control plane node from one RHOSP host to another if control plane machine sets are not enabled?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-control-plane-osp-migrating"
+    ]
+  },
+  {
+    "id": "deleting-cluster-autoscaler",
+    "query": "How do I disable the cluster autoscaler in my OpenShift environment?",
+    "topic": "machine_management",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "deleting-cluster-autoscaler"
+    ]
+  },
+  {
+    "id": "multi-arch-deleting-podplacment-config-using-web-console",
+    "query": "How do I delete the existing ClusterPodPlacementConfig object using the OpenShift web console?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "multi-arch-deleting-podplacment-config-using-web-console"
+    ]
+  },
+  {
+    "id": "nodes-pods-daemonsets-creating",
+    "query": "How do I disable the default project-wide node selector in my namespace before creating a daemon set?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-pods-daemonsets-creating"
+    ]
+  },
+  {
+    "id": "machine-config-install-time-configs",
+    "query": "How can I override the default disk partition schema for new nodes in my OpenShift cluster?",
+    "topic": "machine_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "machine-config-install-time-configs"
+    ]
+  },
+  {
+    "id": "update-duration-mco",
+    "query": "How can I speed up the update process for compute nodes using the Machine Config Operator?",
+    "topic": "updating",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "update-duration-mco"
+    ]
+  },
+  {
+    "id": "persistent-storage-cinder-provisioning",
+    "query": "What prerequisites do I need to meet before manually provisioning storage with Cinder in OpenShift Container Platform?",
+    "topic": "storage",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "persistent-storage-cinder-provisioning"
+    ]
+  },
+  {
+    "id": "deployments-graceful-termination",
+    "query": "How can I configure the graceful termination period for my application in OpenShift?",
+    "topic": "applications",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "deployments-graceful-termination"
+    ]
+  },
+  {
+    "id": "nodes-vsphere-machine-set-concept-static-ip",
+    "query": "How do I configure a machine set to request a static IP address for a machine in OpenShift?",
+    "topic": "post_installation_configuration",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-vsphere-machine-set-concept-static-ip"
+    ]
+  },
+  {
+    "id": "oadp-about-enable-api-group-versions",
+    "query": "How do I enable the API Group Versions feature in Velero to back up all Kubernetes API versions?",
+    "topic": "backup_and_restore",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "oadp-about-enable-api-group-versions"
+    ]
+  },
+  {
+    "id": "security-infra",
+    "query": "What are the network requirements for setting up a bare-metal cluster in a telco environment?",
+    "topic": "post_installation_configuration",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "security-infra"
+    ]
+  },
+  {
+    "id": "nodes-nodes-working-evacuating",
+    "query": "How do I evacuate pods from a specific node while ensuring that only pods backed by a replication controller are affected?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-nodes-working-evacuating",
+      "nodes-nodes-working-master-schedulable"
+    ]
+  },
+  {
+    "id": "secrets-store-auto-rotation",
+    "query": "How often does the Secrets Store CSI driver check for updates to the mounted volume?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "secrets-store-auto-rotation"
+    ]
+  },
+  {
+    "id": "nodes-containers-copying-files-about",
+    "query": "How do I copy a local directory to a specific pod while ensuring that only its contents are transferred?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-containers-copying-files-about"
+    ]
+  },
+  {
+    "id": "sbo-projecting-the-binding-data",
+    "query": "How do I project the binding data as files in my workload?",
+    "topic": "applications",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "sbo-projecting-the-binding-data"
+    ]
+  },
+  {
+    "id": "lvms-scaling-storage-of-clusters-using-cli",
+    "query": "How do I scale up the storage capacity of the worker nodes on my OpenShift cluster using the CLI?",
+    "topic": "storage",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "lvms-scaling-storage-of-clusters-using-cli"
+    ]
+  },
+  {
+    "id": "rosa-sts-aws-requirements-creating-multi-association",
+    "query": "How do I associate multiple AWS accounts with my Red Hat organization for creating OpenShift Container Platform clusters?",
+    "topic": "support",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "rosa-sts-aws-requirements-creating-multi-association"
+    ]
+  },
+  {
+    "id": "managing-dedicated-administrators",
+    "query": "How do I add a user to the `cluster-admin` group in OpenShift?",
+    "topic": "authentication",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "managing-dedicated-administrators"
+    ]
+  },
+  {
+    "id": "persistent-storage-local-pvc",
+    "query": "How do I create a persistent volume claim for a local volume in OpenShift?",
+    "topic": "storage",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "persistent-storage-local-pvc"
+    ]
+  },
+  {
+    "id": "authentication-prometheus-system-metrics",
+    "query": "What metrics does OpenShift capture related to authentication attempts for Prometheus?",
+    "topic": "authentication",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "authentication-prometheus-system-metrics"
+    ]
+  },
+  {
+    "id": "config-github-idp",
+    "query": "How do I restrict access to my OpenShift Container Platform cluster when configuring a GitHub identity provider?",
+    "topic": "authentication",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "config-github-idp"
+    ]
+  },
+  {
+    "id": "deployments-replicationcontrollers",
+    "query": "How do I ensure that a specific number of pod replicas are running at all times in my OpenShift environment?",
+    "topic": "applications",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "deployments-replicationcontrollers"
+    ]
+  },
+  {
+    "id": "nvidia-gpu-sharing-methods",
+    "query": "What GPU sharing method should I use for VMs in an OpenShift Container Platform environment?",
+    "topic": "architecture",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nvidia-gpu-sharing-methods"
+    ]
+  },
+  {
+    "id": "olm-installplan",
+    "query": "What are the steps required to create and approve an install plan for an Operator in OpenShift?",
+    "topic": "operators",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "olm-installplan"
+    ]
+  },
+  {
+    "id": "olm-operatorgroups-membership",
+    "query": "What conditions must be met for an Operator to be considered a member of an Operator group?",
+    "topic": "operators",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "olm-operatorgroups-membership"
+    ]
+  },
+  {
+    "id": "rosa-upgrading-cli-tutorial",
+    "query": "How can I verify if an upgrade is available for my OpenShift Container Platform cluster using the ROSA CLI?",
+    "topic": "upgrading",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "rosa-upgrading-cli-tutorial"
+    ]
+  },
+  {
+    "id": "oadp-s3-and-gov-cloud",
+    "query": "What are the key requirements for configuring backup storage in AWS GovCloud to meet federal data security standards?",
+    "topic": "backup_and_restore",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "oadp-s3-and-gov-cloud"
+    ]
+  },
+  {
+    "id": "nodes-cluster-overcommit-about",
+    "query": "How can I configure the overcommitment of resources on a node in OpenShift?",
+    "topic": "nodes",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nodes-cluster-overcommit-about",
+      "nodes-cluster-overcommit-configure-nodes"
+    ]
+  },
+  {
+    "id": "nodes-cluster-resource-override-deploy-console",
+    "query": "How do I install the Cluster Resource Override Operator using the OpenShift web console?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-cluster-resource-override-deploy-console",
+      "nodes-cluster-resource-configure"
+    ]
+  },
+  {
+    "id": "nw-how-nw-iface-selected",
+    "query": "How does OpenShift determine which network interface to use for communication with the Kubernetes API server during node boot?",
+    "topic": "support",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "nw-how-nw-iface-selected"
+    ]
+  },
+  {
+    "id": "nodes-pods-image-volume-adding",
+    "query": "How do I specify a pull policy when adding an image volume to a pod in OpenShift?",
+    "topic": "nodes",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "nodes-pods-image-volume-adding"
+    ]
+  },
+  {
+    "id": "update-applying-mcp-labels-to-nodes-before-the-update",
+    "query": "How do I apply MachineConfigPool labels to nodes before performing a cluster update?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "update-applying-mcp-labels-to-nodes-before-the-update"
+    ]
+  },
+  {
+    "id": "update-upgrading-web",
+    "query": "How do I update my OpenShift cluster using the web console?",
+    "topic": "updating",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "update-upgrading-web"
+    ]
+  },
+  {
+    "id": "rosa-deleting-cluster-upgrade-ocm",
+    "query": "How do I cancel a scheduled upgrade using the OpenShift Cluster Manager console?",
+    "topic": "upgrading",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "rosa-deleting-cluster-upgrade-ocm"
+    ]
+  },
+  {
+    "id": "registry-configuring-private-storage-endpoint-azure",
+    "query": "How do I configure the Image Registry Operator to use private storage endpoints on Azure for my OpenShift Container Platform deployment?",
+    "topic": "post_installation_configuration",
+    "content_type": "CONCEPT",
+    "gold_doc_ids": [
+      "registry-configuring-private-storage-endpoint-azure"
+    ]
+  },
+  {
+    "id": "dr-restoring-cluster-state",
+    "query": "What steps should I take to restore a three-node HA cluster without causing a split?",
+    "topic": "post_installation_configuration",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "dr-restoring-cluster-state"
+    ]
+  },
+  {
+    "id": "collecting-kube-node-logs-windows",
+    "query": "How do I collect Kubernetes node logs for Windows containers?",
+    "topic": "support",
+    "content_type": "PROCEDURE",
+    "gold_doc_ids": [
+      "collecting-kube-node-logs-windows"
+    ]
+  }
+]

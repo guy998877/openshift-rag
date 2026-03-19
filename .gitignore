@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+# RAG pipeline
+.env
+data/processed/
+chroma_db/

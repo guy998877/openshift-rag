@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OpenShift RAG Viewer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/asciidoc.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
+
+    .file-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.1s;
+    }
+    .file-item:hover { background: #f8faff; }
+    .file-item.active { background: #eff6ff; border-left: 3px solid #3b82f6; }
+
+    /* Pane code content */
+    #adoc-content pre, #md-raw pre {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #adoc-content pre code, #md-raw pre code {
+      background: none;
+      padding: 0;
+    }
+
+    /* Rendered markdown styles */
+    #md-rendered { font-size: 14px; line-height: 1.7; color: #1f2937; }
+    #md-rendered h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+    #md-rendered h2 { font-size: 1.2rem; font-weight: 600; margin: 1.25rem 0 0.5rem; color: #111827; }
+    #md-rendered h3 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.4rem; color: #374151; }
+    #md-rendered p { margin: 0.5rem 0; }
+    #md-rendered ul, #md-rendered ol { margin: 0.5rem 0 0.5rem 1.5rem; }
+    #md-rendered li { margin: 0.25rem 0; }
+    #md-rendered code { background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 12px; font-family: monospace; }
+    #md-rendered pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 0.75rem 0; }
+    #md-rendered pre code { background: none; color: inherit; padding: 0; font-size: 12px; }
+    #md-rendered blockquote { border-left: 4px solid #f59e0b; padding: 0.5rem 1rem; background: #fffbeb; margin: 0.75rem 0; border-radius: 0 4px 4px 0; }
+    #md-rendered blockquote strong { color: #92400e; }
+    #md-rendered a { color: #3b82f6; text-decoration: underline; }
+    #md-rendered table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; }
+    #md-rendered th, #md-rendered td { border: 1px solid #e5e7eb; padding: 0.4rem 0.75rem; text-align: left; }
+    #md-rendered th { background: #f9fafb; font-weight: 600; }
+
+    /* Meta tags */
+    .meta-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 9999px; font-size: 11px;
+      white-space: nowrap;
+    }
+    .meta-tag-gray  { background: #f3f4f6; color: #6b7280; }
+    .meta-tag-blue  { background: #dbeafe; color: #1d4ed8; }
+    .meta-tag-green { background: #dcfce7; color: #15803d; }
+    .meta-tag-red   { background: #fee2e2; color: #b91c1c; }
+    .meta-tag-amber { background: #fef3c7; color: #92400e; }
+    .meta-tag-purple{ background: #ede9fe; color: #6d28d9; }
+
+    /* Empty state */
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #9ca3af; }
+
+    /* Query answer markdown */
+    #q-answer h1 { font-size: 1.3rem; font-weight: 700; margin: 0 0 0.75rem; }
+    #q-answer h2 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.4rem; }
+    #q-answer h3 { font-size: 1rem; font-weight: 600; margin: 0.75rem 0 0.3rem; color: #374151; }
+    #q-answer p  { margin: 0.5rem 0; }
+    #q-answer ul, #q-answer ol { margin: 0.4rem 0 0.4rem 1.5rem; }
+    #q-answer li { margin: 0.2rem 0; }
+    #q-answer code { background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 12px; font-family: monospace; }
+    #q-answer pre { background: #1e293b; color: #e2e8f0; padding: 0.75rem 1rem; border-radius: 6px; overflow-x: auto; margin: 0.5rem 0; }
+    #q-answer pre code { background: none; color: inherit; padding: 0; font-size: 12px; }
+    #q-answer blockquote { border-left: 4px solid #f59e0b; padding: 0.4rem 0.75rem; background: #fffbeb; margin: 0.5rem 0; }
+  </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden bg-gray-50 text-gray-800 text-sm">
+
+  <!-- Top bar -->
+  <div class="h-11 bg-gray-900 text-white flex items-center px-4 gap-4 shrink-0">
+    <span class="font-semibold tracking-wide">OpenShift RAG Viewer</span>
+    <!-- Tab buttons -->
+    <div class="flex gap-0 ml-2">
+      <button id="tab-btn-compare" onclick="switchTab('compare')"
+        class="tab-btn px-3 py-1 text-xs rounded-l border border-gray-600 bg-blue-600 text-white">Compare</button>
+      <button id="tab-btn-query" onclick="switchTab('query')"
+        class="tab-btn px-3 py-1 text-xs rounded-r border border-gray-600 text-gray-300 hover:bg-gray-700">Query</button>
+    </div>
+    <div class="ml-auto flex items-center gap-3 text-xs text-gray-400">
+      <span id="stat-total"></span>
+      <span id="stat-shown"></span>
+    </div>
+  </div>
+
+  <!-- Main layout -->
+  <div class="flex flex-1 overflow-hidden" id="main-layout">
+
+    <!-- ─── Left sidebar: file browser ─── -->
+    <div class="w-72 bg-white border-r flex flex-col shrink-0">
+      <!-- Search + filter -->
+      <div class="p-3 border-b bg-gray-50 shrink-0">
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search filename or topic…"
+          class="w-full px-3 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          oninput="onSearch(this.value)"
+        />
+        <div class="flex gap-1.5 mt-2">
+          <button onclick="setTypeFilter('ALL')"       id="filter-ALL"       class="filter-btn active-filter px-2 py-0.5 text-xs rounded border">All</button>
+          <button onclick="setTypeFilter('PROCEDURE')" id="filter-PROCEDURE" class="filter-btn px-2 py-0.5 text-xs rounded border">Procedure</button>
+          <button onclick="setTypeFilter('CONCEPT')"   id="filter-CONCEPT"   class="filter-btn px-2 py-0.5 text-xs rounded border">Concept</button>
+        </div>
+      </div>
+      <!-- File list -->
+      <div id="file-list" class="overflow-y-auto flex-1 text-xs"></div>
+    </div>
+
+    <!-- ─── Right main area ─── -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+      <!-- Metadata panel -->
+      <div id="metadata-panel" class="bg-white border-b shrink-0">
+        <div class="empty-state py-4 text-gray-400 text-xs">← Select a file to view metadata</div>
+      </div>
+
+      <!-- Split panes row -->
+      <div class="flex flex-1 overflow-hidden">
+
+        <!-- adoc pane -->
+        <div class="flex-1 flex flex-col overflow-hidden border-r">
+          <div class="bg-gray-100 border-b px-4 py-2 flex items-center gap-2 shrink-0">
+            <span class="font-medium text-gray-700">Original</span>
+            <span class="text-gray-400 text-xs font-mono" id="adoc-filename">.adoc</span>
+            <span class="ml-auto text-xs text-gray-400" id="adoc-lines"></span>
+          </div>
+          <div id="adoc-content" class="flex-1 overflow-auto p-4 bg-white">
+            <div class="empty-state h-full text-gray-400 text-xs flex items-center justify-center">No file selected</div>
+          </div>
+        </div>
+
+        <!-- md pane -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+          <div class="bg-gray-100 border-b px-4 py-2 flex items-center gap-2 shrink-0">
+            <span class="font-medium text-gray-700">Preprocessed</span>
+            <span class="text-gray-400 text-xs font-mono" id="md-filename">.md</span>
+            <span class="ml-auto text-xs text-gray-400" id="md-lines"></span>
+            <div class="flex border border-gray-300 rounded overflow-hidden ml-2">
+              <button id="btn-raw"      onclick="setMdMode('raw')"      class="px-2 py-0.5 text-xs bg-blue-500 text-white">Raw</button>
+              <button id="btn-rendered" onclick="setMdMode('rendered')" class="px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200">Rendered</button>
+            </div>
+          </div>
+          <div id="md-raw"      class="flex-1 overflow-auto p-4 bg-white"></div>
+          <div id="md-rendered" class="flex-1 overflow-auto p-4 bg-white hidden"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Query panel (hidden by default) ─── -->
+  <div id="query-panel" class="hidden flex-1 overflow-auto bg-gray-50 p-6">
+    <div class="max-w-4xl mx-auto flex flex-col gap-5">
+
+      <!-- Input row -->
+      <div class="flex gap-2">
+        <input id="q-input" type="text" placeholder="Ask a question about OpenShift…"
+          class="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onkeydown="if(event.key==='Enter') runQuery()" />
+        <button onclick="runQuery()"
+          class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50"
+          id="q-ask-btn">Ask</button>
+      </div>
+
+      <!-- Options row -->
+      <div class="flex flex-wrap gap-3 items-center text-xs text-gray-600">
+        <label class="flex items-center gap-1">
+          Results:
+          <input id="q-n-results" type="number" value="5" min="1" max="20"
+            class="w-14 px-2 py-1 border border-gray-300 rounded" />
+        </label>
+        <label class="flex items-center gap-1">
+          Topic:
+          <select id="q-filter-topic" class="px-2 py-1 border border-gray-300 rounded bg-white">
+            <option value="">all</option>
+            <option value="support">support</option>
+            <option value="upgrading">upgrading</option>
+            <option value="operators">operators</option>
+            <option value="nodes">nodes</option>
+            <option value="post_installation_configuration">post_installation_configuration</option>
+            <option value="updating">updating</option>
+            <option value="machine_management">machine_management</option>
+            <option value="machine_configuration">machine_configuration</option>
+            <option value="authentication">authentication</option>
+            <option value="backup_and_restore">backup_and_restore</option>
+            <option value="architecture">architecture</option>
+            <option value="applications">applications</option>
+            <option value="storage">storage</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1">
+          Type:
+          <select id="q-filter-type" class="px-2 py-1 border border-gray-300 rounded bg-white">
+            <option value="">all</option>
+            <option value="PROCEDURE">PROCEDURE</option>
+            <option value="CONCEPT">CONCEPT</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-1">
+          Model:
+          <select id="q-model" class="px-2 py-1 border border-gray-300 rounded bg-white">
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
+            <option value="gpt-4o">gpt-4o</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- Loading spinner -->
+      <div id="q-spinner" class="hidden text-sm text-gray-500 flex items-center gap-2">
+        <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        Retrieving and generating answer…
+      </div>
+
+      <!-- Error message -->
+      <div id="q-error" class="hidden bg-red-50 border border-red-200 text-red-700 text-sm rounded p-3"></div>
+
+      <!-- Answer section -->
+      <div id="q-answer-section" class="hidden">
+        <!-- Grounding warning (shown when is_grounded == false) -->
+        <div id="q-grounding-warning" class="hidden mb-3 flex items-center gap-2 bg-yellow-50 border border-yellow-300 text-yellow-800 text-xs rounded px-3 py-2">
+          <span>&#9888;</span>
+          <span>Answer could not be fully verified against the retrieved documents.</span>
+        </div>
+        <div class="font-semibold text-gray-700 mb-2 text-sm border-b pb-1">Answer</div>
+        <!-- Rewritten query hint -->
+        <div id="q-rewritten-hint" class="hidden mb-2 text-xs text-gray-400 italic"></div>
+        <div id="q-answer" class="prose-sm text-gray-800 text-sm leading-relaxed" style="font-size:14px;line-height:1.7"></div>
+      </div>
+
+      <!-- Sources section -->
+      <div id="q-sources-section" class="hidden">
+        <div class="font-semibold text-gray-700 mb-2 text-sm border-b pb-1" id="q-sources-header">Sources</div>
+        <div id="q-sources" class="flex flex-col gap-2"></div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // ─── Tab switching ───────────────────────────────────────────────
+  let currentTab = 'compare';
+
+  function switchTab(tab) {
+    currentTab = tab;
+    const mainLayout = document.getElementById('main-layout');
+    const queryPanel = document.getElementById('query-panel');
+    const compareBtn = document.getElementById('tab-btn-compare');
+    const queryBtn   = document.getElementById('tab-btn-query');
+
+    if (tab === 'compare') {
+      mainLayout.classList.remove('hidden');
+      mainLayout.classList.add('flex');
+      queryPanel.classList.add('hidden');
+      compareBtn.classList.add('bg-blue-600', 'text-white');
+      compareBtn.classList.remove('text-gray-300');
+      queryBtn.classList.remove('bg-blue-600', 'text-white');
+      queryBtn.classList.add('text-gray-300');
+    } else {
+      mainLayout.classList.add('hidden');
+      mainLayout.classList.remove('flex');
+      queryPanel.classList.remove('hidden');
+      compareBtn.classList.remove('bg-blue-600', 'text-white');
+      compareBtn.classList.add('text-gray-300');
+      queryBtn.classList.add('bg-blue-600', 'text-white');
+      queryBtn.classList.remove('text-gray-300');
+      // Focus the input
+      setTimeout(() => document.getElementById('q-input').focus(), 50);
+    }
+  }
+
+  // ─── Query tab logic ─────────────────────────────────────────────
+  async function runQuery() {
+    const question = document.getElementById('q-input').value.trim();
+    if (!question) return;
+
+    const btn = document.getElementById('q-ask-btn');
+    btn.disabled = true;
+    document.getElementById('q-spinner').classList.remove('hidden');
+    document.getElementById('q-error').classList.add('hidden');
+    document.getElementById('q-answer-section').classList.add('hidden');
+    document.getElementById('q-sources-section').classList.add('hidden');
+    document.getElementById('q-grounding-warning').classList.add('hidden');
+    document.getElementById('q-rewritten-hint').classList.add('hidden');
+
+    const body = {
+      question,
+      n_results: parseInt(document.getElementById('q-n-results').value) || 5,
+      filter_topic: document.getElementById('q-filter-topic').value,
+      filter_type: document.getElementById('q-filter-type').value,
+      model: document.getElementById('q-model').value,
+    };
+
+    try {
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById('q-error').textContent = data.error;
+        document.getElementById('q-error').classList.remove('hidden');
+      } else {
+        // Show grounding warning if needed
+        if (data.is_grounded === false) {
+          document.getElementById('q-grounding-warning').classList.remove('hidden');
+        }
+
+        // Show rewritten query hint if it differs from original
+        const hintEl = document.getElementById('q-rewritten-hint');
+        if (data.rewritten_query && data.rewritten_query !== question) {
+          hintEl.textContent = '\u2139 Searched as: "' + data.rewritten_query + '"';
+          hintEl.classList.remove('hidden');
+        }
+
+        // Render answer as markdown
+        document.getElementById('q-answer').innerHTML = marked.parse(data.answer || '');
+        document.getElementById('q-answer-section').classList.remove('hidden');
+
+        // Render sources
+        if (data.sources && data.sources.length > 0) {
+          document.getElementById('q-sources-header').textContent = `Sources (${data.sources.length})`;
+          const typeColor = {PROCEDURE: 'bg-blue-100 text-blue-700', CONCEPT: 'bg-green-100 text-green-700'};
+          document.getElementById('q-sources').innerHTML = data.sources.map(s => {
+            const ct = s.content_type || '?';
+            const color = typeColor[ct] || 'bg-gray-100 text-gray-600';
+            const abbr = ct === 'PROCEDURE' ? 'PROC' : ct === 'CONCEPT' ? 'CONC' : ct;
+            return `<div class="flex items-center gap-2 bg-white border border-gray-200 rounded px-3 py-2 text-xs">
+              <span class="px-1.5 py-0.5 rounded font-medium ${color}">${abbr}</span>
+              <span class="font-medium flex-1 truncate" title="${escapeHtml(s.title || s.id)}">${escapeHtml(s.title || s.id)}</span>
+              <span class="text-gray-400 truncate max-w-xs">${escapeHtml(s.source_dir || '')}</span>
+              ${s.id ? `<button onclick="viewSource('${s.id}')" class="ml-2 text-blue-500 hover:underline shrink-0">View</button>` : ''}
+            </div>`;
+          }).join('');
+          document.getElementById('q-sources-section').classList.remove('hidden');
+        }
+      }
+    } catch (e) {
+      document.getElementById('q-error').textContent = 'Request failed: ' + e.message;
+      document.getElementById('q-error').classList.remove('hidden');
+    } finally {
+      btn.disabled = false;
+      document.getElementById('q-spinner').classList.add('hidden');
+    }
+  }
+
+  function viewSource(stem) {
+    switchTab('compare');
+    selectFile(stem);
+  }
+
+  // ─── State ───────────────────────────────────────────────────────
+  let allFiles = [];
+  let currentStem = null;
+  let typeFilter = 'ALL';
+  let searchQuery = '';
+  let mdMode = 'raw';
+  let currentMdText = '';
+
+  // ─── Init ────────────────────────────────────────────────────────
+  async function init() {
+    const res = await fetch('/api/files');
+    allFiles = await res.json();
+    document.getElementById('stat-total').textContent = `${allFiles.length} files`;
+    renderFileList();
+  }
+
+  // ─── File list ───────────────────────────────────────────────────
+  function onSearch(val) {
+    searchQuery = val.toLowerCase();
+    renderFileList();
+  }
+
+  function setTypeFilter(type) {
+    typeFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+      b.classList.add('border-gray-300', 'text-gray-600');
+    });
+    const active = document.getElementById('filter-' + type);
+    active.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+    active.classList.remove('border-gray-300', 'text-gray-600');
+    renderFileList();
+  }
+
+  function renderFileList() {
+    const filtered = allFiles.filter(f => {
+      if (typeFilter !== 'ALL' && f.content_type !== typeFilter) return false;
+      if (searchQuery) {
+        return f.filename.toLowerCase().includes(searchQuery) ||
+               f.source_dir.toLowerCase().includes(searchQuery) ||
+               f.topic.toLowerCase().includes(searchQuery);
+      }
+      return true;
+    });
+
+    document.getElementById('stat-shown').textContent = `${filtered.length} shown`;
+
+    const typeColor = { PROCEDURE: 'text-blue-600 bg-blue-50', CONCEPT: 'text-green-700 bg-green-50', UNKNOWN: 'text-gray-500 bg-gray-100' };
+
+    document.getElementById('file-list').innerHTML = filtered.length === 0
+      ? `<div class="empty-state p-8 text-gray-400 text-xs flex items-center justify-center h-32">No files match</div>`
+      : filtered.map(f => `
+        <div class="file-item ${currentStem === f.id ? 'active' : ''}" onclick="selectFile('${f.id}')">
+          <div class="flex items-center gap-1.5 mb-0.5">
+            <span class="text-xs px-1.5 py-0 rounded font-medium ${typeColor[f.content_type] || typeColor.UNKNOWN}">
+              ${f.content_type === 'PROCEDURE' ? 'PROC' : f.content_type === 'CONCEPT' ? 'CONC' : f.content_type}
+            </span>
+            <span class="font-mono truncate" title="${f.filename}">${f.filename}</span>
+          </div>
+          <div class="text-gray-400 pl-0.5 truncate">${f.source_dir}</div>
+        </div>`).join('');
+  }
+
+  // ─── File loading ────────────────────────────────────────────────
+  async function selectFile(stem) {
+    currentStem = stem;
+    renderFileList();
+
+    // Show loading state
+    document.getElementById('adoc-content').innerHTML = `<div class="text-gray-400 text-xs p-4">Loading…</div>`;
+    document.getElementById('md-raw').innerHTML = `<div class="text-gray-400 text-xs p-4">Loading…</div>`;
+    document.getElementById('md-rendered').innerHTML = '';
+
+    const res = await fetch('/api/file/' + stem);
+    const data = await res.json();
+
+    document.getElementById('adoc-filename').textContent = stem + '.adoc';
+    document.getElementById('md-filename').textContent = stem + '.md';
+
+    renderAdoc(data.adoc);
+    currentMdText = data.md;
+    renderMd();
+    renderMetadata(data.metadata);
+  }
+
+  // ─── Adoc pane ───────────────────────────────────────────────────
+  function renderAdoc(text) {
+    const lines = text.split('\n').length;
+    document.getElementById('adoc-lines').textContent = `${lines} lines`;
+    let highlighted;
+    try {
+      highlighted = hljs.highlight(text, { language: 'asciidoc' }).value;
+    } catch {
+      highlighted = escapeHtml(text);
+    }
+    document.getElementById('adoc-content').innerHTML =
+      `<pre><code class="hljs language-asciidoc">${highlighted}</code></pre>`;
+  }
+
+  // ─── Md pane ─────────────────────────────────────────────────────
+  function setMdMode(mode) {
+    mdMode = mode;
+    document.getElementById('btn-raw').className =
+      mode === 'raw' ? 'px-2 py-0.5 text-xs bg-blue-500 text-white' : 'px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200';
+    document.getElementById('btn-rendered').className =
+      mode === 'rendered' ? 'px-2 py-0.5 text-xs bg-blue-500 text-white' : 'px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-200';
+    document.getElementById('md-raw').classList.toggle('hidden', mode !== 'raw');
+    document.getElementById('md-rendered').classList.toggle('hidden', mode !== 'rendered');
+    if (currentMdText) renderMd();
+  }
+
+  function renderMd() {
+    const lines = currentMdText.split('\n').length;
+    document.getElementById('md-lines').textContent = `${lines} lines`;
+
+    if (mdMode === 'raw') {
+      let highlighted;
+      try {
+        highlighted = hljs.highlight(currentMdText, { language: 'markdown' }).value;
+      } catch {
+        highlighted = escapeHtml(currentMdText);
+      }
+      document.getElementById('md-raw').innerHTML =
+        `<pre><code class="hljs language-markdown">${highlighted}</code></pre>`;
+    } else {
+      document.getElementById('md-rendered').innerHTML = marked.parse(currentMdText);
+    }
+  }
+
+  // ─── Metadata panel ──────────────────────────────────────────────
+  function renderMetadata(meta) {
+    if (!meta || Object.keys(meta).length === 0) {
+      document.getElementById('metadata-panel').innerHTML =
+        `<div class="px-4 py-3 text-xs text-gray-400">No metadata available.</div>`;
+      return;
+    }
+
+    const bool = (v, label, trueColor='green', falseColor='gray') =>
+      `<span class="meta-tag meta-tag-${v ? trueColor : falseColor}">
+        ${v ? '✓' : '✗'} ${label}
+      </span>`;
+
+    const chip = (v, label, color='blue') => v
+      ? `<span class="meta-tag meta-tag-${color}"><span class="opacity-60">${label}</span> ${v}</span>`
+      : '';
+
+    const tags = (v, label, color='purple') => {
+      if (!v) return '';
+      const items = v.split(',').map(s => s.trim()).filter(Boolean);
+      if (!items.length) return '';
+      return `<span class="meta-tag meta-tag-gray opacity-70 mr-0.5">${label}:</span>` +
+             items.map(t => `<span class="meta-tag meta-tag-${color}">${t}</span>`).join(' ');
+    };
+
+    const typeColor = meta.content_type === 'PROCEDURE' ? 'blue' : 'green';
+
+    const html = `
+      <div class="px-4 py-2.5">
+        <!-- Row 1: document identity -->
+        <div class="flex flex-wrap gap-1.5 items-center mb-2">
+          <span class="meta-tag meta-tag-${typeColor} font-semibold">${meta.content_type || '—'}</span>
+          ${chip(meta.title, '', 'gray')}
+          ${chip(meta.ocp_version, 'OCP', 'amber')}
+          ${chip(meta.topic, 'topic', 'gray')}
+          ${chip(meta.source_dirs_all, 'dirs', 'gray')}
+          ${chip(meta.assembly_count, 'assemblies', 'gray')}
+        </div>
+        <!-- Row 2: content signals -->
+        <div class="flex flex-wrap gap-1.5 items-center mb-2">
+          ${chip(meta.word_count, 'words', 'blue')}
+          ${bool(meta.has_code,             'code')}
+          ${bool(meta.has_prerequisites,    'prerequisites')}
+          ${bool(meta.has_verification,     'verification')}
+          ${bool(meta.is_troubleshooting,   'troubleshooting', 'amber', 'gray')}
+          ${bool(meta.requires_cluster_admin,'cluster-admin required', 'red', 'gray')}
+        </div>
+        <!-- Row 3: commands + resources -->
+        <div class="flex flex-wrap gap-1.5 items-center">
+          ${tags(meta.code_langs,   'langs',    'blue')}
+          ${tags(meta.oc_commands,  'oc',       'purple')}
+          ${tags(meta.api_resources,'resources','amber')}
+        </div>
+      </div>`;
+
+    document.getElementById('metadata-panel').innerHTML = html;
+  }
+
+  // ─── Util ────────────────────────────────────────────────────────
+  function escapeHtml(text) {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ─── Bootstrap filter button styles ──────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    setTypeFilter('ALL');
+    init();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,4987 @@
+{
+  "type": "retrieval",
+  "timestamp": "2026-03-19T15:29:36.196742Z",
+  "config": {
+    "k_retrieve": 20,
+    "use_hybrid": true,
+    "use_rerank": false,
+    "collection": "openshift_docs_v0"
+  },
+  "aggregate": {
+    "recall@1": 0.6967,
+    "precision@1": 0.77,
+    "recall@3": 0.815,
+    "precision@3": 0.31,
+    "recall@5": 0.84,
+    "precision@5": 0.192,
+    "recall@10": 0.8883,
+    "precision@10": 0.102,
+    "recall@20": 0.9233,
+    "precision@20": 0.053,
+    "mrr": 0.8379,
+    "any_hit@5": 0.91,
+    "any_hit@10": 0.95,
+    "avg_ms": 413
+  },
+  "results": [
+    {
+      "id": "cpmso-config-options",
+      "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "cpmso-config-options"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "cpmso-config-options",
+          "update-vsphere-virtual-hardware-on-control-plane-nodes",
+          "ts-capi-sync-list-duplicate-resources",
+          "cpmso-feat-config-update",
+          "update-mco-process",
+          "machine-delete",
+          "cpmso-feat-replace",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "architecture-machine-roles",
+          "machine-api-overview",
+          "cpmso-openstack-with-az-config",
+          "machine-health-checks-resource",
+          "mco-update-boot-images-configuring",
+          "installation-process",
+          "rosa-hcp-upgrade-options",
+          "cpmso-activating",
+          "architecture-machine-config-pools",
+          "machine-lifecycle-hook-deletion-etcd",
+          "cpmso-ts-mhc-etcd-degraded",
+          "cpms-changing-openstack-flavor-type"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "cpmso-config-options"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 314
+    },
+    {
+      "id": "oadp-creating-alerting-rule",
+      "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-creating-alerting-rule"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-creating-alerting-rule",
+          "oadp-incremental-backup-support",
+          "oadp-features",
+          "changes-from-oadp-1-4-to-1-5",
+          "monitoring-sending-notifications-to-external-systems",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-installing-dpa-1-3",
+          "oadp-cluster-to-cluster-uid-and-gid-ranges",
+          "oadp-monitoring-setup",
+          "oadp-deletion-policy-1-3",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-self-service-overview",
+          "oadp-restore-single-vm",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "installing-oadp-rosa-sts",
+          "installing-oadp-aws-sts",
+          "oadp-s3-compatible-backup-storage-providers",
+          "nvidia-gpu-csps",
+          "oadp-configuring-repository-maintenance",
+          "oadp-backup-restore-for-large-usage"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-creating-alerting-rule"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 357
+    },
+    {
+      "id": "olm-arch-olm-operator",
+      "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-arch-olm-operator"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "olm-arch-olm-operator",
+          "olm-operatorgroups-intersections",
+          "olm-csv",
+          "olm-operatorgroups-copied-csvs",
+          "olm-disabling-copied-csvs",
+          "lvms-uninstalling-logical-volume-manager-operator-using-openshift-cli",
+          "olm-operatorgroups-about",
+          "olm-policy-understanding",
+          "update-ensuring-that-layered-products-are-compatible",
+          "red-hat-marketplace-features",
+          "olm-installing-operators-from-software-catalog",
+          "olm-catalogsource",
+          "olm-operatorconditions-about",
+          "olm-dependency-resolution-about",
+          "deployments-replicationcontrollers",
+          "sbo-methods-of-exposing-binding-data",
+          "olm-arch-catalog-operator",
+          "sbo-categories-of-exposable-binding-data",
+          "olm-overview",
+          "olm-installplan"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "olm-arch-olm-operator"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 285
+    },
+    {
+      "id": "nodes-nodes-working-master-schedulable",
+      "query": "How do I configure control plane nodes to be schedulable in OpenShift?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-nodes-working-master-schedulable",
+        "nodes-nodes-working-evacuating"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-nodes-working-master-schedulable",
+          "update-vsphere-virtual-hardware-on-control-plane-nodes",
+          "graceful-shutdown",
+          "update-duration-estimate-cluster-update-time",
+          "update-duration-mco",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "graceful-restart",
+          "update-mco-process",
+          "update-updating-the-worker-nodes",
+          "machine-config-node-drain",
+          "update-using-custom-machine-config-pools-about",
+          "cluster-autoscaler-about",
+          "nodes-nodes-working-marking",
+          "cpmso-control-plane-recovery",
+          "nodes-edge-remote-workers-strategies",
+          "dr-restoring-cluster-state",
+          "nodes-nodes-working-updating",
+          "multi-architecture-modify-machine-set-azure",
+          "rosa-hcp-classic-comparison",
+          "nodes-edge-remote-workers-power"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 0.5,
+        "precision@5": 0.2,
+        "recall@10": 0.5,
+        "precision@10": 0.1,
+        "recall@20": 0.5,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-nodes-working-master-schedulable"
+        ],
+        "gold_missed": [
+          "nodes-nodes-working-evacuating"
+        ]
+      },
+      "elapsed_ms": 242
+    },
+    {
+      "id": "velero-obtaining-by-accessing-binary",
+      "query": "How do I set an alias to access the Velero binary in my cluster's Velero deployment?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "velero-obtaining-by-accessing-binary"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "velero-obtaining-by-accessing-binary",
+          "oadp-using-ca-certificates-with-velero-command",
+          "oadp-deleting-backups-using-velero",
+          "troubleshooting-backup-cr-status-remains-in-progress-issue",
+          "migration-debugging-velero-resources",
+          "oadp-checking-api-group-versions",
+          "oadp-about-enable-api-group-versions",
+          "oadp-velero-timeouts",
+          "oadp-installing-dpa-1-3",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-creating-restore-hooks",
+          "migration-configuring-aws-s3",
+          "oadp-review-backup-restore",
+          "oadp-configuring-velero-load-affinity",
+          "oadp-restic-restore-failing-psa-policy",
+          "oadp-velero-default-timeouts",
+          "oadp-pod-volume-backup",
+          "oadp-setting-resource-limits-and-requests",
+          "oadp-configuring-aws-md5sum",
+          "multi-arch-creating-podplacment-config"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "velero-obtaining-by-accessing-binary"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 213
+    },
+    {
+      "id": "nodes-descheduler-installing",
+      "query": "How do I change the descheduler from predictive mode to automatic mode in my OpenShift cluster?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-descheduler-installing"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-descheduler-installing",
+          "oadp-incremental-backup-support",
+          "nodes-descheduler-configuring-profiles",
+          "cco-determine-mode-gui",
+          "cco-determine-mode-cli",
+          "nodes-descheduler-uninstalling",
+          "nodes-pods-vertical-autoscaler-in-place",
+          "olm-sqlite-catalog-configuring-elevated-permissions",
+          "coreos-layering-configuring-on",
+          "about-manually-maintained-credentials-upgrade",
+          "nodes-descheduler-configuring-interval",
+          "disabling-etcd-encryption",
+          "nodes-pods-vertical-autoscaler-using-about",
+          "coreos-layering-configuring-on-rebuild",
+          "nodes-pods-vertical-autoscaler-about",
+          "olm-disabling-copied-csvs",
+          "comparison-of-solutions-to-provision-node-local-storage",
+          "olm-catalog-source-and-psa",
+          "nodes-containers-projected-volumes-about",
+          "persistent-storage-vsphere-dynamic-provisioning"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-descheduler-installing"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 218
+    },
+    {
+      "id": "nodes-nodes-rebooting-affinity",
+      "query": "How do I configure pod anti-affinity to ensure workloads are spread across nodes before rebooting a node?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-nodes-rebooting-affinity"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-nodes-rebooting-affinity",
+          "update-pod-anti-affinity",
+          "nodes-scheduler-pod-affinity-about",
+          "nodes-nodes-rebooting-infrastructure",
+          "nodes-scheduler-profiles-about",
+          "nodes-nodes-rebooting-gracefully",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "nodes-nodes-rebooting-router",
+          "graceful-shutdown",
+          "update-updating-the-worker-nodes",
+          "bound-sa-tokens-configuring",
+          "lvms-about-lvm-storage-installation",
+          "oadp-configuring-restore-pvc-datamover-restore",
+          "binding-infra-node-workloads-using-taints-tolerations",
+          "update-duration-mco",
+          "machine-lifecycle-hook-deletion-uses",
+          "creating-an-infra-node",
+          "nodes-containers-init-about",
+          "machine-health-checks-resource",
+          "nodes-edge-remote-workers-network"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-nodes-rebooting-affinity"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 370
+    },
+    {
+      "id": "nodes-scheduler-profiles-configuring",
+      "query": "How do I configure the scheduler to use the HighNodeUtilization profile in my OpenShift cluster?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-scheduler-profiles-configuring"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-scheduler-profiles-configuring",
+          "nodes-scheduler-profiles-about",
+          "nodes-secondary-scheduler-install-console",
+          "tls-profiles-kubelet-configuring",
+          "nodes-secondary-scheduler-uninstall-console",
+          "nodes-cluster-worker-latency-profiles-about",
+          "nodes-secondary-scheduler-configuring-console",
+          "tls-profiles-understanding",
+          "nodes-secondary-scheduler-about",
+          "persistent-storage-csi-efs-cross-account",
+          "nodes-secondary-scheduler-remove-resources-console",
+          "security-context-constraints-psa-about",
+          "nodes-secondary-scheduler-pod-console",
+          "nodes-pods-priority-preempt-about",
+          "dynamic-provisioning-annotations",
+          "nodes-nodes-rebooting-router",
+          "nodes-cluster-worker-latency-profiles-using",
+          "nodes-edge-remote-workers-network",
+          "nodes-nodes-resources-configuring-about",
+          "rosa-sts-aws-requirements-creating-multi-association"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-scheduler-profiles-configuring"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 390
+    },
+    {
+      "id": "nodes-cma-autoscaling-custom-metrics-access",
+      "query": "How do I create a custom query for performance metrics in the OpenShift Container Platform web console?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-cma-autoscaling-custom-metrics-access"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-cma-autoscaling-custom-metrics-access",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "monitoring-determining-why-prometheus-is-consuming-disk-space",
+          "nodes-pods-autoscaling-about",
+          "observability-key-performance-metrics",
+          "odc-monitoring-your-project-metrics",
+          "viewing-resource-logs-console",
+          "nodes-secondary-scheduler-install-console",
+          "oadp-viewing-metrics-ui",
+          "nodes-cma-autoscaling-keda-controller-edit",
+          "nodes-cma-autoscaling-custom-prometheus-config",
+          "nodes-cma-autoscaling-custom-install",
+          "sd-nodes-cma-autoscaling-custom-install",
+          "nodes-dashboard-using-identify-critical-memory-crio",
+          "nodes-cma-autoscaling-custom-uninstalling",
+          "nodes-pods-configuring-restart",
+          "oadp-monitoring-setup",
+          "oadp-creating-service-monitor",
+          "nodes-dashboard-using-identify-critical-cpu-kubelet",
+          "persistent-storage-csi-efs-metrics-overview"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cma-autoscaling-custom-metrics-access"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 286
+    },
+    {
+      "id": "storage-persistent-storage-fsgroup",
+      "query": "How can I reduce pod timeouts when using a storage volume with many files in OpenShift?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "storage-persistent-storage-fsGroup",
+        "storage-persistent-storage-iscsi-enforcing-disk-quota",
+        "storage-persistent-storage-volume-format"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "storage-persistent-storage-fsGroup",
+          "storage-persistent-storage-selinuxChangePolicy",
+          "nodes-containers-projected-volumes-about",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-overview",
+          "nodes-containers-copying-files-about",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "nodes-pods-configmap-overview",
+          "storage-ephemeral-vols-lifecycle",
+          "persistent-storage-csi-manila-dynamic-provisioning",
+          "nodes-pods-image-volume-about",
+          "nodes-nodes-jobs-about",
+          "nodes-nodes-jobs-creating",
+          "storage-persistent-storage-lifecycle",
+          "dynamic-provisioning-about",
+          "bound-sa-tokens-configuring",
+          "persistent-storage-vsphere-static-provisioning",
+          "storage-expanding-flexvolume",
+          "installation-overview",
+          "persistent-storage-csi-group-snapshots-create",
+          "nodes-pods-secrets-creating"
+        ],
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "storage-persistent-storage-fsGroup"
+        ],
+        "gold_missed": [
+          "storage-persistent-storage-iscsi-enforcing-disk-quota",
+          "storage-persistent-storage-volume-format"
+        ]
+      },
+      "elapsed_ms": 221
+    },
+    {
+      "id": "odc-discovering-and-identifying-operator-backed-bindable-ser",
+      "query": "How can I identify which Operator-backed services are bindable in the Developer Catalog?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "odc-discovering-and-identifying-operator-backed-bindable-services"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "odc-discovering-and-identifying-operator-backed-bindable-services",
+          "templates-marking-as-bindable",
+          "odc-using-the-developer-catalog-to-add-services-or-components",
+          "sbo-about-service-binding-operator",
+          "nodes-pods-autoscaling-creating-web-console",
+          "architecture-machine-roles",
+          "rhcos-add-extensions",
+          "odc-creating-a-binding-connection-between-components",
+          "nodes-containers-projected-volumes-about",
+          "architecture-kubernetes-introduction",
+          "nodes-nodes-resources-configuring-about",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "rhcos-about",
+          "nodes-dashboard-using-identify-critical-top3",
+          "ignition-config-viewing",
+          "nodes-nodes-jobs-about",
+          "private-service-connect-psc-architecture",
+          "nodes-cluster-resource-configure-about",
+          "odc-creating-helm-releases-using-developer-perspective",
+          "monitoring-determining-why-prometheus-is-consuming-disk-space"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "odc-discovering-and-identifying-operator-backed-bindable-services"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 3491
+    },
+    {
+      "id": "accessing-windows-node",
+      "query": "How can I access a Windows node in my OpenShift cluster?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "accessing-windows-node"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "accessing-windows-node-using-rdp",
+          "accessing-windows-node-using-ssh",
+          "nodes-containers-projected-volumes-about",
+          "dynamic-provisioning-annotations",
+          "identity-provider-about-request-header",
+          "collecting-kube-node-logs-windows",
+          "accessing-windows-node",
+          "nodes-nodes-resources-configuring-about",
+          "nodes-edge-remote-workers-network",
+          "nodes-edge-remote-workers-strategies",
+          "sd-understanding-process-id-limits",
+          "nodes-cluster-resource-configure-about",
+          "machine-config-overview",
+          "nodes-cluster-resource-levels-about",
+          "nodes-nodes-working-updating",
+          "nodes-nodes-rebooting-gracefully",
+          "nodes-nodes-jobs-about",
+          "bound-sa-tokens-configuring",
+          "collecting-windows-application-event-logs",
+          "update-duration-estimate-cluster-update-time"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.1429,
+        "first_hit_rank": 7,
+        "gold_found": [
+          "accessing-windows-node"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 247
+    },
+    {
+      "id": "nodes-pods-configmap-overview",
+      "query": "How can I use a ConfigMap to store and manage configuration data for my applications in OpenShift?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-pods-configmap-overview"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-pods-configmap-overview",
+          "persistent-storage-csi-secrets-store-driver-overview",
+          "etcd-overview",
+          "nodes-containers-projected-volumes-about",
+          "nodes-cluster-resource-configure-about",
+          "odc-deploying-container-image",
+          "nodes-containers-init-about",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-overview",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "nodes-pods-configmap-creating-from-files",
+          "oadp-s3-and-gov-cloud",
+          "red-hat-marketplace-features",
+          "olm-accessing-images-private-registries",
+          "deployments-n1-compatibility",
+          "architecture-machine-config-pools",
+          "dynamic-provisioning-annotations",
+          "architecture-platform-benefits",
+          "oadp-features",
+          "sd-understanding-process-id-limits",
+          "arch-olm-operators"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-pods-configmap-overview"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 211
+    },
+    {
+      "id": "admission-webhook-types",
+      "query": "How can I configure a mutating admission webhook to modify pod specifications in my OpenShift cluster?",
+      "topic": "architecture",
+      "gold_doc_ids": [
+        "admission-webhook-types"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "admission-plug-ins-about",
+          "admission-webhook-types",
+          "admission-webhooks-about",
+          "pod-short-term-auth-gcp-deploy-pod",
+          "nodes-pods-vertical-autoscaler-about",
+          "configuring-dynamic-admission",
+          "migration-debugging-velero-admission-webhooks-ibm-appconnect",
+          "nodes-cluster-resource-override-deploy-console",
+          "understanding-pod-identity-webhook-workflow-in-user-defined-projects",
+          "nodes-cluster-resource-override-deploy-cli",
+          "security-context-constraints-psa-about",
+          "ephemeral-storage-csi-inline-overview-admin-plugin",
+          "olm-catalog-source-and-psa",
+          "dynamic-provisioning-annotations",
+          "nodes-nodes-jobs-about",
+          "security-context-constraints-psa-label",
+          "security-context-constraints-requiring",
+          "persistent-storage-csi-secrets-store-driver-overview",
+          "monitoring-sending-notifications-to-external-systems",
+          "security-context-constraints-psa-opting"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "admission-webhook-types"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 467
+    },
+    {
+      "id": "oadp-configuring-aws-md5sum",
+      "query": "How do I configure the Backup Storage Location to use a specific checksum algorithm in the Data Protection Application?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-configuring-aws-md5sum"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-configuring-aws-md5sum",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "oadp-creating-default-secret",
+          "oadp-auth-azure-secret-based",
+          "oadp-usecase-kopia-override-algorithms",
+          "oadp-usecase-backup-odf",
+          "changes-from-oadp-1-4-to-1-5",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-features",
+          "oadp-dpt-use-case-bsl-spec",
+          "migration-configuring-aws-s3",
+          "oadp-installing-dpa-1-3",
+          "oadp-velero-default-timeouts",
+          "oadp-configuring-backup-pvc-datamover-backup",
+          "creating-the-data-protection-application",
+          "oadp-ssec-encrypted-backups",
+          "oadp-self-service-creating-nab",
+          "migration-configuring-azure",
+          "installing-oadp-aws-sts",
+          "installing-oadp-rosa-sts"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-configuring-aws-md5sum"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 211
+    },
+    {
+      "id": "persistent-storage-csi-snapshots-operator",
+      "query": "What custom resource definitions (CRDs) does the CSI Snapshot Controller Operator create during OpenShift Container Platform installation?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-csi-snapshots-operator",
+        "persistent-storage-csi-azure-file-static-provisioning-procedure",
+        "persistent-storage-csi-group-snapshots-overview"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-csi-snapshots-operator",
+          "oadp-data-mover-crds",
+          "red-hat-marketplace-features",
+          "olm-deleting-operators-from-a-cluster-using-web-console",
+          "olm-operator-framework",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "persistent-storage-csi-group-snapshots-overview",
+          "oadp-plugins",
+          "dr-scenario-cluster-state-issues",
+          "nw-ingress-gateway-api-manage-succession",
+          "vmware-csi-driver-reqs",
+          "persistent-storage-csi-snapshots-overview",
+          "machine-config-overview",
+          "oadp-troubleshooting-dpt",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "using-data-protection-test",
+          "oadp-dpt-use-case-bsl-spec",
+          "persistent-storage-csi-snapshots-create",
+          "persistent-storage-csi-vsphere-install-issues",
+          "oadp-csi-snapshot-timeouts"
+        ],
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.6667,
+        "precision@10": 0.2,
+        "recall@20": 0.6667,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "persistent-storage-csi-snapshots-operator",
+          "persistent-storage-csi-group-snapshots-overview"
+        ],
+        "gold_missed": [
+          "persistent-storage-csi-azure-file-static-provisioning-procedure"
+        ]
+      },
+      "elapsed_ms": 343
+    },
+    {
+      "id": "impersonation-project-creation",
+      "query": "How do I create a project request on behalf of a different user in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "impersonation-project-creation"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "impersonation-project-creation",
+          "bound-sa-tokens-configuring",
+          "nodes-pods-secrets-about",
+          "quotas-requiring-explicit-quota",
+          "nodes-cluster-overcommit-about",
+          "customizing-project-request-message",
+          "tokens-scoping-about",
+          "olm-arch-catalog-operator",
+          "about-project-creation",
+          "nodes-cluster-resource-configure-about",
+          "security-context-constraints-example",
+          "deployments-ab-testing",
+          "olm-operatorgroups-limitations",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "nodes-containers-remote-commands-protocol",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "viewing-a-project-using-the-CLI",
+          "storage-ephemeral-storage-manage",
+          "persistent-storage-csi-vsphere-top-aware-overview",
+          "nodes-edge-remote-workers-network"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "impersonation-project-creation"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 217
+    },
+    {
+      "id": "oadp-backingup-persistent-volumes",
+      "query": "How do I configure the `VolumeSnapshotClass` CR to enable CSI snapshots for backing up persistent volumes?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-backingup-persistent-volumes"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-backingup-persistent-volumes",
+          "oadp-1-3-backing-csi-snapshots",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "persistent-storage-csi-snapshots-operator",
+          "troubleshooting-backup-cr-status-remains-in-partiallyfailed-issue",
+          "installing-oadp-aws-sts",
+          "oadp-incremental-backup-support",
+          "installing-oadp-rosa-sts",
+          "oadp-csi-snapshot-timeouts",
+          "persistent-storage-csi-migration-overview",
+          "persistent-storage-csi-manila-limitations",
+          "persistent-storage-csi-group-snapshots-overview",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-installing-dpa-1-3",
+          "persistent-storage-csi-snapshots-overview",
+          "persistent-storage-csi-snapshots-create",
+          "oadp-plugins",
+          "oadp-features",
+          "oadp-restic-timeouts"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-backingup-persistent-volumes"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 349
+    },
+    {
+      "id": "updating-role-arn-oadp-rosa-sts",
+      "query": "How do I update the IAM role ARN in the OADP Operator subscription if I provided an incorrect ARN during installation?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "updating-role-arn-oadp-rosa-sts"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "updating-role-arn-oadp-rosa-sts",
+          "how-service-accounts-assume-aws-iam-roles-in-sre-owned-projects",
+          "setting-up-an-aws-iam-role-a-service-account",
+          "rosa-sts-ocm-role-creation",
+          "rosa-sts-user-role-creation",
+          "creating-a-service-account-in-your-project",
+          "understanding-pod-identity-webhook-workflow-in-user-defined-projects",
+          "persistent-storage-csi-efs-sts",
+          "rosa-sts-ocm-and-user-role-troubleshooting",
+          "preparing-aws-sts-credentials-for-oadp",
+          "preparing-aws-credentials-for-oadp",
+          "persistent-storage-csi-efs-one-zone-procedure",
+          "verifying-the-assumed-iam-role-in-your-pod",
+          "installing-oadp-aws-sts",
+          "installing-oadp-rosa-sts",
+          "rosa-troubleshoot-hcp-install",
+          "persistent-storage-csi-efs-cross-account",
+          "rosa-troubleshooting-cluster-deletion",
+          "olm-installing-from-software-catalog-using-cli",
+          "oadp-incremental-backup-support"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "updating-role-arn-oadp-rosa-sts"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 194
+    },
+    {
+      "id": "olm-preparing-multitenant-operators",
+      "query": "How do I create a separate namespace for a tenant Operator in a multitenant cluster?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-preparing-multitenant-operators"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "olm-preparing-multitenant-operators",
+          "olm-multitenancy-solution",
+          "olm-operatorgroups-limitations",
+          "olm-accessing-images-private-registries",
+          "olm-operatorgroups-about",
+          "update-pod-anti-affinity",
+          "olm-policy-scoping-operator-install",
+          "nodes-containers-projected-volumes-about",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "persistent-storage-csi-azure-file-cross-sub-dynamic-pre-provisioning-pv-pvc-procedure",
+          "nodes-containers-init-about",
+          "olm-installing-from-software-catalog-using-cli",
+          "olm-colocation-namespaces",
+          "olm-arch-olm-operator",
+          "olm-installing-global-namespaces",
+          "private-clusters-about",
+          "olm-catalogsource",
+          "oadp-self-service-overview",
+          "oadp-installing-dpa-1-3"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "olm-preparing-multitenant-operators"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 267
+    },
+    {
+      "id": "odc-creating-a-visual-connection-between-components",
+      "query": "How do I create a visual connection between my Spring PetClinic application and the Crunchy PostgreSQL database in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "odc-creating-a-visual-connection-between-components"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "odc-creating-a-visual-connection-between-components",
+          "odc-creating-a-binding-connection-between-components",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service-power-z",
+          "sbo-advanced-binding-options",
+          "sbo-deploying-the-spring-petclinic-sample-application",
+          "sbo-deploying-the-spring-petclinic-sample-application-power-z",
+          "sbo-service-binding-terminology",
+          "sbo-creating-a-postgresql-database-instance-power-z",
+          "sbo-rbac-requirements",
+          "sbo-creating-a-postgresql-database-instance",
+          "templates-quickstart",
+          "templates-rails-writing-application",
+          "templates-rails-configuring-application",
+          "templates-rails-deploying-application",
+          "templates-rails-creating-database-service",
+          "osd-aws-privatelink-architecture",
+          "red-hat-marketplace-features",
+          "templates-cli-parameters",
+          "templates-rails-creating-frontend-service"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "odc-creating-a-visual-connection-between-components"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 353
+    },
+    {
+      "id": "storage-persistent-storage-iscsi-enforcing-disk-quota",
+      "query": "How can I use LUN partitions to enforce disk quotas for persistent storage in my OpenShift cluster?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "storage-persistent-storage-iscsi-enforcing-disk-quota",
+        "storage-persistent-storage-fsGroup",
+        "storage-persistent-storage-volume-format"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "storage-persistent-storage-iscsi-enforcing-disk-quota",
+          "persistent-storage-fibre-disk-quotas",
+          "storage-persistent-storage-nfs-enforcing-disk-quota",
+          "dynamic-provisioning-annotations",
+          "osd-on-gcp-troubleshoot-cluster-install",
+          "persistent-storage-vsphere-dynamic-provisioning",
+          "storage-ephemeral-storage-manage",
+          "nodes-cluster-overcommit-configure-nodes",
+          "storage-azure-create-storage-class",
+          "persistent-storage-local-create-cr",
+          "persistent-storage-csi-migration-overview",
+          "persistent-storage-fibre-volume-security",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "machineset-vsphere-data-disks",
+          "lvms-about-adding-devices-to-a-vg",
+          "nodes-nodes-resources-configuring-about",
+          "oadp-incremental-backup-support",
+          "storage-ephemeral-storage-overview",
+          "nodes-cma-autoscaling-custom-trigger-kafka",
+          "persistent-storage-vsphere-dynamic-provisioning-cli"
+        ],
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "storage-persistent-storage-iscsi-enforcing-disk-quota"
+        ],
+        "gold_missed": [
+          "storage-persistent-storage-fsGroup",
+          "storage-persistent-storage-volume-format"
+        ]
+      },
+      "elapsed_ms": 384
+    },
+    {
+      "id": "oadp-ssec-encrypted-backups",
+      "query": "How do I configure server-side encryption with customer-provided keys (SSE-C) for backup data in AWS S3 using OADP?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-ssec-encrypted-backups"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-ssec-encrypted-backups",
+          "machineset-customer-managed-encryption-azure",
+          "oadp-usecase-kopia-override-algorithms",
+          "machineset-gcp-enabling-customer-managed-encryption",
+          "oadp-s3-compatible-backup-storage-providers",
+          "oadp-s3-and-gov-cloud",
+          "migration-configuring-aws-s3",
+          "oadp-multiple-bsl-use-case",
+          "nodes-pods-secrets-about",
+          "oadp-kopia-algorithms-benchmarking",
+          "about-etcd-encryption",
+          "etcd-encryption-types",
+          "oadp-ibm-z-test-support",
+          "oadp-ibm-power-test-support",
+          "cleanup-a-backup-oadp-rosa-sts",
+          "oadp-usecase-backup-odf",
+          "oadp-configuring-dpa-multiple-bsl",
+          "cleanup-a-backup-oadp-aws-sts",
+          "oadp-kopia-configuring-algorithms",
+          "osd-aws-privatelink-architecture"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-ssec-encrypted-backups"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 336
+    },
+    {
+      "id": "cpmso-feat-config-update",
+      "query": "How do I update the control plane configuration in my OpenShift cluster?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "cpmso-feat-config-update"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "update-duration-estimate-cluster-update-time",
+          "update-mco-process",
+          "sd-vs-ocp",
+          "updating-control-plane-only-layered-products",
+          "update-vsphere-virtual-hardware-on-control-plane-nodes",
+          "cpmso-feat-config-update",
+          "update-service-overview",
+          "updating-sno",
+          "update-using-custom-machine-config-pools-about",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "cpmso-feat-auto-update",
+          "nodes-nodes-working-updating",
+          "private-clusters-setting-api-private-aws",
+          "understanding-machine-config-operator",
+          "installation-process",
+          "determining-where-installation-issues-occur",
+          "nodes-edge-remote-workers-power",
+          "update-process-workflow",
+          "about-updates",
+          "cpmso-activating"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.1667,
+        "first_hit_rank": 6,
+        "gold_found": [
+          "cpmso-feat-config-update"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 334
+    },
+    {
+      "id": "persistent-storage-csi-azure-file-static-provisioning-proced",
+      "query": "How do I create a secret for my Azure storage account to use with static provisioning in OpenShift?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-csi-azure-file-static-provisioning-procedure",
+        "persistent-storage-csi-snapshots-operator",
+        "persistent-storage-csi-group-snapshots-overview"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-csi-azure-file-cross-sub-dynamic-pre-provisioning-pv-pvc-procedure",
+          "persistent-storage-csi-azure-file-static-provisioning-procedure",
+          "dynamic-provisioning-azure-file-definition",
+          "persistent-storage-csi-azure-file-cross-sub-dynamic-provisioning-procedure",
+          "oadp-auth-azure-secret-based",
+          "persistent-storage-csi-smb-cifs-provision-static",
+          "migration-configuring-azure",
+          "storage-persistent-storage-azure-file",
+          "registry-configuring-private-storage-endpoint-azure",
+          "persistent-storage-csi-azure-disk-sc-zrs",
+          "olm-accessing-images-private-registries",
+          "persistent-storage-csi-smb-cifs-provision-dynamic",
+          "nodes-pods-secrets-about",
+          "oadp-auth-azure-sts",
+          "nodes-pods-secrets-creating-sa",
+          "storage-azure-create-storage-class",
+          "multi-architecture-creating-bootimage",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "dynamic-provisioning-annotations"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "persistent-storage-csi-azure-file-static-provisioning-procedure"
+        ],
+        "gold_missed": [
+          "persistent-storage-csi-snapshots-operator",
+          "persistent-storage-csi-group-snapshots-overview"
+        ]
+      },
+      "elapsed_ms": 369
+    },
+    {
+      "id": "oadp-pod-crash-set-resource-request-velero",
+      "query": "How do I set CPU and memory resource requests for a Velero pod in the oadp_v1alpha1_dpa.yaml file?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-pod-crash-set-resource-request-velero"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-backup-restore-for-large-usage",
+          "nodes-pods-vertical-autoscaler-about",
+          "nodes-nodes-resources-configuring-about",
+          "nodes-cluster-overcommit-resources-containers",
+          "nodes-pods-vertical-autoscaler-tuning",
+          "oadp-setting-resource-limits-and-requests",
+          "oadp-velero-cpu-memory-requirements",
+          "nodes-cluster-limit-ranges-creating",
+          "nodes-pods-vertical-autoscaler-using-about",
+          "setting-up-cpu-manager",
+          "nodes-cluster-overcommit-qos-about",
+          "nodes-pods-autoscaling-best-practices-hpa",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "how-huge-pages-are-consumed-by-apps",
+          "oadp-pod-crash-set-resource-request-velero",
+          "nodes-cluster-resource-configure-about",
+          "nodes-pods-autoscaling-about",
+          "nodes-pods-adjust-resources-in-place-configuring",
+          "nodes-pods-autoscaling-requests-and-limits-hpa",
+          "nodes-pods-autoscaling-creating-web-console"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.0667,
+        "first_hit_rank": 15,
+        "gold_found": [
+          "oadp-pod-crash-set-resource-request-velero"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 332
+    },
+    {
+      "id": "applications-create-using-cli-source-code",
+      "query": "How do I create an application from a private remote Git repository in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "applications-create-using-cli-source-code"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "applications-create-using-cli-source-code",
+          "templates-rails-storing-application-in-git",
+          "nodes-containers-init-about",
+          "odc-importing-codebase-from-git-to-create-application",
+          "odc-editing-source-code-using-developer-perspective",
+          "applications-create-using-cli-image",
+          "odc-creating-sample-applications",
+          "templates-quickstart",
+          "osd-aws-privatelink-architecture",
+          "templates-writing-parameters",
+          "odc-adding-services-to-application",
+          "nodes-sigstore-configure",
+          "helm-adding-namespace-scoped-helm-chart-repositories",
+          "nodes-pods-secrets-about",
+          "rosa-architecture",
+          "odc-deploying-container-image",
+          "olm-csv",
+          "private-clusters-about",
+          "nodes-edge-remote-workers-network",
+          "creating-rolling-deployments-CLI"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "applications-create-using-cli-source-code"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 420
+    },
+    {
+      "id": "oauth-delete-tokens",
+      "query": "How do I delete a user-owned OAuth access token that is no longer needed?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "oauth-delete-tokens"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oauth-delete-tokens",
+          "oauth-view-details-tokens",
+          "oauth-configuring-token-inactivity-timeout",
+          "oauth-configuring-token-inactivity-timeout-clients",
+          "oauth-list-tokens",
+          "oauth-internal-options",
+          "oauth-configuring-internal-oauth",
+          "service-account-auto-secret-removed",
+          "bound-sa-tokens-configuring",
+          "external-auth-fields",
+          "disabling-etcd-encryption",
+          "config-github-idp",
+          "nodes-nodes-jobs-about",
+          "graceful-shutdown",
+          "oadp-about-kopia-repo-maintenance",
+          "update-availability-faq",
+          "external-auth-about",
+          "nodes-containers-init-about",
+          "rosa-deleting-node-tuning",
+          "security-lifecycle-mgmnt"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oauth-delete-tokens"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 202
+    },
+    {
+      "id": "lvms-about-lvmcluster-cr",
+      "query": "How do I configure the device classes for an LVM volume group in the LVMCluster custom resource?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "lvms-about-lvmcluster-cr"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "lvms-creating-lvms-cluster-using-cli",
+          "lvms-about-lvmcluster-cr",
+          "lvms-creating-lvms-cluster-using-web-console",
+          "lvms-scaling-storage-of-clusters-using-rhacm",
+          "lvms-reusing-vg-from-prev-installation",
+          "lvms-about-adding-devices-to-a-vg",
+          "lvms-about-creating-lvmcluster-cr",
+          "lvms-about-removing-devices-deviceclasses-from-a-vg",
+          "lvms-creating-lvmcluster-using-rhacm",
+          "lvms-unsupported-devices",
+          "lvms-troubleshooting-recovering-from-missing-lvms-or-operator-components",
+          "lvms-deleting-lvmcluster-using-cli",
+          "lvms-about-scaling-storage-of-clusters",
+          "lvms-monitoring-logical-volume-manager-operator",
+          "lvms-limitations-to-configure-size-of-devices",
+          "lvms-deleting-lvmcluster-using-rhacm",
+          "lvms-about-lvm-storage-installation",
+          "lvms-deleting-lvmcluster-using-web-console",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "lvms-about-deleting-lvmcluster-cr"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "lvms-about-lvmcluster-cr"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 424
+    },
+    {
+      "id": "machineset-aws-existing-placement-group",
+      "query": "How do I configure a machine set to deploy Elastic Fabric Adapter instances within a specific AWS placement group?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "machineset-aws-existing-placement-group"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "machineset-aws-existing-placement-group",
+          "machine-feature-aws-existing-placement-group",
+          "machineset-dedicated-instances",
+          "machine-feature-aws-dedicated-instances",
+          "rosa-troubleshooting-pendingverification-failure-deployment",
+          "multi-arch-creating-podplacment-config",
+          "machine-health-checks-resource",
+          "machine-feature-agnostic-capacity-reservation",
+          "machineset-creating-azure-ephemeral-os",
+          "nodes-nodes-rebooting-router",
+          "rosa-hcp-classic-comparison",
+          "deploying-capi-machines-via-mapi-machine-sets",
+          "red-hat-marketplace-features",
+          "rosa-troubleshooting-installing",
+          "rhcos-about",
+          "installing-oadp-aws-sts",
+          "machine-node-custom-partition",
+          "architecture-container-application-benefits",
+          "installing-oadp-rosa-sts",
+          "persistent-storage-csi-efs-cross-account"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "machineset-aws-existing-placement-group"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 375
+    },
+    {
+      "id": "create-a-containerruntimeconfig-crd",
+      "query": "How do I change the log level for the CRI-O runtime on a specific machine config pool in OpenShift?",
+      "topic": "machine_configuration",
+      "gold_doc_ids": [
+        "create-a-containerruntimeconfig-crd"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "create-a-containerruntimeconfig-crd",
+          "create-crio-default-capabilities",
+          "machine-config-overview",
+          "config-container-runtime",
+          "machineconfig-modify-journald",
+          "create-a-kubeletconfig-crd-to-edit-kubelet-parameters",
+          "rhcos-about",
+          "architecture-machine-config-pools",
+          "update-mco-process",
+          "updating-control-plane-only-update-console",
+          "configuring-ovs-log-level-temp",
+          "update-using-custom-machine-config-pools-about",
+          "update-duration-estimate-cluster-update-time",
+          "set-the-default-max-container-root-partition-size-for-overlay-with-crio",
+          "coreos-layering-configuring-on",
+          "verifying-crio-status",
+          "coreos-layering-configuring",
+          "creating-infra-machines",
+          "multi-architecture-enabling-64k-pages",
+          "architecture-machine-roles"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "create-a-containerruntimeconfig-crd"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 278
+    },
+    {
+      "id": "external-auth-providers",
+      "query": "What identity providers are supported for direct authentication in OpenShift?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "external-auth-providers"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "external-auth-providers",
+          "troubleshooting-security-authentication",
+          "external-auth-about",
+          "understanding-idp",
+          "identity-provider-about-request-header",
+          "identity-provider-oidc-supported",
+          "external-auth-fields",
+          "external-auth-configuring",
+          "oadp-s3-compatible-backup-storage-providers",
+          "external-auth-disabling",
+          "config-github-idp",
+          "config-openid-idp",
+          "identity-provider-oidc-about",
+          "config-google-idp",
+          "config-ldap-idp",
+          "cco-short-term-creds-gcp-olm",
+          "osd-revoke-user-access",
+          "understanding-pod-identity-webhook-workflow-in-user-defined-projects",
+          "identity-provider-overview",
+          "machine-config-overview"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "external-auth-providers"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 203
+    },
+    {
+      "id": "persistent-storage-csi-group-snapshots-overview",
+      "query": "What are the three new API objects introduced for managing CSI volume group snapshots in OpenShift?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-csi-group-snapshots-overview",
+        "persistent-storage-csi-snapshots-operator",
+        "persistent-storage-csi-azure-file-static-provisioning-procedure"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-csi-group-snapshots-overview",
+          "persistent-storage-csi-snapshots-overview",
+          "persistent-storage-csi-snapshots-operator",
+          "persistent-storage-csi-group-snapshots-limitations",
+          "persistent-storage-csi-group-snapshots-create",
+          "oadp-data-mover-crds",
+          "persistent-storage-csi-cloning-overview",
+          "persistent-storage-csi-migration-overview",
+          "persistent-storage-csi-group-snapshots-restore",
+          "lvms-about-volume-snapshots",
+          "persistent-storage-csi-manila-limitations",
+          "storage-persistent-storage-overview",
+          "crd-creating-crds",
+          "olm-creating-etcd-cluster-from-operator",
+          "nvidia-gpu-vsphere",
+          "oadp-about-kopia-repo-maintenance",
+          "oadp-backingup-persistent-volumes",
+          "olm-policy-understanding",
+          "persistent-storage-csi-snapshots-create",
+          "architecture-machine-roles"
+        ],
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.6667,
+        "precision@3": 0.6667,
+        "recall@5": 0.6667,
+        "precision@5": 0.4,
+        "recall@10": 0.6667,
+        "precision@10": 0.2,
+        "recall@20": 0.6667,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "persistent-storage-csi-group-snapshots-overview",
+          "persistent-storage-csi-snapshots-operator"
+        ],
+        "gold_missed": [
+          "persistent-storage-csi-azure-file-static-provisioning-procedure"
+        ]
+      },
+      "elapsed_ms": 1193
+    },
+    {
+      "id": "machine-user-infra-machines-pxe",
+      "query": "How do I confirm that my PXE or iPXE installation for the RHCOS images is correct?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "machine-user-infra-machines-pxe"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "machine-user-infra-machines-pxe",
+          "rhcos-about",
+          "machine-user-infra-machines-iso",
+          "architecture-platform-benefits",
+          "pruning-images-running-operation",
+          "installation-process",
+          "installation-overview",
+          "machine-config-overview",
+          "querying-operator-status-after-installation",
+          "rhcos-add-extensions",
+          "architecture-kubernetes-introduction",
+          "nodes-nodes-garbage-collection-images",
+          "nodes-sigstore-configure",
+          "olm-accessing-images-private-registries",
+          "rosa-troubleshoot-hcp-install",
+          "nodes-sigstore-configure-cluster-policy",
+          "installation-bootstrap-gather",
+          "coreos-layering-configuring",
+          "sno-adding-worker-nodes-to-sno-clusters-manually",
+          "update-upgrading-web"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "machine-user-infra-machines-pxe"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 240
+    },
+    {
+      "id": "deployments-deploymentconfigs",
+      "query": "What capabilities does a `DeploymentConfig` object provide for managing application deployments in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "deployments-deploymentconfigs"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "deployments-deploymentconfigs",
+          "deployment-specific-features",
+          "deployments-canary-deployments",
+          "deployments-triggers",
+          "pruning-deployments",
+          "machine-api-overview",
+          "creating-rolling-deployments-CLI",
+          "deployments-kube-deployments",
+          "deployments-blue-green",
+          "security-context-constraints-example",
+          "persistent-storage-csi-group-snapshots-overview",
+          "arch-olm-operators",
+          "olm-operator-framework",
+          "deployments-comparing-deploymentconfigs",
+          "nodes-pods-autoscaling-creating-web-console",
+          "deployments-ab-testing",
+          "deployments-scaling-manually",
+          "nodes-pods-user-namespaces-configuring",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-overview"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "deployments-deploymentconfigs"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 406
+    },
+    {
+      "id": "updating-control-plane-only-update",
+      "query": "What steps should I follow to perform a Control Plane Only update in OpenShift Container Platform?",
+      "topic": "updating",
+      "gold_doc_ids": [
+        "updating-control-plane-only-update"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "updating-control-plane-only-layered-products",
+          "about-updates",
+          "update-selecting-the-target-release",
+          "update-using-custom-machine-config-pools-about",
+          "updating-sno",
+          "update-duration-estimate-cluster-update-time",
+          "machine-api-overview",
+          "understanding-machine-config-operator",
+          "lvms-installing-logical-volume-manager-operator-disconnected-environment",
+          "machine-config-overview",
+          "olm-subscription",
+          "update-process-workflow",
+          "architecture-platform-benefits",
+          "architecture-machine-roles",
+          "update-vsphere-virtual-hardware-on-template",
+          "update-availability-faq",
+          "osd-revoke-user-access",
+          "update-vsphere-virtual-hardware-on-control-plane-nodes",
+          "update-updating-all-the-olm-operators",
+          "sd-vs-ocp"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 0.0,
+        "precision@20": 0.0,
+        "mrr": 0.0,
+        "first_hit_rank": null,
+        "gold_found": [],
+        "gold_missed": [
+          "updating-control-plane-only-update"
+        ]
+      },
+      "elapsed_ms": 225
+    },
+    {
+      "id": "upgrade-manual",
+      "query": "How do I schedule an individual upgrade for my OpenShift Container Platform cluster using the OpenShift Cluster Manager?",
+      "topic": "upgrading",
+      "gold_doc_ids": [
+        "upgrade-manual"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "rosa-upgrading-manual-ocm",
+          "upgrade-auto",
+          "upgrade",
+          "upgrade-manual",
+          "rosa-how-upgrades-work",
+          "scheduling-virtual-hardware-update-on-vsphere",
+          "migrating-to-multi-arch-cli",
+          "etcd-overview",
+          "rosa-deleting-cluster-upgrade-cli",
+          "updating-control-plane-only-layered-products",
+          "update-selecting-the-target-release",
+          "sd-vs-ocp",
+          "rhcos-about",
+          "nodes-pods-configuring-restart",
+          "machine-config-overview",
+          "multi-architecture-import-imagestreams",
+          "nodes-nodes-garbage-collection-containers",
+          "monitoring-sending-notifications-to-external-systems",
+          "rosa-upgrading-cli-tutorial",
+          "nodes-nodes-resources-configuring-about"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.25,
+        "first_hit_rank": 4,
+        "gold_found": [
+          "upgrade-manual"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 221
+    },
+    {
+      "id": "storage-ephemeral-storage-monitoring",
+      "query": "How do I check the ephemeral storage usage in the `/var/lib` directory?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "storage-ephemeral-storage-monitoring",
+        "storage-ephemeral-storage-manage"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "storage-ephemeral-storage-manage",
+          "storage-ephemeral-storage-monitoring",
+          "storage-ephemeral-storage-overview",
+          "storage-ephemeral-vols-overview",
+          "storage-ephemeral-vols-lifecycle",
+          "ephemeral-storage-csi-inline-overview",
+          "nodes-cluster-overcommit-resources-containers",
+          "machineset-creating-azure-ephemeral-os",
+          "persistent-storage-csi-efs-metrics-overview",
+          "oadp-velero-timeouts",
+          "persistent-storage-csi-efs-metrics-procedure-cli",
+          "persistent-storage-csi-efs-metrics-procedure-gui",
+          "storage-ephemeral-vols-procedure",
+          "lvms-monitoring-logical-volume-manager-operator",
+          "ephemeral-storage-csi-inline-pod",
+          "ephemeral-storage-csi-inline-overview-admin-plugin",
+          "oadp-incremental-backup-support",
+          "nodes-cluster-resource-configure-about",
+          "cleaning-crio-storage",
+          "oadp-storage-class-mapping"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.6667,
+        "recall@5": 1.0,
+        "precision@5": 0.4,
+        "recall@10": 1.0,
+        "precision@10": 0.2,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "storage-ephemeral-storage-monitoring",
+          "storage-ephemeral-storage-manage"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 203
+    },
+    {
+      "id": "nodes-cluster-overcommit-configure-nodes",
+      "query": "What parameters does OpenShift Container Platform set to manage memory overcommitment on nodes?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-cluster-overcommit-configure-nodes",
+        "nodes-cluster-overcommit-about"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-cluster-overcommit-configure-nodes",
+          "nodes-cluster-overcommit-about",
+          "nodes-cluster-resource-configure-about",
+          "nodes-nodes-resources-configuring-about",
+          "nodes-cluster-overcommit-qos-about",
+          "machine-config-overview",
+          "nodes-cluster-resource-configure-jdk",
+          "nodes-scheduler-taints-tolerations-about",
+          "arch-olm-operators",
+          "machine-api-overview",
+          "nodes-cluster-overcommit-resources-containers",
+          "nodes-containers-sysctls-about",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "ts-capi-sync-list-duplicate-resources",
+          "rosa-troubleshoot-hcp-install",
+          "installation-overview",
+          "nodes-nodes-garbage-collection-containers",
+          "nodes-cluster-overcommit-project-disable",
+          "nodes-cluster-overcommit-node-disable",
+          "nodes-edge-remote-workers-network"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.6667,
+        "recall@5": 1.0,
+        "precision@5": 0.4,
+        "recall@10": 1.0,
+        "precision@10": 0.2,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cluster-overcommit-configure-nodes",
+          "nodes-cluster-overcommit-about"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 193
+    },
+    {
+      "id": "nodes-edge-remote-workers-power",
+      "query": "What happens to the pods on a remote worker node if it loses power and how does OpenShift handle their recovery?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-edge-remote-workers-power"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-edge-remote-workers-power",
+          "nodes-edge-remote-workers-network",
+          "nodes-edge-remote-workers-strategies",
+          "architecture-machine-config-pools",
+          "nodes-nodes-rebooting-infrastructure",
+          "nodes-pods-configuring-restart",
+          "nodes-nodes-working-deleting-bare-metal",
+          "nodes-nodes-resources-configuring-about",
+          "machine-config-overview",
+          "storage-ephemeral-storage-overview",
+          "nvidia-gpu-features",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "nodes-containers-sysctls-setting",
+          "nodes-nodes-jobs-about",
+          "nodes-pods-allocate-dra-about",
+          "cluster-autoscaler-about",
+          "rhcos-about",
+          "investigating-worker-node-installation-issues",
+          "architecture-machine-roles",
+          "understanding-machine-config-operator"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-edge-remote-workers-power"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 314
+    },
+    {
+      "id": "scheduling-virtual-hardware-update-on-vsphere",
+      "query": "How can I schedule a virtual hardware update to occur during the reboot of nodes in an OpenShift Container Platform update?",
+      "topic": "updating",
+      "gold_doc_ids": [
+        "scheduling-virtual-hardware-update-on-vsphere"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "scheduling-virtual-hardware-update-on-vsphere",
+          "vmware-csi-driver-reqs",
+          "upgrade",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "update-duration-estimate-cluster-update-time",
+          "rosa-how-upgrades-work",
+          "update-mco-process",
+          "nvidia-gpu-features",
+          "nodes-cluster-resource-levels-about",
+          "rhcos-about",
+          "nvidia-gpu-vsphere",
+          "nodes-nodes-rebooting-infrastructure",
+          "update-vsphere-virtual-hardware-on-compute-nodes",
+          "sno-clusters-reboot-without-drain",
+          "rosa-upgrading-manual-ocm",
+          "update-service-overview",
+          "nvidia-gpu-kvm",
+          "update-conditional-web-console",
+          "machine-config-overview",
+          "nodes-nodes-rebooting-router"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "scheduling-virtual-hardware-update-on-vsphere"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 707
+    },
+    {
+      "id": "machineset-manually-scaling",
+      "query": "How do I manually scale a compute machine set in my OpenShift cluster?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "machineset-manually-scaling"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "machineset-manually-scaling",
+          "nodes-nodes-working-deleting",
+          "machine-api-overview",
+          "machine-autoscaler-about",
+          "machineset-modifying",
+          "nodes-scheduler-taints-tolerations-adding-machineset",
+          "update-duration-estimate-cluster-update-time",
+          "machineset-creating-azure-ephemeral-os",
+          "ts-capi-sync-list-duplicate-resources",
+          "nodes-nodes-working-updating",
+          "deploying-capi-machines-via-mapi-machine-sets",
+          "mco-update-boot-images-about",
+          "multi-architecture-import-imagestreams",
+          "nodes-scheduler-node-selectors-cluster",
+          "nodes-vsphere-machine-set-concept-static-ip",
+          "nodes-scheduler-node-selectors-project",
+          "machine-autoscaler-configuring",
+          "update-mco-process",
+          "differences-between-machinesets-and-machineconfigpool",
+          "rosa-how-upgrades-work"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "machineset-manually-scaling"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 296
+    },
+    {
+      "id": "olm-operatorgroups-static",
+      "query": "How can I create a static Operator group to manage Prometheus resources across multiple namespaces?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-operatorgroups-static"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "olm-operatorgroups-static",
+          "security-rbac-overview",
+          "olm-preparing-multitenant-operators",
+          "nodes-vsphere-machine-set-concept-static-ip",
+          "idle-idling-applications",
+          "persistent-storage-csi-group-snapshots-overview",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-overview",
+          "monitoring-determining-why-prometheus-is-consuming-disk-space",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "config-htpasswd-idp-webui",
+          "olm-arch-olm-operator",
+          "odc-grouping-multiple-components",
+          "nodes-containers-projected-volumes-about",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "architecture-machine-config-pools",
+          "nodes-edge-remote-workers-network",
+          "nodes-cma-autoscaling-custom-trigger-prom-gpu"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "olm-operatorgroups-static"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 291
+    },
+    {
+      "id": "restore-determine-state-etcd-member",
+      "query": "How can I determine if my etcd member's machine is not running or if the node is not ready?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "restore-determine-state-etcd-member"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "restore-determine-state-etcd-member",
+          "machine-health-checks-resource",
+          "updating-sno",
+          "dr-restoring-etcd-quorum-ha",
+          "restore-replace-stopped-etcd-member",
+          "dr-scenario-cluster-state-issues",
+          "nodes-nodes-resources-configuring-about",
+          "cpmso-control-plane-recovery",
+          "restore-replace-stopped-baremetal-etcd-member",
+          "nodes-cluster-resource-configure-about",
+          "etcd-defrag",
+          "cpmso-ts-mhc-etcd-degraded",
+          "machine-lifecycle-hook-deletion-etcd",
+          "machine-lifecycle-hook-deletion",
+          "machine-config-drift-detection",
+          "enabling-etcd-encryption",
+          "etcd-overview",
+          "dr-restoring-cluster-state",
+          "installation-process",
+          "architecture-machine-config-pools"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "restore-determine-state-etcd-member"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 286
+    },
+    {
+      "id": "deployments-blue-green",
+      "query": "How do I set up a blue-green deployment for my application in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "deployments-blue-green"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "deployments-blue-green",
+          "deployments-canary-deployments",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "architecture-kubernetes-introduction",
+          "creating-rolling-deployments-CLI",
+          "deployments-deploymentconfigs",
+          "dynamic-provisioning-annotations",
+          "odc-starting-recreate-deployment",
+          "nodes-containers-init-about",
+          "deployments-rolling-strategy",
+          "olm-csv",
+          "update-pod-anti-affinity",
+          "deployments-recreate-strategy",
+          "deployments-kube-deployments",
+          "nodes-pods-autoscaling-about",
+          "oadp-features",
+          "strategies-for-s2i-troubleshooting",
+          "odc-starting-rolling-deployment",
+          "gathering-s2i-diagnostic-data",
+          "nodes-containers-projected-volumes-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "deployments-blue-green"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 211
+    },
+    {
+      "id": "admission-webhooks-about",
+      "query": "What are the roles of mutating and validating admission plugins in the OpenShift admission process?",
+      "topic": "architecture",
+      "gold_doc_ids": [
+        "admission-webhooks-about"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "admission-plug-ins-about",
+          "admission-webhooks-about",
+          "admission-webhook-types",
+          "migration-debugging-velero-admission-webhooks-ibm-appconnect",
+          "security-context-constraints-psa-synchronization",
+          "ephemeral-storage-csi-inline-overview-admin-plugin",
+          "nodes-pods-vertical-autoscaler-about",
+          "nodes-pods-plugins-device-mgr",
+          "security-context-constraints-psa-about",
+          "security-context-constraints-psa-sync-exclusions",
+          "oadp-restic-restore-failing-psa-policy",
+          "configuring-dynamic-admission",
+          "security-sec-considerations-telco",
+          "security-context-constraints-about",
+          "security-pod-sec-in-kub-and-ocp",
+          "olm-sqlite-catalog-configuring-elevated-permissions",
+          "oadp-configuring-velero-plugins",
+          "security-context-constraints-psa-opting",
+          "nodes-pods-vertical-autoscaler-tuning",
+          "security-context-constraints-psa-rectifying"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "admission-webhooks-about"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 544
+    },
+    {
+      "id": "machine-feature-aws-throughput-capi",
+      "query": "How do I configure the throughput for gp3 storage volumes in my AWS cluster?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "machine-feature-aws-throughput-capi"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "machine-feature-aws-throughput-capi",
+          "machineset-creating-gp3-throughput",
+          "installing-oadp-aws-sts",
+          "installing-oadp-rosa-sts",
+          "dynamic-provisioning-annotations",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "dynamic-provisioning-change-default-class",
+          "oadp-incremental-backup-support",
+          "oadp-csi-snapshot-timeouts",
+          "oadp-configuring-aws-md5sum",
+          "storage-ephemeral-storage-overview",
+          "persistent-storage-csi-efs-cross-account",
+          "persistent-storage-csi-efs-one-zone-overview",
+          "oadp-usecase-kopia-override-algorithms",
+          "nodes-containers-projected-volumes-about",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-procedure",
+          "oadp-s3-and-gov-cloud",
+          "storage-persistent-storage-lifecycle",
+          "ephemeral-storage-csi-inline-overview",
+          "oadp-multiple-bsl-use-case"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "machine-feature-aws-throughput-capi"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 236
+    },
+    {
+      "id": "service-account-auto-secret-removed",
+      "query": "What happens to the image pull secrets when I disable the integrated OpenShift image registry on my cluster?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "service-account-auto-secret-removed"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "service-account-auto-secret-removed",
+          "disabling-redirect-private-storage-endpoint-azure",
+          "pruning-images-manual",
+          "configuring-private-storage-endpoint-azure-vnet-subnet-iro-discovery",
+          "registry-configuring-private-storage-endpoint-azure",
+          "olm-accessing-images-private-registries",
+          "coreos-layering-configuring-on-proc",
+          "configuring-private-storage-endpoint-azure-user-provided-vnet-subnet",
+          "mco-update-boot-images-about",
+          "pruning-hard-pruning-registry",
+          "coreos-layering-configuring-on",
+          "infrastructure-components",
+          "olm-about-opm",
+          "nodes-pods-image-volume-adding",
+          "nodes-pods-secrets-about",
+          "odc-deploying-container-image",
+          "pruning-images",
+          "installation-restricted-network-samples",
+          "lvms-installing-logical-volume-manager-operator-disconnected-environment",
+          "olm-refresh-subs"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "service-account-auto-secret-removed"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 311
+    },
+    {
+      "id": "nodes-pods-priority-preempt-about",
+      "query": "How does the scheduler handle pod preemption when a higher-priority pod needs to be scheduled on a node that is waiting for a lower-priority pod to terminate?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-pods-priority-preempt-about"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-pods-priority-preempt-about",
+          "nodes-scheduler-pod-affinity-about",
+          "nodes-pods-pod-disruption-about",
+          "nodes-pods-priority-configuring",
+          "nodes-scheduler-node-affinity-configuring-preferred",
+          "nodes-scheduler-node-selectors-about",
+          "nodes-pods-priority-about",
+          "storage-multi-attach-error",
+          "nodes-scheduler-profiles-about",
+          "nodes-scheduler-node-affinity-about",
+          "nodes-nodes-rebooting-infrastructure",
+          "nodes-pods-configuring-restart",
+          "nodes-scheduler-taints-tolerations-about",
+          "nodes-nodes-rebooting-router",
+          "cluster-autoscaler-about",
+          "nodes-scheduler-node-affinity-configuring-required",
+          "nodes-scheduler-taints-tolerations-adding",
+          "multi-arch-creating-podplacment-config",
+          "nodes-nodes-rebooting-affinity",
+          "nodes-edge-remote-workers-strategies"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-pods-priority-preempt-about"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 511
+    },
+    {
+      "id": "persistent-storage-csi-vsphere-stor-policy",
+      "query": "What storage policy does the vSphere CSI Driver Operator use in OpenShift Container Platform?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-csi-vsphere-stor-policy",
+        "persistent-storage-csi-snapshots-operator",
+        "persistent-storage-csi-azure-file-static-provisioning-procedure"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "vmware-csi-driver-reqs",
+          "persistent-storage-csi-vsphere-install-issues",
+          "persistent-storage-csi-vsphere-stor-policy",
+          "persistent-storage-csi-vsphere-disable-storage-consequences",
+          "persistent-storage-csi-vsphere-limitations",
+          "persistent-storage-csi-azure-file-nfs",
+          "persistent-storage-csi-manila-limitations",
+          "persistent-storage-csi-vsphere-disable-storage-overview",
+          "persistent-storage-csi-migration-overview",
+          "persistent-storage-csi-dynamic-provisioning",
+          "persistent-storage-csi-vsphere-top-aware-overview",
+          "persistent-storage-csi-efs-cross-account",
+          "persistent-storage-csi-vsphere-top-aware-infra-top",
+          "persistent-storage-csi-gcp-file-install",
+          "persistent-storage-csi-secrets-store-driver-overview",
+          "persistent-storage-csi-olm-operator-install",
+          "persistent-storage-csi-olm-operator-uninstall",
+          "ephemeral-storage-csi-inline-overview",
+          "persistent-storage-csi-snapshots-overview",
+          "persistent-storage-csi-vsphere-adding-bm-nodes"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 0.3333,
+        "first_hit_rank": 3,
+        "gold_found": [
+          "persistent-storage-csi-vsphere-stor-policy"
+        ],
+        "gold_missed": [
+          "persistent-storage-csi-snapshots-operator",
+          "persistent-storage-csi-azure-file-static-provisioning-procedure"
+        ]
+      },
+      "elapsed_ms": 310
+    },
+    {
+      "id": "cpmso-activating",
+      "query": "How do I activate the control plane machine set custom resource after verifying its configuration?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "cpmso-activating"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "cpmso-activating",
+          "cpmso-creating-cr",
+          "cpmso-openstack-with-az-config",
+          "cpmso-openstack-ts-root-volume-azs",
+          "cpmso-deleting",
+          "cpmso-overview",
+          "cpmso-feat-config-update",
+          "cpmso-control-plane-recovery",
+          "architecture-machine-config-pools",
+          "cpmso-failure-domains-balancing",
+          "machine-api-overview",
+          "machine-lifecycle-hook-deletion-etcd",
+          "cpmso-feat-replace",
+          "update-duration-estimate-cluster-update-time",
+          "update-mco-process",
+          "cpms-changing-aws-instance-type",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "understanding-machine-config-operator",
+          "cpms-changing-openstack-flavor-type",
+          "dr-restoring-etcd-quorum-ha"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "cpmso-activating"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 311
+    },
+    {
+      "id": "storage-ephemeral-storage-manage",
+      "query": "How can I set quotas for ephemeral storage in my OpenShift project?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "storage-ephemeral-storage-manage",
+        "storage-ephemeral-storage-monitoring"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "storage-ephemeral-storage-manage",
+          "storage-ephemeral-storage-overview",
+          "dynamic-provisioning-annotations",
+          "storage-persistent-storage-nfs-enforcing-disk-quota",
+          "ephemeral-storage-csi-inline-overview",
+          "nodes-cluster-overcommit-resources-containers",
+          "storage-ephemeral-vols-lifecycle",
+          "machineset-creating-azure-ephemeral-os",
+          "storage-ephemeral-vols-overview",
+          "storage-persistent-storage-fsGroup",
+          "storage-ephemeral-storage-types",
+          "ephemeral-storage-csi-inline-overview-admin-plugin",
+          "storage-ephemeral-storage-monitoring",
+          "osd-on-gcp-troubleshoot-cluster-install",
+          "quotas-creating-object-count-quotas",
+          "oadp-incremental-backup-support",
+          "nodes-cluster-overcommit-configure-nodes",
+          "storage-persistent-storage-iscsi-enforcing-disk-quota",
+          "comparison-of-solutions-to-provision-node-local-storage",
+          "persistent-storage-fibre-disk-quotas"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 0.5,
+        "precision@5": 0.2,
+        "recall@10": 0.5,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "storage-ephemeral-storage-manage",
+          "storage-ephemeral-storage-monitoring"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 291
+    },
+    {
+      "id": "storage-persistent-storage-volume-format",
+      "query": "What happens if a persistent volume is not formatted with the specified file system before being used in OpenShift Container Platform?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "storage-persistent-storage-volume-format",
+        "storage-persistent-storage-fsGroup",
+        "storage-persistent-storage-iscsi-enforcing-disk-quota"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-cinder-pv-format",
+          "storage-persistent-storage-volume-format",
+          "persistent-storage-vsphere-static-provisioning",
+          "persistent-storage-cinder-creating-pv",
+          "machine-config-overview",
+          "storage-persistent-storage-nfs-provisioning",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "persistent-storage-csi-snapshots-create",
+          "persistent-storage-local-pod",
+          "rhcos-about",
+          "persistent-storage-local-create-cr-manual",
+          "storage-persistent-storage-lifecycle",
+          "persistent-storage-csi-efs-one-zone-overview",
+          "storage-expanding-filesystem-pvc",
+          "persistent-storage-local-create-cr",
+          "persistent-storage-csi-vol-populator",
+          "nodes-pods-user-namespaces-configuring",
+          "oadp-cluster-to-cluster-uid-and-gid-ranges",
+          "storage-ephemeral-vols-lifecycle",
+          "support-submitting-a-case"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "storage-persistent-storage-volume-format"
+        ],
+        "gold_missed": [
+          "storage-persistent-storage-fsGroup",
+          "storage-persistent-storage-iscsi-enforcing-disk-quota"
+        ]
+      },
+      "elapsed_ms": 409
+    },
+    {
+      "id": "persistent-storage-csi-efs-sts",
+      "query": "How do I obtain a role Amazon Resource Name (ARN) for configuring the AWS EFS CSI Driver Operator with OpenShift Container Platform using AWS Security Token Service?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-csi-efs-sts",
+        "persistent-storage-csi-snapshots-operator",
+        "persistent-storage-csi-azure-file-static-provisioning-procedure"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-csi-efs-sts",
+          "sd-persistent-storage-csi-efs-sts",
+          "persistent-storage-efs-csi-driver-operator-setup",
+          "persistent-storage-csi-efs-one-zone-procedure",
+          "persistent-storage-csi-efs-cross-account",
+          "setting-up-an-aws-iam-role-a-service-account",
+          "deploying-a-pod-that-includes-an-aws-sdk",
+          "creating-a-service-account-in-your-project",
+          "installing-oadp-rosa-sts",
+          "understanding-pod-identity-webhook-workflow-in-user-defined-projects",
+          "installing-oadp-aws-sts",
+          "persistent-storage-csi-dynamic-provisioning-aws-efs",
+          "how-service-accounts-assume-aws-iam-roles-in-sre-owned-projects",
+          "persistent-storage-csi-efs-one-zone-overview",
+          "rosa-sts-ocm-role-creation",
+          "persistent-storage-csi-efs-metrics-procedure-cli",
+          "persistent-storage-csi-efs-metrics-procedure-gui",
+          "verifying-the-assumed-iam-role-in-your-pod",
+          "rosa-sts-user-role-creation",
+          "enabling-aws-sts-existing-cluster"
+        ],
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "persistent-storage-csi-efs-sts"
+        ],
+        "gold_missed": [
+          "persistent-storage-csi-snapshots-operator",
+          "persistent-storage-csi-azure-file-static-provisioning-procedure"
+        ]
+      },
+      "elapsed_ms": 297
+    },
+    {
+      "id": "multi-architecture-modify-machine-set-aws",
+      "query": "How do I add 64-bit x86 compute machines to my multi-architecture AWS cluster that currently has 64-bit ARM control plane machines?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "multi-architecture-modify-machine-set-aws"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "multi-architecture-modify-machine-set-aws",
+          "multi-architecture-modify-machine-set-azure",
+          "multi-architecture-modify-machine-set-google-cloud",
+          "multi-architecture-enabling-64k-pages",
+          "multi-architecture-creating-bootimage",
+          "migrating-from-x86-to-arm-cp",
+          "machineset-gcp-confidential-vm",
+          "machineset-azure-confidential-vms",
+          "multi-architecture-verifying-cluster-compatibility",
+          "machine-api-overview",
+          "cpmso-feat-replace",
+          "update-mco-process",
+          "multiarch-migrating-cp-infra-gcp",
+          "machine-adding-aws-compute-cloudformation",
+          "architecture-machine-roles",
+          "multi-architecture-import-imagestreams",
+          "ts-capi-sync-list-duplicate-resources",
+          "multi-architecture-scheduling",
+          "cpms-changing-openstack-flavor-type",
+          "installation-process"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "multi-architecture-modify-machine-set-aws"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 321
+    },
+    {
+      "id": "update-updating-all-the-olm-operators",
+      "query": "How do I approve and update all the OLM Operators during a multi-version upgrade?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "update-updating-all-the-olm-operators"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "update-updating-all-the-olm-operators",
+          "olm-dependency-resolution-about",
+          "olm-installing-operators-from-software-catalog",
+          "updating-control-plane-only-layered-products",
+          "update-updating-the-olm-operators",
+          "updating-control-plane-only-update",
+          "updating-control-plane-only-update-console",
+          "querying-operator-status-after-installation",
+          "update-conditional-web-console",
+          "update-manifest-application",
+          "olm-about-catalogs",
+          "sbo-categories-of-exposable-binding-data",
+          "olm-colocation-namespaces",
+          "olm-catalogsource",
+          "olm-policy-understanding",
+          "lvms-installing-logical-volume-manager-operator-using-openshift-web-console",
+          "update-upgrading-web",
+          "update-service-overview",
+          "olm-installing-from-software-catalog-using-cli",
+          "op-installing-sbo-operator-using-the-web-console"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "update-updating-all-the-olm-operators"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 233
+    },
+    {
+      "id": "identity-provider-about-basic-authentication",
+      "query": "How does OpenShift Container Platform validate user credentials when using basic authentication?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "identity-provider-about-basic-authentication"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "identity-provider-about-basic-authentication",
+          "nodes-pods-secrets-creating-basic",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "dr-scenario-cluster-state-issues",
+          "rosa-troubleshooting-awsinsufficientpermission-failure-deployment",
+          "understanding-idp",
+          "config-github-idp",
+          "installing-oadp-rosa-sts",
+          "identity-provider-basic-authentication-troubleshooting",
+          "pruning-hard-pruning-registry",
+          "installing-oadp-aws-sts",
+          "nodes-edge-remote-workers-network",
+          "rhcos-about",
+          "cco-manual-upgrade-annotation",
+          "admission-plug-ins-about",
+          "updating-sno",
+          "vmware-csi-driver-reqs",
+          "nodes-pods-configuring-restart",
+          "cco-ccoctl-install-verifying",
+          "persistent-storage-csi-efs-sts"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "identity-provider-about-basic-authentication"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 273
+    },
+    {
+      "id": "overriding-default-node-ip-selection-logic",
+      "query": "How do I create a hint file to override the default node IP selection logic in OpenShift?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "overriding-default-node-ip-selection-logic"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "overriding-default-node-ip-selection-logic",
+          "nw-how-nw-iface-selected",
+          "configuring-ovnk-use-second-ovs-bridge",
+          "nodes-containers-init-about",
+          "nodes-cluster-resource-override-move-infra",
+          "nodes-vsphere-scaling-machines-static-ip",
+          "nodes-cluster-resource-override-deploy-cli",
+          "nodes-scheduler-taints-tolerations-projects",
+          "machine-config-overview",
+          "how-huge-pages-are-consumed-by-apps",
+          "bound-sa-tokens-configuring",
+          "rodoo-enable-override",
+          "nodes-cluster-resource-configure-about",
+          "creating-rolling-deployments-CLI",
+          "nodes-nodes-rebooting-router",
+          "nodes-cluster-resource-configure",
+          "deployments-custom-strategy",
+          "installation-bootstrap-gather",
+          "oadp-installing-dpa-1-3",
+          "nodes-nodes-resources-configuring-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "overriding-default-node-ip-selection-logic"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 412
+    },
+    {
+      "id": "nodes-cluster-resource-configure",
+      "query": "How do I configure the Cluster Resource Override Operator to control overcommit for my OpenShift cluster?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-cluster-resource-configure",
+        "nodes-cluster-resource-override-deploy-console"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-cluster-resource-configure",
+          "nodes-cluster-resource-override-deploy-console",
+          "nodes-cluster-resource-override-deploy-cli",
+          "nodes-cluster-overcommit-about",
+          "nodes-cluster-resource-override-move-infra",
+          "oadp-incremental-backup-support",
+          "rodoo-uninstall-operator",
+          "nodes-cluster-overcommit-configure-nodes",
+          "rodoo-about",
+          "updating-control-plane-only-layered-products",
+          "rodoo-install-operator",
+          "dynamic-provisioning-annotations",
+          "overriding-default-node-ip-selection-logic",
+          "oadp-kopia-configuring-algorithms",
+          "machine-config-overview",
+          "nodes-nodes-resources-configuring-setting",
+          "update-duration-estimate-cluster-update-time",
+          "config-container-runtime",
+          "rodoo-enable-override",
+          "nodes-nodes-resources-configuring-about"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.6667,
+        "recall@5": 1.0,
+        "precision@5": 0.4,
+        "recall@10": 1.0,
+        "precision@10": 0.2,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cluster-resource-configure",
+          "nodes-cluster-resource-override-deploy-console"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 309
+    },
+    {
+      "id": "managed-cluster-notification-view-in-hcc",
+      "query": "How can I view the cluster notifications for my OpenShift cluster using the Red Hat Hybrid Cloud Console?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "managed-cluster-notification-view-in-hcc"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "managed-cluster-notification-view-in-hcc",
+          "rosa-hcp-no-console-access",
+          "upgrade",
+          "rosa-hcp-private-ready-no-console-access",
+          "migration-configuring-mcg",
+          "private-service-connect-psc-architecture",
+          "sd-vs-ocp",
+          "monitoring-sending-notifications-to-external-systems",
+          "nvidia-gpu-csps",
+          "mco-update-boot-images-about",
+          "infrastructure-components",
+          "osd-aws-privatelink-architecture",
+          "rosa-sts-aws-requirements-creating-multi-association",
+          "nodes-containers-events-about",
+          "osd-private-architecture-model-gcp",
+          "architecture-platform-benefits",
+          "storage-persistent-storage-selinuxChangePolicy",
+          "osd-gcp-architecture",
+          "persistent-storage-csi-manila-limitations",
+          "checking-load-balancer-configuration"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "managed-cluster-notification-view-in-hcc"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 409
+    },
+    {
+      "id": "templates-rails-writing-application",
+      "query": "How do I create a new Rails application with PostgreSQL as the database?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "templates-rails-writing-application"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "templates-rails-writing-application",
+          "templates-rails-creating-database-service",
+          "templates-rails-deploying-application",
+          "templates-rails-creating-welcome-page",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "templates-rails-configuring-application",
+          "templates-rails-setting-up-database",
+          "odc-creating-a-binding-connection-between-components",
+          "templates-cli-parameters",
+          "templates-quickstart",
+          "sbo-service-binding-terminology",
+          "templates-rails-storing-application-in-git",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "sbo-rbac-requirements",
+          "nodes-containers-init-about",
+          "templates-rails-creating-frontend-service",
+          "sbo-advanced-binding-options",
+          "odc-creating-a-visual-connection-between-components",
+          "creating-rolling-deployments-CLI"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "templates-rails-writing-application"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 306
+    },
+    {
+      "id": "oadp-using-enable-api-group-versions",
+      "query": "How do I configure Velero to back up all Kubernetes API group versions supported on my cluster?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-using-enable-api-group-versions"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-about-enable-api-group-versions",
+          "oadp-checking-api-group-versions",
+          "oadp-using-enable-api-group-versions",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "changes-from-oadp-1-4-to-1-5",
+          "architecture-machine-roles",
+          "oadp-incremental-backup-support",
+          "oadp-pod-volume-backup",
+          "oadp-features",
+          "oadp-installing-dpa-1-3",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "oadp-backing-up-opt-out",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-plugins",
+          "nw-ingress-gateway-api-manage-succession",
+          "dr-restoring-cluster-state-about",
+          "olm-operatorgroups-limitations",
+          "security-lifecycle-mgmnt",
+          "update-service-overview",
+          "installing-oadp-aws-sts"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.3333,
+        "first_hit_rank": 3,
+        "gold_found": [
+          "oadp-using-enable-api-group-versions"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 227
+    },
+    {
+      "id": "templates-marking-as-bindable",
+      "query": "How do I prevent end users from binding against services provisioned from a specific template?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "templates-marking-as-bindable"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "templates-marking-as-bindable",
+          "sbo-rbac-requirements",
+          "sbo-api-differences",
+          "sbo-methods-of-exposing-binding-data",
+          "sbo-key-features",
+          "identity-provider-about-basic-authentication",
+          "rbac-overview",
+          "disabling-project-self-provisioning",
+          "persistent-storage-csi-snapshots-operator",
+          "oadp-incremental-backup-support",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "security-rbac-overview",
+          "sbo-about-service-binding-operator",
+          "odc-discovering-and-identifying-operator-backed-bindable-services",
+          "sbo-categories-of-exposable-binding-data",
+          "sbo-configuration-of-directory-path-to-project-binding-data",
+          "config-github-idp",
+          "security-context-constraints-rbac",
+          "storage-persistent-storage-overview",
+          "architecture-kubernetes-introduction"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "templates-marking-as-bindable"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 210
+    },
+    {
+      "id": "nodes-control-plane-osp-migrating",
+      "query": "How do I manually migrate a control plane node from one RHOSP host to another if control plane machine sets are not enabled?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-control-plane-osp-migrating"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-control-plane-osp-migrating",
+          "cpmso-feat-replace",
+          "cpmso-openstack-with-az-config",
+          "update-duration-estimate-cluster-update-time",
+          "cpmso-openstack-ts-root-volume-azs",
+          "multiarch-migrating-cp-infra-gcp",
+          "architecture-machine-roles",
+          "cpmso-feat-ondelete-update",
+          "dr-restoring-cluster-state",
+          "graceful-shutdown",
+          "machine-api-overview",
+          "cpms-changing-openstack-flavor-type",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "update-mco-process",
+          "dr-restoring-etcd-quorum-ha",
+          "nodes-edge-remote-workers-strategies",
+          "nodes-edge-remote-workers-power",
+          "installation-process",
+          "machine-lifecycle-hook-deletion-etcd",
+          "investigating-master-node-installation-issues"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-control-plane-osp-migrating"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 333
+    },
+    {
+      "id": "deleting-cluster-autoscaler",
+      "query": "How do I disable the cluster autoscaler in my OpenShift environment?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "deleting-cluster-autoscaler"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "deleting-machine-autoscaler",
+          "mco-update-boot-images-about",
+          "machineconfig-modify-journald",
+          "cluster-autoscaler-about",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "deleting-cluster-autoscaler",
+          "dynamic-provisioning-annotations",
+          "machine-autoscaler-about",
+          "oadp-incremental-backup-support",
+          "support-submitting-a-case",
+          "machine-api-overview",
+          "service-account-auto-secret-removed",
+          "nodes-cma-autoscaling-custom-creating-job",
+          "nodes-cma-autoscaling-custom-install",
+          "nodes-cma-autoscaling-custom-uninstalling",
+          "nodes-cluster-enabling-features-about",
+          "olm-software-catalog-architecture",
+          "nodes-pods-vertical-autoscaler-uninstall",
+          "mco-update-boot-images-disable",
+          "sd-nodes-cma-autoscaling-custom-install"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.1667,
+        "first_hit_rank": 6,
+        "gold_found": [
+          "deleting-cluster-autoscaler"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 220
+    },
+    {
+      "id": "multi-arch-deleting-podplacment-config-using-web-console",
+      "query": "How do I delete the existing ClusterPodPlacementConfig object using the OpenShift web console?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "multi-arch-deleting-podplacment-config-using-web-console"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "multi-arch-deleting-podplacment-config-using-cli",
+          "multi-arch-deleting-podplacment-config-using-web-console",
+          "multi-arch-creating-podplacment-config-using-web-console",
+          "multi-arch-creating-podplacment-config-using-cli",
+          "nodes-pods-vertical-autoscaler-uninstall",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "multi-arch-uninstalling-using-web-console",
+          "persistent-storage-csi-vol-populator-uninstall",
+          "persistent-storage-csi-group-snapshot-create-admin",
+          "deleting-a-project-using-the-web-console",
+          "lvms-about-deleting-lvmcluster-cr",
+          "nodes-pods-secrets-updating",
+          "oadp-incremental-backup-support",
+          "installing-oadp-aws-sts",
+          "lvms-deleting-lvmcluster-using-web-console",
+          "installing-oadp-rosa-sts",
+          "oadp-creating-object-bucket-claim",
+          "lvms-uninstalling-logical-volume-manager-operator-using-openshift-web-console",
+          "creating-rolling-deployments-CLI"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "multi-arch-deleting-podplacment-config-using-web-console"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 333
+    },
+    {
+      "id": "nodes-pods-daemonsets-creating",
+      "query": "How do I disable the default project-wide node selector in my namespace before creating a daemon set?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-pods-daemonsets-creating"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-pods-daemonsets-creating",
+          "nodes-scheduler-node-selectors-project",
+          "creating-an-infra-node",
+          "nodes-scheduler-taints-tolerations-projects",
+          "nodes-edge-remote-workers-strategies",
+          "admission-webhook-types",
+          "deployments-assigning-pods-to-nodes",
+          "oadp-installing-dpa-1-3",
+          "machine-config-overview",
+          "nodes-scheduler-node-selectors-about",
+          "persistent-storage-local-create-cr",
+          "dynamic-provisioning-annotations",
+          "deployments-replicationcontrollers",
+          "overriding-default-node-ip-selection-logic",
+          "understanding-machine-config-operator",
+          "nodes-qos-about-swap",
+          "nodes-scheduler-node-selectors-cluster",
+          "nodes-scheduler-node-selectors-pod",
+          "oadp-cluster-to-cluster-uid-and-gid-ranges",
+          "oadp-about-disable-node-agent-dpa"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-pods-daemonsets-creating"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 370
+    },
+    {
+      "id": "machine-config-install-time-configs",
+      "query": "How can I override the default disk partition schema for new nodes in my OpenShift cluster?",
+      "topic": "machine_configuration",
+      "gold_doc_ids": [
+        "machine-config-install-time-configs"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "machine-config-install-time-configs",
+          "machine-node-custom-partition",
+          "storage-ephemeral-storage-types",
+          "storage-persistent-storage-nfs-enforcing-disk-quota",
+          "set-the-default-max-container-root-partition-size-for-overlay-with-crio",
+          "nodes-nodes-garbage-collection-images",
+          "nodes-cluster-resource-configure",
+          "persistent-storage-local-create-cr",
+          "machine-config-overview",
+          "config-container-runtime",
+          "rhcos-about",
+          "dynamic-provisioning-annotations",
+          "nodes-cma-autoscaling-custom-trigger-kafka",
+          "lvms-about-adding-devices-to-a-vg",
+          "nodes-cluster-resource-override-deploy-console",
+          "nodes-cluster-resource-override-deploy-cli",
+          "nodes-cluster-resource-configure-about",
+          "nodes-nodes-resources-configuring-setting",
+          "ldap-syncing-about",
+          "bound-sa-tokens-configuring"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "machine-config-install-time-configs"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 862
+    },
+    {
+      "id": "update-duration-mco",
+      "query": "How can I speed up the update process for compute nodes using the Machine Config Operator?",
+      "topic": "updating",
+      "gold_doc_ids": [
+        "update-duration-mco"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "update-mco-process",
+          "updating-control-plane-only-update-console",
+          "update-duration-mco",
+          "update-duration-estimate-cluster-update-time",
+          "modify-unavailable-workers",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "coreos-layering-configuring-on",
+          "installation-process",
+          "updating-control-plane-only-update-cli",
+          "rhcos-about",
+          "multi-architecture-enabling-64k-pages",
+          "update-using-custom-machine-config-pools-unpause",
+          "migrating-to-multi-arch-cli",
+          "understanding-machine-config-operator",
+          "nodes-scheduler-taints-tolerations-adding-machineset",
+          "checking-mco-node-status",
+          "nodes-scheduler-node-selectors-cluster",
+          "update-using-custom-machine-config-pools-about",
+          "nodes-nodes-working-updating",
+          "architecture-machine-config-pools"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.3333,
+        "first_hit_rank": 3,
+        "gold_found": [
+          "update-duration-mco"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 309
+    },
+    {
+      "id": "persistent-storage-cinder-provisioning",
+      "query": "What prerequisites do I need to meet before manually provisioning storage with Cinder in OpenShift Container Platform?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-cinder-provisioning"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-cinder-provisioning",
+          "lvms-about-lvm-storage-installation",
+          "persistent-storage-csi-cinder-storage-class",
+          "storage-persistent-storage-lifecycle",
+          "machine-api-overview",
+          "rosa-troubleshooting-awsinsufficientpermission-failure-deployment",
+          "persistent-storage-cinder-creating-pv",
+          "persistent-storage-cinder-pv-format",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "machine-config-overview",
+          "olm-catalog-source-and-psa",
+          "storage-expanding-flexvolume",
+          "persistent-storage-csi-azure-file-static-provisioning-procedure",
+          "support-submitting-a-case",
+          "machineset-vsphere-data-disks",
+          "graceful-shutdown",
+          "upi-installation-considerations",
+          "persistent-storage-vsphere-dynamic-provisioning",
+          "config-openid-idp",
+          "persistent-storage-csi-vsphere-limitations"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "persistent-storage-cinder-provisioning"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 224
+    },
+    {
+      "id": "deployments-graceful-termination",
+      "query": "How can I configure the graceful termination period for my application in OpenShift?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "deployments-graceful-termination"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "deployments-graceful-termination",
+          "nodes-pods-priority-preempt-about",
+          "nodes-nodes-rebooting-affinity",
+          "dynamic-provisioning-annotations",
+          "nodes-pods-autoscaling-best-practices-hpa",
+          "odc-interacting-with-applications-and-components",
+          "nodes-containers-init-about",
+          "nodes-containers-projected-volumes-about",
+          "deployments-n1-compatibility",
+          "upgrade",
+          "cleaning-crio-storage",
+          "nodes-nodes-jobs-about",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "nodes-nodes-rebooting-gracefully",
+          "pod-disruption-eviction-policy",
+          "nodes-nodes-jobs-creating",
+          "oadp-velero-default-timeouts",
+          "nodes-cluster-resource-levels-command",
+          "oadp-features",
+          "nodes-cluster-worker-latency-profiles-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "deployments-graceful-termination"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 571
+    },
+    {
+      "id": "nodes-vsphere-machine-set-concept-static-ip",
+      "query": "How do I configure a machine set to request a static IP address for a machine in OpenShift?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "nodes-vsphere-machine-set-concept-static-ip"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-vsphere-machine-set-concept-static-ip",
+          "nodes-vsphere-machine-set-scaling-static-ip",
+          "nodes-vsphere-scaling-machines-static-ip",
+          "overriding-default-node-ip-selection-logic",
+          "configuring-ovnk-use-second-ovs-bridge",
+          "nw-how-nw-iface-selected",
+          "sno-adding-worker-nodes-to-sno-clusters-manually",
+          "nodes-cluster-overcommit-node-enforcing",
+          "dr-restoring-etcd-quorum-ha",
+          "machine-config-overview",
+          "machineset-vsphere-multiple-nics",
+          "machineset-gcp-enabling-customer-managed-encryption",
+          "machineset-yaml-osp-sr-iov-port-security",
+          "machine-user-infra-machines-ibm-z",
+          "installation-bootstrap-gather",
+          "deploying-capi-machines-via-mapi-machine-sets",
+          "accessing-windows-node-using-rdp",
+          "create-a-kubeletconfig-crd-to-edit-kubelet-parameters",
+          "machine-health-checks-resource",
+          "nodes-nodes-resources-configuring-setting"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-vsphere-machine-set-concept-static-ip"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 576
+    },
+    {
+      "id": "oadp-about-enable-api-group-versions",
+      "query": "How do I enable the API Group Versions feature in Velero to back up all Kubernetes API versions?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-about-enable-api-group-versions"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-about-enable-api-group-versions",
+          "oadp-using-enable-api-group-versions",
+          "oadp-checking-api-group-versions",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "changes-from-oadp-1-4-to-1-5",
+          "architecture-machine-roles",
+          "mco-update-boot-images-configuring",
+          "oadp-features",
+          "oadp-backing-up-opt-out",
+          "enabling-etcd-encryption",
+          "oadp-backing-and-restoring-from-cluster-to-cluster",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "update-api-compatibility",
+          "dr-restoring-cluster-state-about",
+          "oadp-plugins",
+          "nw-ingress-gateway-api-manage-succession",
+          "mco-update-boot-images-about",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "persistent-storage-csi-group-snapshots-create",
+          "oadp-installing-dpa-1-3"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-about-enable-api-group-versions"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 310
+    },
+    {
+      "id": "security-infra",
+      "query": "What are the network requirements for setting up a bare-metal cluster in a telco environment?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "security-infra"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "security-infra",
+          "machine-config-overview",
+          "support-submitting-a-case",
+          "adding-node-iso-yaml",
+          "architecture-machine-config-pools",
+          "nvidia-gpu-kvm",
+          "osd-aws-privatelink-architecture",
+          "nodes-nodes-jobs-about",
+          "olm-arch-olm-operator",
+          "olm-dependency-resolution-about",
+          "troubleshooting-bmn-connect-to-node",
+          "rosa-troubleshooting-awssubnetnotexist-failure-deployment",
+          "cluster-autoscaler-about",
+          "nodes-cluster-resource-configure-jdk",
+          "machine-vsphere-machines",
+          "deployment-specific-features",
+          "persistent-storage-csi-google-cloud-file-create-sc",
+          "olm-dependencies",
+          "machine-api-overview",
+          "rosa-hcp-upgrade-options"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "security-infra"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 310
+    },
+    {
+      "id": "nodes-nodes-working-evacuating",
+      "query": "How do I evacuate pods from a specific node while ensuring that only pods backed by a replication controller are affected?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-nodes-working-evacuating",
+        "nodes-nodes-working-master-schedulable"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-nodes-working-evacuating",
+          "nodes-nodes-working-deleting",
+          "deployments-replicationcontrollers",
+          "nodes-nodes-working-deleting-bare-metal",
+          "nodes-edge-remote-workers-network",
+          "nodes-pods-using-about",
+          "nodes-edge-remote-workers-strategies",
+          "graceful-shutdown",
+          "update-vsphere-virtual-hardware-on-compute-nodes",
+          "architecture-kubernetes-introduction",
+          "update-pod-anti-affinity",
+          "cluster-autoscaler-about",
+          "architecture-machine-roles",
+          "machine-delete",
+          "oadp-pod-volume-backup",
+          "nodes-nodes-resources-configuring-about",
+          "nodes-nodes-jobs-about",
+          "nodes-pods-vertical-autoscaler-about",
+          "nodes-pods-configmap-overview",
+          "deployment-specific-features"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 0.5,
+        "precision@5": 0.2,
+        "recall@10": 0.5,
+        "precision@10": 0.1,
+        "recall@20": 0.5,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-nodes-working-evacuating"
+        ],
+        "gold_missed": [
+          "nodes-nodes-working-master-schedulable"
+        ]
+      },
+      "elapsed_ms": 323
+    },
+    {
+      "id": "secrets-store-auto-rotation",
+      "query": "How often does the Secrets Store CSI driver check for updates to the mounted volume?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "secrets-store-auto-rotation"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "secrets-store-auto-rotation",
+          "persistent-storage-csi-secrets-store-driver-overview",
+          "persistent-storage-csi-secrets-store-driver-install",
+          "persistent-storage-csi-secrets-store-driver-uninstall",
+          "secrets-store-sync-secrets",
+          "persistent-storage-csi-secrets-store-disconnect-environment",
+          "persistent-storage-csi-secrets-store-network-policies",
+          "secrets-store-providers",
+          "secrets-store-viewing-secret-versions",
+          "secrets-store-aws",
+          "secrets-store-azure",
+          "persistent-storage-csi-vsphere-install-issues",
+          "secrets-store-vault",
+          "secrets-store-google",
+          "persistent-storage-csi-vsphere-disable-storage-consequences",
+          "ephemeral-storage-csi-inline-overview-admin-plugin",
+          "persistent-storage-csi-manila-limitations",
+          "persistent-storage-csi-dynamic-provisioning",
+          "persistent-storage-csi-migration-overview",
+          "persistent-storage-csi-efs-static-pv"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "secrets-store-auto-rotation"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 369
+    },
+    {
+      "id": "nodes-containers-copying-files-about",
+      "query": "How do I copy a local directory to a specific pod while ensuring that only its contents are transferred?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-containers-copying-files-about"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-containers-copying-files-about",
+          "nodes-containers-copying-files-procedure",
+          "rhcos-load-firmware-blobs",
+          "oadp-about-kopia-repo-maintenance",
+          "olm-fb-catalogs",
+          "nodes-containers-projected-volumes-about",
+          "nodes-pods-using-about",
+          "security-rhcos-overview",
+          "update-pod-anti-affinity",
+          "security-rbac-overview",
+          "oadp-pod-volume-backup",
+          "sbo-configuration-of-directory-path-to-project-binding-data",
+          "architecture-kubernetes-introduction",
+          "persistent-storage-local-tolerations",
+          "storage-persistent-storage-fsGroup",
+          "nodes-pods-configmap-overview",
+          "dr-scenario-cluster-state-issues",
+          "nodes-nodes-jobs-about",
+          "update-availability-faq",
+          "ignition-config-viewing"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-containers-copying-files-about"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 550
+    },
+    {
+      "id": "sbo-projecting-the-binding-data",
+      "query": "How do I project the binding data as files in my workload?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "sbo-projecting-the-binding-data"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "sbo-projecting-the-binding-data",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service",
+          "sbo-configuration-of-directory-path-to-project-binding-data",
+          "sbo-categories-of-exposable-binding-data",
+          "sbo-key-features",
+          "sbo-about-service-binding-operator",
+          "sbo-advanced-binding-options",
+          "sbo-methods-of-exposing-binding-data",
+          "sbo-connecting-spring-petclinic-sample-app-to-postgresql-database-service-power-z",
+          "sbo-binding-workloads-that-are-not-compliant-with-PodSpec",
+          "sbo-naming-strategies",
+          "disabling-project-self-provisioning",
+          "sbo-data-model",
+          "nodes-containers-init-about",
+          "dynamic-provisioning-annotations",
+          "sbo-api-differences",
+          "nodes-containers-projected-volumes-about",
+          "odc-discovering-and-identifying-operator-backed-bindable-services",
+          "odc-creating-a-binding-connection-between-components",
+          "security-context-constraints-rbac"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "sbo-projecting-the-binding-data"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 353
+    },
+    {
+      "id": "lvms-scaling-storage-of-clusters-using-cli",
+      "query": "How do I scale up the storage capacity of the worker nodes on my OpenShift cluster using the CLI?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "lvms-scaling-storage-of-clusters-using-cli"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "lvms-scaling-storage-of-clusters-using-cli",
+          "lvms-scaling-storage-of-clusters-using-web-console",
+          "lvms-about-scaling-storage-of-clusters",
+          "lvms-scaling-storage-of-clusters-using-rhacm",
+          "nodes-edge-remote-workers-network",
+          "nvidia-gpu-features",
+          "mco-update-boot-images-about",
+          "cluster-autoscaler-about",
+          "nodes-nodes-resources-configuring-about",
+          "nodes-cluster-resource-levels-about",
+          "oadp-incremental-backup-support",
+          "persistent-storage-csi-gcp-hyperdisk-storage-pools-procedure",
+          "machine-config-overview",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "creating-rolling-deployments-CLI",
+          "architecture-machine-roles",
+          "nodes-edge-remote-workers-power",
+          "installing-oadp-aws-sts",
+          "rhcos-about",
+          "installing-oadp-rosa-sts"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "lvms-scaling-storage-of-clusters-using-cli"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 299
+    },
+    {
+      "id": "rosa-sts-aws-requirements-creating-multi-association",
+      "query": "How do I associate multiple AWS accounts with my Red Hat organization for creating OpenShift Container Platform clusters?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "rosa-sts-aws-requirements-creating-multi-association"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "rosa-sts-aws-requirements-creating-multi-association",
+          "rosa-sts-aws-requirements-creating-association",
+          "rosa-sts-ocm-role-creation",
+          "rosa-troubleshooting-pendingverification-failure-deployment",
+          "rosa-troubleshooting-installing",
+          "oadp-ibm-z-test-support",
+          "oadp-ibm-power-test-support",
+          "persistent-storage-csi-manila-limitations",
+          "service-accounts-overview",
+          "how-service-accounts-assume-aws-iam-roles-in-sre-owned-projects",
+          "registry-configuring-private-storage-endpoint-azure",
+          "rosa-hcp-private-ready-no-console-access",
+          "architecture-platform-benefits",
+          "ocm-accessing",
+          "oadp-s3-compatible-backup-storage-providers",
+          "infrastructure-components",
+          "mco-update-boot-images-about",
+          "creating-an-example-aws-sdk-container-image",
+          "nodes-secondary-scheduler-install-console",
+          "rosa-architecture"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "rosa-sts-aws-requirements-creating-multi-association"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 309
+    },
+    {
+      "id": "managing-dedicated-administrators",
+      "query": "How do I add a user to the `cluster-admin` group in OpenShift?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "managing-dedicated-administrators"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "unauthenticated-users-cluster-role-binding",
+          "ldap-syncing-rfc2307",
+          "ldap-syncing-nesting",
+          "rosa-create-cluster-admins",
+          "olm-policy-understanding",
+          "nodes-containers-projected-volumes-about",
+          "ldap-syncing-rfc2307-user-defined-error",
+          "ldap-syncing-running-openshift",
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "rbac-adding-roles",
+          "lvms-about-adding-devices-to-a-vg",
+          "persistent-storage-csi-group-snapshots-create",
+          "impersonation-multiple-groups-web-console",
+          "persistent-storage-csi-group-snapshots-overview",
+          "architecture-machine-config-pools",
+          "restic-permission-error-for-nfs-data-volumes-with-root-squash-enabled",
+          "update-updating-the-worker-nodes",
+          "olm-policy-scoping-operator-install",
+          "crd-creating-crds",
+          "disabling-project-self-provisioning"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 0.0,
+        "precision@20": 0.0,
+        "mrr": 0.0,
+        "first_hit_rank": null,
+        "gold_found": [],
+        "gold_missed": [
+          "managing-dedicated-administrators"
+        ]
+      },
+      "elapsed_ms": 722
+    },
+    {
+      "id": "persistent-storage-local-pvc",
+      "query": "How do I create a persistent volume claim for a local volume in OpenShift?",
+      "topic": "storage",
+      "gold_doc_ids": [
+        "persistent-storage-local-pvc"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "persistent-storage-local-pod",
+          "storage-persistent-storage-lifecycle",
+          "persistent-storage-local-create-cr-manual",
+          "persistent-storage-local-removing-devices",
+          "persistent-storage-hostpath-static-provisioning",
+          "storage-ephemeral-vols-lifecycle",
+          "persistent-storage-local-discovery",
+          "storage-persistent-storage-creating-volume-claim",
+          "persistent-storage-local-create-cr",
+          "storage-persistent-storage-nfs-provisioning",
+          "persistent-storage-local-pvc",
+          "persistent-storage-vsphere-static-provisioning",
+          "persistent-storage-vsphere-dynamic-provisioning",
+          "lvms-about-volume-clones",
+          "persistent-storage-csi-cloning-overview",
+          "storage-persistent-storage-pvc-volumeattributesclass",
+          "storage-persistent-storage-reclaim-manual",
+          "storage-persistent-storage-azure-file",
+          "storage-ephemeral-vols-pvc-naming",
+          "persistent-storage-csi-group-snapshots-overview"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.0909,
+        "first_hit_rank": 11,
+        "gold_found": [
+          "persistent-storage-local-pvc"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 290
+    },
+    {
+      "id": "authentication-prometheus-system-metrics",
+      "query": "What metrics does OpenShift capture related to authentication attempts for Prometheus?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "authentication-prometheus-system-metrics"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "authentication-prometheus-system-metrics",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "nodes-cma-autoscaling-custom-prometheus-config",
+          "nodes-pods-autoscaling-workflow-hpa",
+          "nodes-cma-autoscaling-custom-creating-workload",
+          "nodes-cma-autoscaling-custom-creating-job",
+          "nodes-cma-autoscaling-custom-trigger-kafka",
+          "identity-provider-about-basic-authentication",
+          "identity-provider-htpasswd-about",
+          "observability-key-performance-metrics",
+          "monitoring-determining-why-prometheus-is-consuming-disk-space",
+          "oauth-register-additional-client",
+          "olm-reinstall",
+          "sd-nodes-cma-autoscaling-custom-install",
+          "external-auth-disabling",
+          "machine-lifecycle-hook-deletion",
+          "identity-provider-about-ldap",
+          "monitoring-investigating-why-user-defined-metrics-are-unavailable",
+          "migration-configuring-azure",
+          "machine-config-overview"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "authentication-prometheus-system-metrics"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 302
+    },
+    {
+      "id": "config-github-idp",
+      "query": "How do I restrict access to my OpenShift Container Platform cluster when configuring a GitHub identity provider?",
+      "topic": "authentication",
+      "gold_doc_ids": [
+        "config-github-idp"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "config-github-idp",
+          "identity-provider-github-about",
+          "understanding-idp",
+          "osd-revoke-user-access",
+          "identity-provider-registering-github",
+          "config-google-idp",
+          "osd-revoke-admin-privileges",
+          "identity-provider-provisioning-user-lookup-mapping",
+          "nodes-edge-remote-workers-network",
+          "nodes-pods-configuring-restart",
+          "config-htpasswd-idp",
+          "upgrade",
+          "registry-configuring-private-storage-endpoint-azure",
+          "pod-short-term-auth-gcp-cloud-sa",
+          "external-auth-configuring",
+          "config-openid-idp",
+          "external-auth-fields",
+          "nodes-nodes-garbage-collection-containers",
+          "config-gitlab-idp",
+          "nodes-nodes-resources-configuring-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "config-github-idp"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 433
+    },
+    {
+      "id": "deployments-replicationcontrollers",
+      "query": "How do I ensure that a specific number of pod replicas are running at all times in my OpenShift environment?",
+      "topic": "applications",
+      "gold_doc_ids": [
+        "deployments-replicationcontrollers"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-pods-pod-disruption-about",
+          "deployments-replicationcontrollers",
+          "nodes-pods-autoscaling-creating-cpu-percent",
+          "nodes-cluster-resource-levels-about",
+          "nodes-nodes-jobs-about",
+          "update-pod-anti-affinity",
+          "architecture-kubernetes-introduction",
+          "nodes-pods-autoscaling-policies",
+          "cluster-autoscaler-about",
+          "nodes-nodes-working-deleting",
+          "oadp-backup-restore-for-large-usage",
+          "nodes-pods-vertical-autoscaler-about",
+          "nodes-cma-autoscaling-custom-creating-workload",
+          "nodes-edge-remote-workers-strategies",
+          "nodes-pods-pod-disruption-configuring",
+          "support-submitting-a-case",
+          "nodes-pods-autoscaling-creating-cpu",
+          "deployments-replicasets",
+          "bound-sa-tokens-configuring",
+          "nodes-nodes-rebooting-infrastructure"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "deployments-replicationcontrollers"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 405
+    },
+    {
+      "id": "nvidia-gpu-sharing-methods",
+      "query": "What GPU sharing method should I use for VMs in an OpenShift Container Platform environment?",
+      "topic": "architecture",
+      "gold_doc_ids": [
+        "nvidia-gpu-sharing-methods"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nvidia-gpu-sharing-methods",
+          "nvidia-gpu-vsphere",
+          "nvidia-gpu-kvm",
+          "nvidia-gpu-virtualization-with-gpu",
+          "nvidia-gpu-features",
+          "machine-api-overview",
+          "nvidia-gpu-bare-metal",
+          "nvidia-gpu-csps",
+          "support-submitting-a-case",
+          "machine-config-overview",
+          "nodes-cma-autoscaling-custom-trigger-prom",
+          "persistent-storage-csi-vsphere-top-aware-overview",
+          "machine-api-vmw-add-tags",
+          "capi-overview",
+          "identity-provider-provisioning-user-lookup-mapping",
+          "nvidia-gpu-virtualization",
+          "machineset-gcp-enabling-gpu-support",
+          "nodes-containers-init-about",
+          "nodes-pods-allocate-dra-about",
+          "ldap-syncing-nesting"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nvidia-gpu-sharing-methods"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 411
+    },
+    {
+      "id": "olm-installplan",
+      "query": "What are the steps required to create and approve an install plan for an Operator in OpenShift?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-installplan"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "olm-policy-understanding",
+          "op-installing-sbo-operator-using-the-web-console",
+          "querying-operator-status-after-installation",
+          "olm-installing-from-software-catalog-using-cli",
+          "nodes-secondary-scheduler-install-console",
+          "olm-arch-olm-operator",
+          "olm-installplan",
+          "olm-arch-catalog-operator",
+          "olm-multitenancy-solution",
+          "installation-process",
+          "oauth-register-additional-client",
+          "how-service-accounts-assume-aws-iam-roles-in-sre-owned-projects",
+          "olm-csv",
+          "olm-about-catalogs",
+          "olm-dependencies",
+          "olm-default-install-behavior",
+          "olm-disabling-copied-csvs",
+          "olm-dependency-resolution-about",
+          "olm-changing-update-channel",
+          "rodoo-install-operator"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.1429,
+        "first_hit_rank": 7,
+        "gold_found": [
+          "olm-installplan"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 433
+    },
+    {
+      "id": "olm-operatorgroups-membership",
+      "query": "What conditions must be met for an Operator to be considered a member of an Operator group?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-operatorgroups-membership"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "olm-operatorgroups-membership",
+          "olm-operatorgroups-provided-apis-annotations",
+          "olm-overriding-operatorconditions",
+          "determining-upgrade-viability-conditiontype",
+          "olm-arch-olm-operator",
+          "olm-operatorgroups-static",
+          "olm-operatorgroups-about",
+          "olm-operatorconditions-about",
+          "machine-lifecycle-hook-deletion-etcd",
+          "olm-preparing-multitenant-operators",
+          "olm-operatorgroups-intersections",
+          "olm-policy-understanding",
+          "olm-dependencies",
+          "service-accounts-as-oauth-clients",
+          "cpmso-ts-mhc-etcd-degraded",
+          "olm-overriding-proxy-settings",
+          "nodes-pods-vertical-autoscaler-in-place",
+          "olm-reinstall",
+          "nodes-scheduler-node-affinity-about",
+          "update-manifest-application"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "olm-operatorgroups-membership"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 385
+    },
+    {
+      "id": "rosa-upgrading-cli-tutorial",
+      "query": "How can I verify if an upgrade is available for my OpenShift Container Platform cluster using the ROSA CLI?",
+      "topic": "upgrading",
+      "gold_doc_ids": [
+        "rosa-upgrading-cli-tutorial"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "rosa-upgrading-cli-tutorial",
+          "rosa-upgrading-manual-ocm",
+          "rosa-troubleshooting-installing",
+          "upgrade",
+          "rosa-how-upgrades-work",
+          "rosa-deleting-cluster-upgrade-cli",
+          "migrating-to-multi-arch-cli",
+          "rosa-hcp-upgrading-cli-machinepool",
+          "rosa-hcp-upgrading-cli-control-plane",
+          "rosa-troubleshooting-awsinsufficientpermission-failure-deployment",
+          "update-upgrading-cli",
+          "upgrade-manual",
+          "nodes-nodes-resources-configuring-about",
+          "updating-control-plane-only-update-cli",
+          "nodes-nodes-garbage-collection-containers",
+          "rosa-sts-aws-requirements-creating-multi-association",
+          "rosa-creating-node-tuning",
+          "installing-oadp-rosa-sts",
+          "update-selecting-the-target-release",
+          "rhcos-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "rosa-upgrading-cli-tutorial"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 416
+    },
+    {
+      "id": "oadp-s3-and-gov-cloud",
+      "query": "What are the key requirements for configuring backup storage in AWS GovCloud to meet federal data security standards?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-s3-and-gov-cloud"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "oadp-s3-and-gov-cloud",
+          "oadp-ssec-encrypted-backups",
+          "migration-configuring-aws-s3",
+          "oadp-configuring-aws-md5sum",
+          "oadp-s3-compatible-backup-storage-providers",
+          "nodes-pods-secrets-about",
+          "machineset-vsphere-data-disks",
+          "oadp-self-service-namespace-scoped",
+          "oadp-about-backup-snapshot-locations-secrets",
+          "oadp-self-service-rejecting-nabsl",
+          "installing-oadp-aws-sts",
+          "oadp-usecase-kopia-override-algorithms",
+          "installing-oadp-rosa-sts",
+          "nodes-scheduler-pod-affinity-about",
+          "oadp-velero-cpu-memory-requirements",
+          "creating-the-data-protection-application",
+          "oadp-configuring-backup-pvc-datamover-backup",
+          "observability-key-performance-metrics",
+          "storage-persistent-storage-selinuxChangePolicy",
+          "oadp-enabling-built-in-data-mover"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-s3-and-gov-cloud"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 392
+    },
+    {
+      "id": "nodes-cluster-overcommit-about",
+      "query": "How can I configure the overcommitment of resources on a node in OpenShift?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-cluster-overcommit-about",
+        "nodes-cluster-overcommit-configure-nodes"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-cluster-overcommit-about",
+          "nodes-cluster-overcommit-node-disable",
+          "nodes-cluster-overcommit-qos-about",
+          "nodes-cluster-overcommit-configure-nodes",
+          "nodes-nodes-resources-configuring-about",
+          "cluster-autoscaler-about",
+          "nodes-cluster-resource-levels-about",
+          "nodes-nodes-rebooting-affinity",
+          "setting-resource-quota-for-extended-resources",
+          "nodes-qos-about-swap",
+          "nodes-containers-projected-volumes-about",
+          "nodes-nodes-jobs-about",
+          "nodes-pods-priority-preempt-about",
+          "bound-sa-tokens-configuring",
+          "machine-config-overview",
+          "nodes-cluster-resource-configure-about",
+          "nodes-scheduler-node-affinity-about",
+          "nodes-cluster-overcommit-project-disable",
+          "nodes-nodes-resources-configuring-setting",
+          "nodes-scheduler-pod-affinity-about"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.4,
+        "recall@10": 1.0,
+        "precision@10": 0.2,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cluster-overcommit-about",
+          "nodes-cluster-overcommit-configure-nodes"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 556
+    },
+    {
+      "id": "nodes-cluster-resource-override-deploy-console",
+      "query": "How do I install the Cluster Resource Override Operator using the OpenShift web console?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-cluster-resource-override-deploy-console",
+        "nodes-cluster-resource-configure"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-cluster-resource-override-deploy-console",
+          "rodoo-install-operator",
+          "persistent-storage-csi-gcp-file-install",
+          "nodes-cluster-resource-override-deploy-cli",
+          "rodoo-uninstall-operator",
+          "nodes-cluster-resource-configure",
+          "installing-operator-oadp",
+          "rodoo-about",
+          "rodoo-uninstall-resources",
+          "red-hat-marketplace-features",
+          "nodes-cluster-resource-override-move-infra",
+          "lvms-about-lvm-storage-installation",
+          "nodes-pods-configuring-restart",
+          "installing-oadp-aws-sts",
+          "op-installing-sbo-operator-using-the-web-console",
+          "installing-oadp-rosa-sts",
+          "lvms-installing-logical-volume-manager-operator-using-openshift-web-console",
+          "multi-arch-installing-using-web-console",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains"
+        ],
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 0.5,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.2,
+        "recall@20": 1.0,
+        "precision@20": 0.1,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cluster-resource-override-deploy-console",
+          "nodes-cluster-resource-configure"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 204
+    },
+    {
+      "id": "nw-how-nw-iface-selected",
+      "query": "How does OpenShift determine which network interface to use for communication with the Kubernetes API server during node boot?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "nw-how-nw-iface-selected"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nw-how-nw-iface-selected",
+          "architecture-machine-roles",
+          "nodes-cluster-worker-latency-profiles-about",
+          "admission-webhook-types",
+          "admission-webhooks-about",
+          "investigating-master-node-installation-issues",
+          "nodes-edge-remote-workers-network",
+          "configuring-ovnk-use-second-ovs-bridge",
+          "osd-aws-privatelink-architecture",
+          "private-clusters-setting-api-private-aws",
+          "architecture-platform-benefits",
+          "machineset-vsphere-multiple-nics",
+          "nodes-edge-remote-workers-strategies",
+          "installation-process",
+          "troubleshooting-certs-auto-etcd",
+          "sno-adding-worker-nodes-to-sno-clusters-manually",
+          "ts-capi-cli-reference-intended-objects",
+          "olm-about-catalogs",
+          "external-auth-fields",
+          "nodes-nodes-resources-configuring-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nw-how-nw-iface-selected"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 271
+    },
+    {
+      "id": "nodes-pods-image-volume-adding",
+      "query": "How do I specify a pull policy when adding an image volume to a pod in OpenShift?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-pods-image-volume-adding"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "nodes-pods-image-volume-adding",
+          "nodes-pods-image-volume-about",
+          "nodes-sigstore-configure",
+          "coreos-layering-configuring-on",
+          "coreos-layering-configuring-on-proc",
+          "nodes-sigstore-configure-image-policy",
+          "nodes-pods-secrets-about",
+          "nodes-pods-configuring-restart",
+          "nodes-containers-init-about",
+          "storage-persistent-storage-lifecycle",
+          "service-account-auto-secret-removed",
+          "nodes-sigstore-configure-cluster-policy",
+          "adding-node-iso-yaml",
+          "nodes-containers-projected-volumes-about",
+          "nodes-nodes-jobs-creating",
+          "adding-node-iso-flags",
+          "olm-catalogsource",
+          "nodes-pods-secrets-creating",
+          "olm-accessing-images-private-registries",
+          "lvms-about-adding-devices-to-a-vg"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-pods-image-volume-adding"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 281
+    },
+    {
+      "id": "update-applying-mcp-labels-to-nodes-before-the-update",
+      "query": "How do I apply MachineConfigPool labels to nodes before performing a cluster update?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "update-applying-mcp-labels-to-nodes-before-the-update"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "update-applying-mcp-labels-to-nodes-before-the-update",
+          "update-creating-mcp-groups-for-the-cluster",
+          "nodes-nodes-garbage-collection-configuring",
+          "nodes-nodes-managing-about",
+          "nodes-nodes-working-updating",
+          "bound-sa-tokens-configuring",
+          "ts-capi-migrate-sync-label-annotation",
+          "machineconfig-modify-journald",
+          "nodes-scheduler-node-selectors-cluster",
+          "nodes-scheduler-node-selectors-project",
+          "nodes-scheduler-node-selectors-pod",
+          "create-a-kubeletconfig-crd-to-edit-kubelet-parameters",
+          "nodes-pods-daemonsets-creating",
+          "architecture-machine-config-pools",
+          "troubleshooting-disabling-autoreboot-mco-console",
+          "updating-control-plane-only-update",
+          "creating-an-infra-node",
+          "storage-persistent-storage-nfs-provisioning",
+          "deployments-assigning-pods-to-nodes",
+          "nodes-containers-init-about"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "update-applying-mcp-labels-to-nodes-before-the-update"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 240
+    },
+    {
+      "id": "update-upgrading-web",
+      "query": "How do I update my OpenShift cluster using the web console?",
+      "topic": "updating",
+      "gold_doc_ids": [
+        "update-upgrading-web"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "updating-control-plane-only-layered-products",
+          "oadp-incremental-backup-support",
+          "migrating-to-multi-arch-cli",
+          "updating-control-plane-only-update-console",
+          "update-changing-update-server-web",
+          "lvms-installing-logical-volume-manager-operator-using-openshift-web-console",
+          "osd-applications-renew-custom-domains",
+          "rosa-applications-renew-custom-domains",
+          "multi-arch-installing-using-web-console",
+          "olm-changing-update-channel",
+          "about-manually-maintained-credentials-upgrade",
+          "updating-sno",
+          "viewing-resource-logs-console",
+          "updating-control-plane-only-update-cli",
+          "update-upgrading-web",
+          "dynamic-provisioning-annotations",
+          "nodes-pods-configuring-restart",
+          "op-installing-sbo-operator-using-the-web-console",
+          "creating-rolling-deployments-CLI",
+          "update-duration-estimate-cluster-update-time"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.0667,
+        "first_hit_rank": 15,
+        "gold_found": [
+          "update-upgrading-web"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 296
+    },
+    {
+      "id": "rosa-deleting-cluster-upgrade-ocm",
+      "query": "How do I cancel a scheduled upgrade using the OpenShift Cluster Manager console?",
+      "topic": "upgrading",
+      "gold_doc_ids": [
+        "rosa-deleting-cluster-upgrade-ocm"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "upgrade-auto",
+          "upgrade-manual",
+          "upgrade",
+          "rosa-deleting-cluster-upgrade-cli",
+          "rosa-deleting-cluster-upgrade-ocm",
+          "rosa-upgrading-manual-ocm",
+          "rosa-how-upgrades-work",
+          "rosa-upgrading-cli-tutorial",
+          "migrating-to-multi-arch-cli",
+          "nodes-edge-remote-workers-power",
+          "rosa-hcp-upgrading-cli-machinepool",
+          "nodes-edge-remote-workers-network",
+          "updating-control-plane-only-update-cli",
+          "oadp-upgrading-oadp-operator-1-5-0",
+          "scheduling-virtual-hardware-update-on-vsphere",
+          "updating-control-plane-only-layered-products",
+          "rosa-hcp-upgrading-cli-control-plane",
+          "nodes-cluster-resource-levels-about",
+          "lvms-about-lvm-storage-installation",
+          "osd-applications-renew-custom-domains"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.2,
+        "first_hit_rank": 5,
+        "gold_found": [
+          "rosa-deleting-cluster-upgrade-ocm"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 3590
+    },
+    {
+      "id": "registry-configuring-private-storage-endpoint-azure",
+      "query": "How do I configure the Image Registry Operator to use private storage endpoints on Azure for my OpenShift Container Platform deployment?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "registry-configuring-private-storage-endpoint-azure"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "registry-configuring-private-storage-endpoint-azure",
+          "configuring-private-storage-endpoint-azure-vnet-subnet-iro-discovery",
+          "configuring-private-storage-endpoint-azure-user-provided-vnet-subnet",
+          "olm-accessing-images-private-registries",
+          "nodes-nodes-rebooting-infrastructure",
+          "disabling-redirect-private-storage-endpoint-azure",
+          "service-account-auto-secret-removed",
+          "nodes-pods-configuring-restart",
+          "odc-deploying-container-image",
+          "persistent-storage-csi-secrets-store-disconnect-environment",
+          "private-clusters-about",
+          "applications-create-using-cli-image",
+          "rosa-architecture",
+          "lvms-installing-logical-volume-manager-operator-disconnected-environment",
+          "pruning-hard-pruning-registry",
+          "olm-about-opm",
+          "private-clusters-setting-api-private-azure",
+          "nodes-sigstore-configure-cluster-policy",
+          "mco-update-boot-images-about",
+          "lvms-about-lvm-storage-installation"
+        ],
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "registry-configuring-private-storage-endpoint-azure"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 397
+    },
+    {
+      "id": "dr-restoring-cluster-state",
+      "query": "What steps should I take to restore a three-node HA cluster without causing a split?",
+      "topic": "post_installation_configuration",
+      "gold_doc_ids": [
+        "dr-restoring-cluster-state"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "dr-restoring-etcd-quorum-ha",
+          "dr-restoring-cluster-state",
+          "dr-restoring-cluster-state-about",
+          "admission-plug-ins-about",
+          "oadp-restore-single-vm-from-multiple-vm-backup",
+          "oadp-restore-single-vm",
+          "dr-testing-restore-procedures",
+          "oadp-self-service-namespace-scoped",
+          "dr-restoring-cluster-state-sno",
+          "oadp-self-service-creating-nar",
+          "oadp-self-service-overview",
+          "oadp-incremental-backup-support",
+          "backup-etcd",
+          "understanding-update-channels-choosing",
+          "oadp-creating-restore-hooks",
+          "nodes-containers-init-about",
+          "persistent-storage-csi-snapshots-create",
+          "oadp-about-backing-and-restoring-from-cluster-to-cluster",
+          "nodes-pods-image-volume-about",
+          "oauth-configuring-token-inactivity-timeout"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "dr-restoring-cluster-state"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 628
+    },
+    {
+      "id": "collecting-kube-node-logs-windows",
+      "query": "How do I collect Kubernetes node logs for Windows containers?",
+      "topic": "support",
+      "gold_doc_ids": [
+        "collecting-kube-node-logs-windows"
+      ],
+      "metrics": {
+        "retrieved_stems": [
+          "collecting-windows-application-event-logs",
+          "collecting-kube-node-logs-windows",
+          "investigating-why-windows-machine-compute-node",
+          "collecting-containerd-logs-windows",
+          "gathering-bootstrap-diagnostic-data",
+          "accessing-windows-node-using-rdp",
+          "investigating-master-node-installation-issues",
+          "accessing-windows-node-using-ssh",
+          "accessing-windows-node",
+          "nodes-containers-projected-volumes-about",
+          "investigating-etcd-installation-issues",
+          "investigating-worker-node-installation-issues",
+          "querying-cluster-node-journal-logs",
+          "oadp-incremental-backup-support",
+          "gathering-operator-logs",
+          "velero-obtaining-by-downloading",
+          "architecture-kubernetes-introduction",
+          "investigating-kubelet-api-installation-issues",
+          "nodes-cluster-worker-latency-profiles-about",
+          "osd-applications-renew-custom-domains"
+        ],
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "collecting-kube-node-logs-windows"
+        ],
+        "gold_missed": []
+      },
+      "elapsed_ms": 409
+    }
+  ],
+  "total_seconds": 41.3
+}
