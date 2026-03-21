@@ -7,10 +7,10 @@ from pathlib import Path
 from openai import OpenAI
 from tqdm import tqdm
 
-from ingest import attributes, discover, embed, meta_extract, store
-from ingest.config import DEFAULT_BATCH_SIZE, KEEP_CONTENT_TYPES, TARGET_DIRS
-from ingest.discover import ModuleInfo
-from ingest.preprocess import preprocess
+from retrieval import attributes, discover, embed, meta_extract, store
+from core.config import DEFAULT_BATCH_SIZE, KEEP_CONTENT_TYPES, TARGET_DIRS
+from retrieval.discover import ModuleInfo
+from retrieval.preprocess import preprocess
 
 logger = logging.getLogger(__name__)
 

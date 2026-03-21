@@ -7,7 +7,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from ingest.config import (
+from core.config import (
     DEFAULT_BATCH_SIZE,
     DEFAULT_CHROMA_DIR,
     DEFAULT_COLLECTION,
@@ -15,14 +15,14 @@ from ingest.config import (
     DEFAULT_PROCESSED_DIR,
     TARGET_DIRS,
 )
-from ingest.pipeline import PipelineConfig, run
+from retrieval.pipeline import PipelineConfig, run
 
 
 def main() -> None:
     load_dotenv()
 
     parser = argparse.ArgumentParser(
-        prog="python -m ingest",
+        prog="python -m retrieval",
         description="Preprocess and ingest OpenShift docs into ChromaDB",
     )
     parser.add_argument("--docs-root", type=Path, default=DEFAULT_DOCS_ROOT)

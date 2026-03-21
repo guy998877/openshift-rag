@@ -2,7 +2,7 @@
 import re
 from pathlib import Path
 
-from ingest.attributes import resolve_text
+from retrieval.attributes import resolve_text
 
 # Flags for conditional processing
 OCP_FLAGS: set[str] = {"openshift-enterprise"}

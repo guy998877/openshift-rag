@@ -5,9 +5,12 @@
 ```
 data/
 ├── ground_truth/
-│   └── queries.json          # 100-query fixed benchmark (do not edit)
-├── eval_results/             # all run outputs land here
-│   ├── baseline_hybrid.json  # hybrid k=20 baseline (reference)
+│   └── queries.json                     # 100-query fixed benchmark (do not edit)
+├── eval_results/
+│   ├── EVAL_COMMANDS.md
+│   ├── 2026-03-20T15-29_hybrid_k20/     # one subdir per run (auto-named)
+│   │   ├── metrics.json                 # aggregate + per-query scores
+│   │   └── predictions.jsonl            # per-query retrieved stems
 │   └── ...
 ```
 
@@ -41,37 +44,34 @@ No LLM calls — runs in ~40 seconds.
 | `--mode semantic` | `semantic` | Vector / embedding search only |
 | `--mode keyword` | `keyword` | BM25 keyword search only |
 
+Each run automatically creates a timestamped subdirectory, e.g.
+`data/eval_results/2026-03-20T15-29_hybrid_k20/` containing
+`metrics.json` and `predictions.jsonl`.
+
 ### Hybrid (default)
 
 ```bash
-python -m eval \
-  --output data/eval_results/hybrid_k20.json
+python -m eval
 ```
 
 ### Semantic (vector only)
 
 ```bash
-python -m eval \
-  --mode semantic \
-  --output data/eval_results/semantic_k20.json \
-  --baseline data/eval_results/baseline_hybrid.json
+python -m eval --mode semantic
 ```
 
 ### Keyword (BM25 only)
 
 ```bash
-python -m eval \
-  --mode keyword \
-  --output data/eval_results/keyword_k20.json \
-  --baseline data/eval_results/baseline_hybrid.json
+python -m eval --mode keyword
 ```
 
 ### Ablation: all three modes back-to-back
 
 ```bash
-python -m eval --mode hybrid  --output data/eval_results/hybrid_k20.json
-python -m eval --mode semantic --output data/eval_results/semantic_k20.json --baseline data/eval_results/hybrid_k20.json
-python -m eval --mode keyword  --output data/eval_results/keyword_k20.json  --baseline data/eval_results/hybrid_k20.json
+python -m eval --mode hybrid
+python -m eval --mode semantic
+python -m eval --mode keyword
 ```
 
 ### With cross-encoder reranking
@@ -79,33 +79,49 @@ python -m eval --mode keyword  --output data/eval_results/keyword_k20.json  --ba
 Can be added to any mode:
 
 ```bash
-python -m eval \
-  --mode hybrid \
-  --rerank \
-  --output data/eval_results/hybrid_rerank_k20.json \
-  --baseline data/eval_results/baseline_hybrid.json
+python -m eval --mode hybrid --rerank
 ```
 
-### Custom k
+### Custom retrieval k
 
 ```bash
-python -m eval \
-  --k 50 \
-  --output data/eval_results/hybrid_k50.json \
-  --baseline data/eval_results/baseline_hybrid.json
+python -m eval --k 50
+```
+
+### Limit number of queries evaluated
+
+Useful for quick sanity checks during development.
+
+```bash
+# First 10 queries
+python -m eval --n 10
+
+# First 10 queries, keyword mode
+python -m eval --mode keyword --n 10
+```
+
+### Skip saving to disk
+
+```bash
+python -m eval --no-save
+```
+
+### Custom output directory
+
+```bash
+python -m eval --output-dir /some/other/path
 ```
 
 ---
 
 ## Compare Two Runs
 
-Pass `--baseline` to any run to print a regression diff at the end.
-Flags any metric that moves ≥ 0.02 with `✓ improved` / `✗ REGRESSED`.
+Pass `--baseline` pointing to any previous `metrics.json` to print a
+regression diff at the end. Flags any metric that moves ≥ 0.02 with
+`✓ improved` / `✗ REGRESSED`.
 
 ```bash
-python -m eval \
-  --output data/eval_results/my_run.json \
-  --baseline data/eval_results/baseline_hybrid.json
+python -m eval --baseline data/eval_results/2026-03-19T15-29_hybrid_k20/metrics.json
 ```
 
 ---

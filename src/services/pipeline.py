@@ -1,4 +1,4 @@
-"""LangChain RAG chain for OpenShift docs QA."""
+"""LangChain RAG pipeline for OpenShift docs QA."""
 from __future__ import annotations
 
 import os
@@ -91,10 +91,10 @@ def run_pipeline(
     ground: bool = False,
 ) -> QAResult:
     """Full pipeline: rewrite → retrieve → rerank → generate → ground."""
-    from qa.grounding import grounding_check
-    from qa.hybrid import hybrid_search
-    from qa.rerank import rerank
-    from qa.rewrite import rewrite_query
+    from services.grounding import grounding_check
+    from retrieval.hybrid import hybrid_search
+    from retrieval.rerank import rerank
+    from services.rewrite import rewrite_query
 
     t_total = time.monotonic()
     log: dict = {}

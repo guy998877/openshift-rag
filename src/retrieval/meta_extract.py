@@ -1,8 +1,8 @@
 """Extract rich metadata from preprocessed Markdown for ChromaDB storage."""
 import re
 
-from ingest.config import HARDCODED_ATTRS
-from ingest.discover import ModuleInfo
+from core.config import HARDCODED_ATTRS
+from retrieval.discover import ModuleInfo
 
 _CODE_FENCE_RE = re.compile(r"^```(\w+)?")
 _OC_CMD_RE = re.compile(r"^\$\s+oc\s+(\S+)")

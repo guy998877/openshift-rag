@@ -70,7 +70,7 @@ def generate_benchmark(
     random.seed(seed)
 
     # Build metadata map
-    from ingest import discover
+    from retrieval import discover
     modules = discover.discover(docs_root)
     mod_map = {m.filename: m for m in modules}
 

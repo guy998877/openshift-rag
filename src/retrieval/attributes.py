@@ -2,7 +2,7 @@
 import re
 from pathlib import Path
 
-from ingest.config import HARDCODED_ATTRS
+from core.config import HARDCODED_ATTRS
 
 _ATTR_LINE = re.compile(r"^:([^:]+):\s*(.*)")
 _IFDEF_ORIGIN = re.compile(r"^ifdef::openshift-origin\[\]")

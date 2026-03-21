@@ -4,7 +4,7 @@ import time
 
 from openai import APIError, OpenAI, RateLimitError
 
-from ingest.config import EMBEDDING_MODEL
+from core.config import EMBEDDING_MODEL
 
 logger = logging.getLogger(__name__)
 

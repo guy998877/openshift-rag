@@ -12,7 +12,7 @@ load_dotenv()
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        prog="python -m qa",
+        prog="python -m services",
         description="Ask questions about OpenShift documentation.",
     )
     parser.add_argument("question", help="The question to ask")
@@ -49,7 +49,7 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    from qa.chain import QAResult, _doc_to_source, build_vectorstore
+    from services.pipeline import QAResult, _doc_to_source, build_vectorstore
 
     chroma_dir = Path(args.chroma_dir)
     try:
@@ -65,7 +65,7 @@ def main() -> None:
 
     if count == 0:
         print(
-            "Error: ChromaDB is empty — run: python -m ingest --verbose",
+            "Error: ChromaDB is empty — run: python -m retrieval --verbose",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -75,7 +75,7 @@ def main() -> None:
     if not args.no_hybrid:
         processed_dir = Path(args.processed_dir)
         if processed_dir.exists():
-            from qa.hybrid import BM25Index
+            from retrieval.hybrid import BM25Index
             bm25 = BM25Index(processed_dir)
         else:
             print(f"Warning: processed dir {processed_dir} not found, falling back to vector-only.",
@@ -85,7 +85,7 @@ def main() -> None:
         # Retrieve and print chunks — no LLM call
         use_hybrid = not args.no_hybrid and bm25 is not None
         if use_hybrid:
-            from qa.hybrid import hybrid_search
+            from retrieval.hybrid import hybrid_search
             docs = hybrid_search(args.question, vs, bm25, k_retrieve=50, k_final=args.n_results)
         else:
             search_kwargs: dict = {"k": args.n_results}
@@ -116,7 +116,7 @@ def main() -> None:
             print()
         return
 
-    from qa.chain import run_pipeline
+    from services.pipeline import run_pipeline
 
     try:
         result = run_pipeline(

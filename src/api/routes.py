@@ -4,10 +4,10 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request
+from flask import Blueprint, Flask, jsonify, render_template, request
 
-from ingest import discover, meta_extract
-from ingest.config import DEFAULT_CHROMA_DIR, DEFAULT_COLLECTION, DEFAULT_PROCESSED_DIR
+from retrieval import discover, meta_extract
+from core.config import DEFAULT_CHROMA_DIR, DEFAULT_COLLECTION, DEFAULT_PROCESSED_DIR
 
 load_dotenv()
 
@@ -38,12 +38,10 @@ def create_app(docs_root: Path, processed_dir: Path) -> Flask:
         print(f"WARNING: discover failed: {e}")
         _module_map = {}
 
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="templates")
     app.register_blueprint(_bp)
     return app
 
-
-from flask import Blueprint
 
 _bp = Blueprint("viewer", __name__)
 
@@ -126,7 +124,7 @@ def query():
                         "sources": [], "model": model, "rewritten_query": "", "is_grounded": True})
 
     try:
-        from qa.chain import build_vectorstore, run_pipeline
+        from services.pipeline import build_vectorstore, run_pipeline
 
         # Lazy-init vectorstore
         if _qa_vectorstore is None:
@@ -134,13 +132,13 @@ def query():
 
         count = _qa_vectorstore._collection.count()
         if count == 0:
-            return jsonify({"error": "ChromaDB is empty — run: python -m ingest --verbose",
+            return jsonify({"error": "ChromaDB is empty — run: python -m retrieval --verbose",
                             "answer": None, "sources": [], "model": model,
                             "rewritten_query": "", "is_grounded": True})
 
         # Lazy-init BM25 index
         if not _bm25_loaded and do_hybrid:
-            from qa.hybrid import BM25Index
+            from retrieval.hybrid import BM25Index
             pdir = DEFAULT_PROCESSED_DIR
             if pdir.exists():
                 _bm25 = BM25Index(pdir)

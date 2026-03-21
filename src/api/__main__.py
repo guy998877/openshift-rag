@@ -1,12 +1,12 @@
 import argparse
 from pathlib import Path
 
-from ingest.config import DEFAULT_DOCS_ROOT, DEFAULT_PROCESSED_DIR
-from viewer.app import create_app
+from core.config import DEFAULT_DOCS_ROOT, DEFAULT_PROCESSED_DIR
+from api.routes import create_app
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="python -m viewer")
+    parser = argparse.ArgumentParser(prog="python -m api")
     parser.add_argument("--docs-root", type=Path, default=DEFAULT_DOCS_ROOT)
     parser.add_argument("--processed-dir", type=Path, default=DEFAULT_PROCESSED_DIR)
     parser.add_argument("--port", type=int, default=5000)

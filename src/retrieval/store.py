@@ -4,7 +4,7 @@ from pathlib import Path
 
 import chromadb
 
-from ingest.discover import ModuleInfo
+from retrieval.discover import ModuleInfo
 
 logger = logging.getLogger(__name__)
 

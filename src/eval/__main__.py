@@ -18,25 +18,36 @@ def main() -> None:
     )
     parser.add_argument(
         "--queries", type=Path, default=Path("./data/ground_truth/queries.json"),
+        help="Benchmark queries file (default: data/ground_truth/queries.json)",
     )
     parser.add_argument(
-        "--output", type=Path, default=None, metavar="PATH",
-        help="Save results to this JSON file (e.g. data/eval_results/run.json)",
+        "--output-dir", type=Path, default=Path("./data/eval_results"), metavar="DIR",
+        help="Parent directory for run output (default: data/eval_results). "
+             "A timestamped subdirectory is created automatically.",
+    )
+    parser.add_argument(
+        "--no-save", action="store_true",
+        help="Skip saving results to disk (print summary only)",
     )
     parser.add_argument(
         "--baseline", type=Path, default=None, metavar="PATH",
-        help="Compare against a previously saved report (e.g. data/eval_results/baseline_hybrid.json)",
+        help="Path to a metrics.json from a previous run for regression comparison",
     )
     parser.add_argument(
         "--k", type=int, default=20, metavar="K",
         help="Docs to retrieve per query (default: 20)",
     )
     parser.add_argument(
+        "--n", type=int, default=None, metavar="N",
+        help="Number of queries to evaluate (default: all)",
+    )
+    parser.add_argument(
         "--mode", default="hybrid", choices=["hybrid", "semantic", "keyword"],
         help="Retrieval mode: hybrid (default) | semantic (vector only) | keyword (BM25 only)",
     )
     parser.add_argument(
-        "--rerank", action="store_true", help="Apply cross-encoder reranking after retrieval",
+        "--rerank", action="store_true",
+        help="Apply cross-encoder reranking after retrieval",
     )
     parser.add_argument(
         "--chroma-dir", type=Path, default=Path("./chroma_db"),
@@ -68,7 +79,8 @@ def main() -> None:
         k_retrieve=args.k,
         mode=args.mode,
         use_rerank=args.rerank,
-        output_path=args.output,
+        n_queries=args.n,
+        output_dir=None if args.no_save else args.output_dir,
     )
 
     print_retrieval_summary(report)

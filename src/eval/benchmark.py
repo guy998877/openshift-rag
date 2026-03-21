@@ -6,16 +6,70 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from ingest.config import DEFAULT_CHROMA_DIR, DEFAULT_COLLECTION, DEFAULT_PROCESSED_DIR
-from qa.chain import build_vectorstore
-from qa.hybrid import BM25Index, bm25_search, hybrid_search
+from core.config import DEFAULT_CHROMA_DIR, DEFAULT_COLLECTION, DEFAULT_PROCESSED_DIR
+from services.pipeline import build_vectorstore
+from retrieval.hybrid import BM25Index, bm25_search, hybrid_search
 
 K_VALUES = [1, 3, 5, 10, 20]
 
 MODES = ("hybrid", "semantic", "keyword")
 
 
-# ── Retrieval-only benchmark ─────────────────────────────────────────────────
+# ── Output helpers ────────────────────────────────────────────────────────────
+
+def _run_dir(output_dir: Path, mode: str, k: int, timestamp: str) -> Path:
+    """Create and return a timestamped subdirectory for one run."""
+    # e.g. data/eval_results/2026-03-20T15-29_hybrid_k20
+    slug = timestamp[:16].replace(":", "-")
+    name = f"{slug}_{mode}_k{k}"
+    run_dir = output_dir / name
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir
+
+
+def _save_run(run_dir: Path, report: dict) -> None:
+    """Write metrics.json and predictions.jsonl into run_dir."""
+    # metrics.json — aggregate + per-query scores, no raw retrieved_stems
+    metrics_report = {
+        k: v for k, v in report.items() if k != "results"
+    }
+    metrics_report["results"] = [
+        {
+            "id": r["id"],
+            "query": r["query"],
+            "topic": r["topic"],
+            "gold_doc_ids": r["gold_doc_ids"],
+            "elapsed_ms": r["elapsed_ms"],
+            **{mk: mv for mk, mv in r["metrics"].items() if mk != "retrieved_stems"},
+        }
+        for r in report["results"]
+    ]
+    (run_dir / "metrics.json").write_text(json.dumps(metrics_report, indent=2))
+
+    # predictions.jsonl — one line per query, includes full retrieved_stems
+    with (run_dir / "predictions.jsonl").open("w") as f:
+        for r in report["results"]:
+            line = {
+                "id": r["id"],
+                "query": r["query"],
+                "topic": r["topic"],
+                "gold_doc_ids": r["gold_doc_ids"],
+                "retrieved_stems": r["metrics"].get("retrieved_stems", []),
+                "gold_found": r["metrics"].get("gold_found", []),
+                "gold_missed": r["metrics"].get("gold_missed", []),
+                "recall@5": r["metrics"].get("recall@5"),
+                "recall@10": r["metrics"].get("recall@10"),
+                "mrr": r["metrics"].get("mrr"),
+                "first_hit_rank": r["metrics"].get("first_hit_rank"),
+                "elapsed_ms": r["elapsed_ms"],
+            }
+            f.write(json.dumps(line) + "\n")
+
+    print(f"  metrics.json     → {run_dir / 'metrics.json'}")
+    print(f"  predictions.jsonl → {run_dir / 'predictions.jsonl'}")
+
+
+# ── Retrieval benchmark ───────────────────────────────────────────────────────
 
 def run_retrieval_benchmark(
     queries_path: Path,
@@ -23,16 +77,21 @@ def run_retrieval_benchmark(
     collection: str = DEFAULT_COLLECTION,
     processed_dir: Path = DEFAULT_PROCESSED_DIR,
     k_retrieve: int = 20,
-    mode: str = "hybrid",      # "hybrid" | "semantic" | "keyword"
+    mode: str = "hybrid",
     use_rerank: bool = False,
-    output_path: Path | None = None,
+    n_queries: int | None = None,
+    output_dir: Path | None = None,
 ) -> dict:
-    """Evaluate retrieval quality only. No LLM calls, runs in ~seconds.
+    """Evaluate retrieval quality. No LLM calls, runs in ~seconds.
 
     mode:
       hybrid   — BM25 + vector with RRF merge  (default)
       semantic — vector / embedding search only
       keyword  — BM25 keyword search only
+
+    Saves into output_dir/<timestamp>_<mode>_k<k>/:
+      metrics.json      aggregate + per-query scores
+      predictions.jsonl per-query retrieved stems
     """
     if mode not in MODES:
         raise ValueError(f"mode must be one of {MODES}, got {mode!r}")
@@ -40,6 +99,8 @@ def run_retrieval_benchmark(
     from eval.retrieval import eval_retrieval
 
     queries = json.loads(queries_path.read_text())
+    if n_queries is not None:
+        queries = queries[:n_queries]
 
     print("Loading vectorstore...", end=" ", flush=True)
     vs = build_vectorstore(chroma_dir, collection)
@@ -56,6 +117,7 @@ def run_retrieval_benchmark(
 
     results = []
     t_total = time.monotonic()
+    timestamp = datetime.utcnow().isoformat() + "Z"
 
     for i, q in enumerate(queries, 1):
         qid = q["id"]
@@ -102,11 +164,12 @@ def run_retrieval_benchmark(
 
     report = {
         "type": "retrieval",
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": timestamp,
         "config": {
             "k_retrieve": k_retrieve,
             "mode": mode,
             "use_rerank": use_rerank,
+            "n_queries": len(queries),
             "collection": collection,
         },
         "aggregate": aggregate,
@@ -114,9 +177,10 @@ def run_retrieval_benchmark(
         "total_seconds": round(total_s, 1),
     }
 
-    if output_path:
-        output_path.write_text(json.dumps(report, indent=2))
-        print(f"\nSaved → {output_path}")
+    if output_dir:
+        run_dir = _run_dir(output_dir, mode, k_retrieve, timestamp)
+        print(f"\nSaving run to {run_dir}/")
+        _save_run(run_dir, report)
 
     return report
 
@@ -145,7 +209,7 @@ def print_retrieval_summary(report: dict) -> None:
     print(f"  RETRIEVAL BENCHMARK  —  {report['timestamp'][:19]}")
     print("=" * 65)
     print(f"  mode={cfg.get('mode')}  rerank={cfg.get('use_rerank')}  "
-          f"k_retrieve={cfg.get('k_retrieve')}")
+          f"k_retrieve={cfg.get('k_retrieve')}  n_queries={cfg.get('n_queries')}")
     print("-" * 65)
     for k in K_VALUES:
         print(f"  recall@{k:<4}    {agg.get(f'recall@{k}', 0):.4f}")
@@ -155,13 +219,12 @@ def print_retrieval_summary(report: dict) -> None:
     print()
     print(f"  MRR             {agg.get('mrr', 0):.4f}")
     print(f"  any_hit@5       {agg.get('any_hit@5', 0):.4f}   "
-          f"({round(agg.get('any_hit@5',0) * len(report['results']))}/{len(report['results'])} queries)")
+          f"({round(agg.get('any_hit@5', 0) * len(report['results']))}/{len(report['results'])} queries)")
     print(f"  any_hit@10      {agg.get('any_hit@10', 0):.4f}")
     print(f"  avg latency     {agg.get('avg_ms')}ms")
     print(f"  total time      {report.get('total_seconds')}s")
     print("=" * 65)
 
-    # Per-topic breakdown
     from collections import defaultdict
     by_topic: dict[str, list] = defaultdict(list)
     for r in report["results"]:
@@ -194,8 +257,8 @@ def compare_retrieval_reports(baseline: dict, current: dict) -> None:
 
     for k in K_VALUES:
         _row(f"recall@{k}", f"recall@{k}")
-    _row("MRR",           "mrr")
-    _row("any_hit@5",     "any_hit@5")
-    _row("precision@5",   "precision@5")
-    _row("avg_ms",        "avg_ms", higher_is_better=False)
+    _row("MRR",          "mrr")
+    _row("any_hit@5",    "any_hit@5")
+    _row("precision@5",  "precision@5")
+    _row("avg_ms",       "avg_ms", higher_is_better=False)
     print("=" * 65)

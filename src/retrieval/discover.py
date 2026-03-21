@@ -3,7 +3,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from ingest.config import KEEP_CONTENT_TYPES, TARGET_DIRS
+from core.config import KEEP_CONTENT_TYPES, TARGET_DIRS
 
 _INCLUDE_RE = re.compile(r"^include::(?:\.\./)*modules/([^[]+\.adoc)")
 _CONTENT_TYPE_RE = re.compile(r"^:_mod-docs-content-type:\s*(\S+)")
