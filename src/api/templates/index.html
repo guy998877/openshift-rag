@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/asciidoc.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     /* Scrollbar styling */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -81,6 +82,33 @@
     #q-answer pre { background: #1e293b; color: #e2e8f0; padding: 0.75rem 1rem; border-radius: 6px; overflow-x: auto; margin: 0.5rem 0; }
     #q-answer pre code { background: none; color: inherit; padding: 0; font-size: 12px; }
     #q-answer blockquote { border-left: 4px solid #f59e0b; padding: 0.4rem 0.75rem; background: #fffbeb; margin: 0.5rem 0; }
+
+    /* Query detail drawer */
+    #qd-drawer.open { transform: translateX(0) !important; }
+    .qd-answer h1  { font-size:1.2rem; font-weight:700; margin:0 0 .75rem; border-bottom:2px solid #e5e7eb; padding-bottom:.4rem; }
+    .qd-answer h2  { font-size:1.05rem; font-weight:600; margin:1rem 0 .4rem; }
+    .qd-answer h3  { font-size:.95rem; font-weight:600; margin:.75rem 0 .3rem; color:#374151; }
+    .qd-answer p   { margin:.4rem 0; }
+    .qd-answer ul, .qd-answer ol { margin:.4rem 0 .4rem 1.4rem; }
+    .qd-answer li  { margin:.2rem 0; }
+    .qd-answer code { background:#f3f4f6; padding:.1rem .3rem; border-radius:3px; font-size:11px; font-family:monospace; }
+    .qd-answer pre  { background:#1e293b; color:#e2e8f0; padding:.75rem 1rem; border-radius:6px; overflow-x:auto; margin:.5rem 0; }
+    .qd-answer pre code { background:none; color:inherit; padding:0; font-size:11px; }
+    .qd-answer blockquote { border-left:4px solid #f59e0b; padding:.4rem .75rem; background:#fffbeb; margin:.5rem 0; }
+    .qd-answer table { border-collapse:collapse; width:100%; margin:.5rem 0; }
+    .qd-answer th, .qd-answer td { border:1px solid #e5e7eb; padding:.3rem .6rem; text-align:left; font-size:12px; }
+    .qd-answer th { background:#f9fafb; font-weight:600; }
+
+    /* Eval tab */
+    .n-btn { transition: background 0.1s; }
+    .eval-score-green { background: #dcfce7; color: #15803d; font-weight: 600; }
+    .eval-score-yellow { background: #fef9c3; color: #a16207; font-weight: 600; }
+    .eval-score-red { background: #fee2e2; color: #b91c1c; font-weight: 600; }
+    .eval-score-none { color: #d1d5db; }
+    .eval-row:hover { background: #f8faff; }
+    .eval-row td { vertical-align: middle; }
+    .metric-card { transition: box-shadow 0.2s; }
+    .metric-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden bg-gray-50 text-gray-800 text-sm">
@@ -93,7 +121,9 @@
       <button id="tab-btn-compare" onclick="switchTab('compare')"
         class="tab-btn px-3 py-1 text-xs rounded-l border border-gray-600 bg-blue-600 text-white">Compare</button>
       <button id="tab-btn-query" onclick="switchTab('query')"
-        class="tab-btn px-3 py-1 text-xs rounded-r border border-gray-600 text-gray-300 hover:bg-gray-700">Query</button>
+        class="tab-btn px-3 py-1 text-xs border border-gray-600 text-gray-300 hover:bg-gray-700">Query</button>
+      <button id="tab-btn-eval" onclick="switchTab('eval')"
+        class="tab-btn px-3 py-1 text-xs rounded-r border border-gray-600 text-gray-300 hover:bg-gray-700">Eval</button>
     </div>
     <div class="ml-auto flex items-center gap-3 text-xs text-gray-400">
       <span id="stat-total"></span>
@@ -258,36 +288,171 @@
     </div>
   </div>
 
+  <!-- ─── Query detail drawer ─── -->
+  <div id="qd-overlay" class="hidden fixed inset-0 z-40" style="background:rgba(0,0,0,0.25)"
+       onclick="closeQueryDetail()"></div>
+  <div id="qd-drawer"
+       class="fixed top-0 right-0 h-full z-50 bg-white shadow-2xl flex flex-col overflow-hidden transition-transform duration-200"
+       style="width:660px; transform:translateX(100%)">
+    <!-- Drawer header -->
+    <div class="flex items-start gap-3 px-5 py-3.5 border-b bg-gray-50 shrink-0">
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-gray-800 truncate" id="qd-title">Query detail</div>
+        <div class="text-xs text-gray-400 mt-0.5" id="qd-subtitle"></div>
+      </div>
+      <button onclick="closeQueryDetail()"
+        class="text-gray-400 hover:text-gray-700 text-xl leading-none mt-0.5 shrink-0">✕</button>
+    </div>
+    <!-- Drawer body (scrollable) -->
+    <div class="flex-1 overflow-auto" id="qd-body"></div>
+  </div>
+
+  <!-- ─── Eval panel (hidden by default) ─── -->
+  <div id="eval-panel" class="hidden flex-1 overflow-auto bg-gray-50">
+    <div class="max-w-6xl mx-auto p-5 flex flex-col gap-4">
+
+      <!-- Config + Run row -->
+      <div class="bg-white border rounded-lg px-5 py-4 flex flex-wrap items-center gap-4">
+        <div class="font-semibold text-gray-700 text-sm">RAG Evaluation</div>
+        <div class="w-px h-5 bg-gray-200"></div>
+
+        <!-- N queries -->
+        <div class="flex items-center gap-2 text-xs text-gray-600">
+          <span class="font-medium">Queries:</span>
+          <div class="flex gap-0.5" id="n-btn-group">
+            <button class="n-btn px-2.5 py-1 rounded-l border text-xs" data-n="5"  onclick="setEvalN(5)">5</button>
+            <button class="n-btn px-2.5 py-1 border text-xs"            data-n="10" onclick="setEvalN(10)">10</button>
+            <button class="n-btn px-2.5 py-1 border text-xs"            data-n="25" onclick="setEvalN(25)">25</button>
+            <button class="n-btn px-2.5 py-1 border text-xs"            data-n="50" onclick="setEvalN(50)">50</button>
+            <button class="n-btn px-2.5 py-1 rounded-r border text-xs"  data-n="100" onclick="setEvalN(100)">100</button>
+          </div>
+        </div>
+
+        <!-- Model -->
+        <label class="flex items-center gap-1.5 text-xs text-gray-600">
+          <span class="font-medium">Model:</span>
+          <select id="eval-model" class="px-2 py-1 border border-gray-300 rounded bg-white text-xs">
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
+            <option value="gpt-4o">gpt-4o</option>
+          </select>
+        </label>
+
+        <!-- k -->
+        <label class="flex items-center gap-1.5 text-xs text-gray-600">
+          <span class="font-medium">k (docs):</span>
+          <input id="eval-k" type="number" value="5" min="1" max="20"
+            class="w-12 px-2 py-1 border border-gray-300 rounded text-xs" />
+        </label>
+
+        <!-- Run -->
+        <button id="eval-run-btn" onclick="runEval()"
+          class="ml-auto px-5 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 disabled:opacity-50 font-medium flex items-center gap-2">
+          <span id="eval-run-icon">▶</span> Run Evaluation
+        </button>
+      </div>
+
+      <!-- Progress bar -->
+      <div id="eval-progress-row" class="hidden bg-white border rounded-lg px-5 py-3">
+        <div class="flex justify-between text-xs text-gray-500 mb-1.5">
+          <span id="eval-progress-label" class="truncate flex-1 mr-4"></span>
+          <span id="eval-progress-pct" class="font-medium text-blue-600 shrink-0"></span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2">
+          <div id="eval-progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Metric cards -->
+      <div class="grid grid-cols-5 gap-3" id="eval-metric-cards">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Charts row -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white border rounded-lg p-4">
+          <div class="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Metric Averages</div>
+          <canvas id="eval-bar-chart"></canvas>
+        </div>
+        <div class="bg-white border rounded-lg p-4">
+          <div class="text-xs font-semibold text-gray-400 mb-3 uppercase tracking-wide">Score Trend per Query</div>
+          <canvas id="eval-line-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Per-query results table -->
+      <div class="bg-white border rounded-lg overflow-hidden">
+        <div class="px-4 py-2.5 border-b bg-gray-50 flex items-center justify-between shrink-0">
+          <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Per-Query Results</div>
+          <div id="eval-table-count" class="text-xs text-gray-400"></div>
+        </div>
+        <div class="overflow-auto" style="max-height:380px">
+          <table class="w-full text-xs border-collapse">
+            <thead class="bg-gray-50 sticky top-0 z-10">
+              <tr>
+                <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">#</th>
+                <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">Query</th>
+                <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">Topic</th>
+                <th class="text-center px-2 py-2 font-medium text-gray-500 border-b" title="Answer Relevance">Rel</th>
+                <th class="text-center px-2 py-2 font-medium text-gray-500 border-b" title="Faithfulness">Faith</th>
+                <th class="text-center px-2 py-2 font-medium text-gray-500 border-b" title="Context Relevance">Ctx</th>
+                <th class="text-center px-2 py-2 font-medium text-gray-500 border-b" title="Recall@5">R@5</th>
+                <th class="text-center px-2 py-2 font-medium text-gray-500 border-b">MRR</th>
+                <th class="text-right px-3 py-2 font-medium text-gray-500 border-b">ms</th>
+                <th class="px-2 py-2 border-b"></th>
+              </tr>
+            </thead>
+            <tbody id="eval-table-body">
+              <tr id="eval-table-placeholder">
+                <td colspan="9" class="text-center py-10 text-gray-400">Run evaluation to see per-query results</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 <script>
   // ─── Tab switching ───────────────────────────────────────────────
   let currentTab = 'compare';
 
   function switchTab(tab) {
     currentTab = tab;
-    const mainLayout = document.getElementById('main-layout');
-    const queryPanel = document.getElementById('query-panel');
-    const compareBtn = document.getElementById('tab-btn-compare');
-    const queryBtn   = document.getElementById('tab-btn-query');
+    const panels = {
+      compare: document.getElementById('main-layout'),
+      query:   document.getElementById('query-panel'),
+      eval:    document.getElementById('eval-panel'),
+    };
+    const btns = {
+      compare: document.getElementById('tab-btn-compare'),
+      query:   document.getElementById('tab-btn-query'),
+      eval:    document.getElementById('tab-btn-eval'),
+    };
 
+    // Hide all panels
+    panels.compare.classList.add('hidden');   panels.compare.classList.remove('flex');
+    panels.query.classList.add('hidden');
+    panels.eval.classList.add('hidden');
+
+    // Deactivate all tab buttons
+    Object.values(btns).forEach(b => {
+      b.classList.remove('bg-blue-600', 'text-white');
+      b.classList.add('text-gray-300');
+    });
+
+    // Show active panel + button
     if (tab === 'compare') {
-      mainLayout.classList.remove('hidden');
-      mainLayout.classList.add('flex');
-      queryPanel.classList.add('hidden');
-      compareBtn.classList.add('bg-blue-600', 'text-white');
-      compareBtn.classList.remove('text-gray-300');
-      queryBtn.classList.remove('bg-blue-600', 'text-white');
-      queryBtn.classList.add('text-gray-300');
-    } else {
-      mainLayout.classList.add('hidden');
-      mainLayout.classList.remove('flex');
-      queryPanel.classList.remove('hidden');
-      compareBtn.classList.remove('bg-blue-600', 'text-white');
-      compareBtn.classList.add('text-gray-300');
-      queryBtn.classList.add('bg-blue-600', 'text-white');
-      queryBtn.classList.remove('text-gray-300');
-      // Focus the input
+      panels.compare.classList.remove('hidden');
+      panels.compare.classList.add('flex');
+    } else if (tab === 'query') {
+      panels.query.classList.remove('hidden');
       setTimeout(() => document.getElementById('q-input').focus(), 50);
+    } else if (tab === 'eval') {
+      panels.eval.classList.remove('hidden');
     }
+    btns[tab].classList.add('bg-blue-600', 'text-white');
+    btns[tab].classList.remove('text-gray-300');
   }
 
   // ─── Query tab logic ─────────────────────────────────────────────
@@ -568,7 +733,434 @@
   document.addEventListener('DOMContentLoaded', () => {
     setTypeFilter('ALL');
     init();
+    initEval();
   });
+
+  // ═══════════════════════════════════════════════════════════════
+  // Eval tab
+  // ═══════════════════════════════════════════════════════════════
+
+  const EVAL_METRICS = [
+    { key: 'answer_relevance',  label: 'Answer Relevance', color: '#3b82f6', colorHex: '#3b82f6' },
+    { key: 'faithfulness',      label: 'Faithfulness',     color: '#8b5cf6', colorHex: '#8b5cf6' },
+    { key: 'context_relevance', label: 'Context Rel.',     color: '#0ea5e9', colorHex: '#0ea5e9' },
+    { key: 'recall_5',          label: 'Recall@5',         color: '#10b981', colorHex: '#10b981' },
+    { key: 'mrr',               label: 'MRR',              color: '#f59e0b', colorHex: '#f59e0b' },
+  ];
+
+  let evalN = 10;
+  let evalRunning = false;
+  let evalResults = [];
+  let evalBarChart = null;
+  let evalLineChart = null;
+
+  function scoreColor(v) {
+    if (v === null || v === undefined) return '#9ca3af';
+    return v >= 0.8 ? '#10b981' : v >= 0.6 ? '#f59e0b' : '#ef4444';
+  }
+
+  function initEval() {
+    // Render metric cards
+    const container = document.getElementById('eval-metric-cards');
+    container.innerHTML = EVAL_METRICS.map(m => `
+      <div class="metric-card bg-white border rounded-lg p-4 flex flex-col gap-1.5">
+        <div class="text-xs text-gray-400 font-medium uppercase tracking-wide truncate">${m.label}</div>
+        <div class="text-3xl font-bold text-gray-700" id="eval-card-val-${m.key}">—</div>
+        <div class="w-full bg-gray-100 rounded-full h-1.5">
+          <div id="eval-card-bar-${m.key}" class="h-1.5 rounded-full transition-all duration-500"
+               style="width:0%; background:${m.color}"></div>
+        </div>
+        <div class="text-xs text-gray-400" id="eval-card-n-${m.key}">—</div>
+      </div>`).join('');
+
+    setEvalN(10);
+    initEvalCharts();
+  }
+
+  function setEvalN(n) {
+    evalN = n;
+    document.querySelectorAll('.n-btn').forEach(btn => {
+      const active = parseInt(btn.dataset.n) === n;
+      btn.className = btn.className.replace(/bg-blue-500|text-white|border-blue-500|border-gray-300|text-gray-600/g, '');
+      if (active) {
+        btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+        btn.classList.remove('text-gray-600', 'border-gray-300');
+      } else {
+        btn.classList.add('border-gray-300', 'text-gray-600');
+        btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+      }
+    });
+  }
+
+  function initEvalCharts() {
+    // Bar chart – metric averages (horizontal)
+    const barCtx = document.getElementById('eval-bar-chart').getContext('2d');
+    evalBarChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: EVAL_METRICS.map(m => m.label),
+        datasets: [{
+          data: [0, 0, 0, 0, 0],
+          backgroundColor: EVAL_METRICS.map(m => m.color + '33'),
+          borderColor: EVAL_METRICS.map(m => m.color),
+          borderWidth: 1.5,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: {
+          label: ctx => ` ${ctx.parsed.x.toFixed(3)}`
+        }}},
+        scales: {
+          x: { min: 0, max: 1, grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 }, stepSize: 0.2 } },
+          y: { ticks: { font: { size: 10 } } }
+        },
+        animation: { duration: 400 }
+      }
+    });
+
+    // Line chart – per-query rolling scores
+    const lineCtx = document.getElementById('eval-line-chart').getContext('2d');
+    evalLineChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          { label: 'Answer Rel', data: [], borderColor: '#3b82f6', backgroundColor: '#3b82f610', tension: 0.3, pointRadius: 2.5, borderWidth: 1.5 },
+          { label: 'Faithfulness', data: [], borderColor: '#8b5cf6', backgroundColor: '#8b5cf610', tension: 0.3, pointRadius: 2.5, borderWidth: 1.5 },
+          { label: 'Ctx Rel', data: [], borderColor: '#0ea5e9', backgroundColor: '#0ea5e910', tension: 0.3, pointRadius: 2.5, borderWidth: 1.5 },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { font: { size: 10 }, boxWidth: 10, padding: 10 } } },
+        scales: {
+          x: { ticks: { font: { size: 9 }, maxTicksLimit: 12 }, grid: { color: '#f3f4f6' } },
+          y: { min: -0.05, max: 1.05, ticks: { font: { size: 10 }, stepSize: 0.2 }, grid: { color: '#f3f4f6' } }
+        },
+        animation: { duration: 200 }
+      }
+    });
+  }
+
+  function updateEvalCards() {
+    EVAL_METRICS.forEach(m => {
+      const vals = evalResults.map(r => r[m.key]).filter(v => v !== null && v !== undefined);
+      const avg = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+      const el_val = document.getElementById('eval-card-val-' + m.key);
+      const el_bar = document.getElementById('eval-card-bar-' + m.key);
+      const el_n   = document.getElementById('eval-card-n-'   + m.key);
+      if (avg !== null) {
+        const c = scoreColor(avg);
+        if (el_val) { el_val.textContent = avg.toFixed(3); el_val.style.color = c; }
+        if (el_bar) { el_bar.style.width = (avg * 100) + '%'; el_bar.style.background = c; }
+        if (el_n)   el_n.textContent = `${vals.length} queries`;
+      }
+    });
+  }
+
+  function updateEvalCharts() {
+    if (!evalBarChart || !evalLineChart || evalResults.length === 0) return;
+
+    // Bar chart
+    const avgs = EVAL_METRICS.map(m => {
+      const vals = evalResults.map(r => r[m.key]).filter(v => v !== null && v !== undefined);
+      return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+    });
+    evalBarChart.data.datasets[0].data = avgs;
+    evalBarChart.data.datasets[0].backgroundColor = avgs.map(v => scoreColor(v) + '33');
+    evalBarChart.data.datasets[0].borderColor = avgs.map(v => scoreColor(v));
+    evalBarChart.update('none');
+
+    // Line chart
+    evalLineChart.data.labels = evalResults.map((_, i) => i + 1);
+    evalLineChart.data.datasets[0].data = evalResults.map(r => r.answer_relevance);
+    evalLineChart.data.datasets[1].data = evalResults.map(r => r.faithfulness);
+    evalLineChart.data.datasets[2].data = evalResults.map(r => r.context_relevance);
+    evalLineChart.update('none');
+  }
+
+  function scoreCell(v, explanation) {
+    if (v === null || v === undefined) {
+      return `<td class="text-center px-2 py-2 eval-score-none">—</td>`;
+    }
+    const cls = v >= 0.8 ? 'eval-score-green' : v >= 0.5 ? 'eval-score-yellow' : 'eval-score-red';
+    const title = explanation ? ` title="${escapeHtml(explanation)}"` : '';
+    return `<td class="text-center px-2 py-2 rounded ${cls}"${title}>${v.toFixed(2)}</td>`;
+  }
+
+  function addEvalTableRow(r) {
+    const tbody = document.getElementById('eval-table-body');
+    const ph = document.getElementById('eval-table-placeholder');
+    if (ph) ph.remove();
+
+    const idx = evalResults.length - 1;   // index into evalResults for this row
+    const tr = document.createElement('tr');
+    tr.className = 'eval-row border-t border-gray-100 cursor-pointer';
+    tr.title = 'Click to inspect this query';
+    tr.onclick = () => showQueryDetail(idx);
+    tr.innerHTML = `
+      <td class="px-3 py-2 text-gray-400 shrink-0">${r.i}</td>
+      <td class="px-3 py-2" style="max-width:240px">
+        <div class="truncate text-gray-700 font-medium">${escapeHtml(r.query)}</div>
+        ${r.rewritten_query ? `<div class="truncate text-gray-400 text-xs">↳ ${escapeHtml(r.rewritten_query)}</div>` : ''}
+      </td>
+      <td class="px-3 py-2 text-gray-400 truncate" style="max-width:100px">${escapeHtml(r.topic)}</td>
+      ${scoreCell(r.answer_relevance, r.ar_explanation)}
+      ${scoreCell(r.faithfulness, r.faith_explanation)}
+      ${scoreCell(r.context_relevance, r.ctx_explanation)}
+      ${scoreCell(r.recall_5, null)}
+      ${scoreCell(r.mrr, null)}
+      <td class="text-right px-3 py-2 text-gray-400">${r.elapsed_ms}</td>
+      <td class="px-2 py-2 text-blue-400 text-xs shrink-0">›</td>
+    `;
+    tbody.appendChild(tr);
+    tbody.parentElement.scrollTop = tbody.parentElement.scrollHeight;
+  }
+
+  // ─── Query detail drawer ──────────────────────────────────────────
+  function showQueryDetail(idx) {
+    const r = evalResults[idx];
+    if (!r) return;
+
+    document.getElementById('qd-title').textContent = `#${r.i} — ${r.id}`;
+    document.getElementById('qd-subtitle').textContent = r.topic || '';
+
+    const sc = (v) => v !== null && v !== undefined ? v.toFixed(2) : '—';
+    const scColor = (v) => v === null || v === undefined ? '#9ca3af' : v >= 0.8 ? '#10b981' : v >= 0.5 ? '#f59e0b' : '#ef4444';
+    const scIcon  = (v) => v === null || v === undefined ? '·' : v >= 0.8 ? '✓' : v >= 0.5 ? '◑' : '✗';
+
+    const scoreBlock = (label, v, expl) => `
+      <div class="flex items-start gap-3 py-3 border-b last:border-0">
+        <span class="text-base mt-0.5 shrink-0" style="color:${scColor(v)}">${scIcon(v)}</span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-medium text-gray-700 text-xs">${label}</span>
+            <span class="text-base font-bold tabular-nums shrink-0" style="color:${scColor(v)}">${sc(v)}</span>
+          </div>
+          ${expl ? `<div class="text-xs text-gray-400 mt-0.5 leading-snug italic">${escapeHtml(expl)}</div>` : ''}
+        </div>
+      </div>`;
+
+    // Pipeline timing row
+    const log = r.pipeline_log || {};
+    const timingKeys = ['rewrite_ms','retrieval_ms','rerank_ms','generate_ms'];
+    const timingLabels = { rewrite_ms:'Rewrite', retrieval_ms:'Retrieve', rerank_ms:'Rerank', generate_ms:'Generate' };
+    const timingHtml = timingKeys
+      .filter(k => log[k] !== undefined)
+      .map(k => `<div class="flex flex-col items-center gap-0.5">
+          <span class="text-xs font-mono font-semibold text-gray-700">${log[k]}ms</span>
+          <span class="text-xs text-gray-400">${timingLabels[k]}</span>
+        </div>`)
+      .join(`<div class="text-gray-200 self-center">→</div>`);
+
+    // Sources list
+    const typeColor = { PROCEDURE:'bg-blue-100 text-blue-700', CONCEPT:'bg-green-100 text-green-700' };
+    const sourcesHtml = (r.sources || []).map((s, si) => {
+      const isGoldFound  = (r.gold_found  || []).includes(s.id);
+      const isGoldMissed = (r.gold_doc_ids || []).includes(s.id);  // shouldn't be missed if in sources
+      const border = isGoldFound ? 'border-l-4 border-green-400' : 'border-l-4 border-transparent';
+      const ct = s.content_type || '?';
+      const color = typeColor[ct] || 'bg-gray-100 text-gray-600';
+      const abbr = ct === 'PROCEDURE' ? 'PROC' : ct === 'CONCEPT' ? 'CONC' : ct;
+      return `<div class="flex items-center gap-2 px-3 py-2 border-b last:border-0 ${border} hover:bg-gray-50">
+        <span class="text-xs text-gray-400 w-4 shrink-0">${si+1}</span>
+        <span class="px-1.5 py-0.5 rounded text-xs font-medium ${color} shrink-0">${abbr}</span>
+        <div class="flex-1 min-w-0">
+          <div class="truncate text-xs font-medium text-gray-700" title="${escapeHtml(s.title||s.id)}">${escapeHtml(s.title||s.id)}</div>
+          <div class="truncate text-xs text-gray-400">${escapeHtml(s.source_dir||'')}</div>
+        </div>
+        ${isGoldFound ? '<span class="text-xs text-green-600 font-medium shrink-0">gold ✓</span>' : ''}
+        ${s.id ? `<button onclick="viewSource('${s.id}')" class="text-xs text-blue-500 hover:underline shrink-0">View</button>` : ''}
+      </div>`;
+    }).join('');
+
+    // Missed gold docs
+    const missedHtml = (r.gold_missed || []).length > 0
+      ? `<div class="px-4 py-2 bg-red-50 text-xs text-red-600 border-t">
+           <span class="font-medium">Missed gold docs:</span> ${r.gold_missed.join(', ')}
+         </div>`
+      : '';
+
+    document.getElementById('qd-body').innerHTML = `
+      <!-- Query block -->
+      <div class="px-5 py-4 border-b">
+        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">User Query</div>
+        <div class="text-sm font-medium text-gray-800 leading-relaxed">${escapeHtml(r.query)}</div>
+        ${r.rewritten_query ? `
+          <div class="mt-2 flex items-start gap-1.5 text-xs text-gray-400">
+            <span class="shrink-0 mt-0.5">↳ rewritten:</span>
+            <span class="italic text-gray-500">${escapeHtml(r.rewritten_query)}</span>
+          </div>` : ''}
+      </div>
+
+      <!-- Scores block -->
+      <div class="px-5 py-3 border-b">
+        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Evaluation Scores</div>
+        ${scoreBlock('Answer Relevance', r.answer_relevance, r.ar_explanation)}
+        ${scoreBlock('Faithfulness', r.faithfulness, r.faith_explanation)}
+        ${scoreBlock('Context Relevance', r.context_relevance, r.ctx_explanation)}
+        <div class="flex gap-6 pt-3">
+          <div>
+            <div class="text-xs text-gray-400">Recall@5</div>
+            <div class="text-lg font-bold tabular-nums" style="color:${scColor(r.recall_5)}">${sc(r.recall_5)}</div>
+          </div>
+          <div>
+            <div class="text-xs text-gray-400">MRR</div>
+            <div class="text-lg font-bold tabular-nums" style="color:${scColor(r.mrr)}">${sc(r.mrr)}</div>
+          </div>
+          <div class="ml-auto text-right">
+            <div class="text-xs text-gray-400">Total latency</div>
+            <div class="text-lg font-bold text-gray-600 tabular-nums">${r.elapsed_ms}ms</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Answer block -->
+      <div class="px-5 py-4 border-b">
+        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Generated Answer</div>
+        <div class="qd-answer text-sm text-gray-800 leading-relaxed">
+          ${r.answer ? marked.parse(r.answer) : '<span class="text-gray-400 italic">No answer generated</span>'}
+        </div>
+      </div>
+
+      <!-- Sources block -->
+      <div class="border-b">
+        <div class="px-5 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">
+          Retrieved Sources (${(r.sources||[]).length})
+          ${(r.gold_found||[]).length > 0 ? `<span class="ml-2 text-green-600 normal-case font-normal">${r.gold_found.length} gold found</span>` : ''}
+        </div>
+        ${sourcesHtml || '<div class="px-5 pb-3 text-xs text-gray-400">No sources</div>'}
+        ${missedHtml}
+      </div>
+
+      <!-- Pipeline timing -->
+      ${timingHtml ? `
+        <div class="px-5 py-4">
+          <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Pipeline Timing</div>
+          <div class="flex items-center gap-3 flex-wrap">${timingHtml}</div>
+        </div>` : ''}
+    `;
+
+    document.getElementById('qd-overlay').classList.remove('hidden');
+    document.getElementById('qd-drawer').classList.add('open');
+  }
+
+  function closeQueryDetail() {
+    document.getElementById('qd-overlay').classList.add('hidden');
+    document.getElementById('qd-drawer').classList.remove('open');
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQueryDetail(); });
+
+  async function runEval() {
+    if (evalRunning) return;
+    evalRunning = true;
+    evalResults = [];
+
+    const runBtn = document.getElementById('eval-run-btn');
+    runBtn.disabled = true;
+    document.getElementById('eval-run-icon').textContent = '⏳';
+    document.getElementById('eval-progress-row').classList.remove('hidden');
+    document.getElementById('eval-progress-bar').style.width = '0%';
+    document.getElementById('eval-progress-bar').className = 'bg-blue-500 h-2 rounded-full transition-all duration-300';
+    document.getElementById('eval-progress-label').textContent = 'Initialising pipeline…';
+    document.getElementById('eval-progress-pct').textContent = '';
+    document.getElementById('eval-table-count').textContent = '';
+
+    // Reset table
+    document.getElementById('eval-table-body').innerHTML =
+      '<tr id="eval-table-placeholder"><td colspan="9" class="text-center py-8 text-gray-400 text-xs">Running…</td></tr>';
+
+    // Reset cards
+    EVAL_METRICS.forEach(m => {
+      const ev = document.getElementById('eval-card-val-' + m.key);
+      const eb = document.getElementById('eval-card-bar-' + m.key);
+      const en = document.getElementById('eval-card-n-'   + m.key);
+      if (ev) { ev.textContent = '—'; ev.style.color = '#374151'; }
+      if (eb) { eb.style.width = '0%'; eb.style.background = m.color; }
+      if (en) en.textContent = '—';
+    });
+
+    // Reset charts
+    if (evalBarChart) { evalBarChart.data.datasets[0].data = [0,0,0,0,0]; evalBarChart.update('none'); }
+    if (evalLineChart) {
+      evalLineChart.data.labels = [];
+      evalLineChart.data.datasets.forEach(d => d.data = []);
+      evalLineChart.update('none');
+    }
+
+    const body = {
+      n_queries: evalN,
+      model: document.getElementById('eval-model').value,
+      k: parseInt(document.getElementById('eval-k').value) || 5,
+    };
+
+    try {
+      const res = await fetch('/api/eval', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(errData.error || res.statusText);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          let data;
+          try { data = JSON.parse(line.slice(6)); } catch { continue; }
+
+          if (data.type === 'result') {
+            evalResults.push(data);
+            const pct = Math.round(data.i / data.n * 100);
+            document.getElementById('eval-progress-bar').style.width = pct + '%';
+            document.getElementById('eval-progress-label').textContent =
+              `[${data.i}/${data.n}] ${data.id}`;
+            document.getElementById('eval-progress-pct').textContent = pct + '%';
+            document.getElementById('eval-table-count').textContent = `${data.i} / ${data.n}`;
+            updateEvalCards();
+            updateEvalCharts();
+            addEvalTableRow(data);
+
+          } else if (data.type === 'error') {
+            throw new Error(data.message);
+          }
+        }
+      }
+
+      document.getElementById('eval-progress-label').textContent =
+        `Done — ${evalResults.length} queries evaluated`;
+      document.getElementById('eval-run-icon').textContent = '✓';
+
+    } catch (e) {
+      document.getElementById('eval-progress-label').textContent = '❌ ' + e.message;
+      document.getElementById('eval-progress-bar').className = 'bg-red-500 h-2 rounded-full';
+      document.getElementById('eval-run-icon').textContent = '▶';
+    } finally {
+      evalRunning = false;
+      document.getElementById('eval-run-btn').disabled = false;
+      if (document.getElementById('eval-run-icon').textContent === '⏳') {
+        document.getElementById('eval-run-icon').textContent = '▶';
+      }
+    }
+  }
 </script>
 </body>
 </html>
