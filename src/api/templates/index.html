@@ -123,7 +123,11 @@
       <button id="tab-btn-query" onclick="switchTab('query')"
         class="tab-btn px-3 py-1 text-xs border border-gray-600 text-gray-300 hover:bg-gray-700">Query</button>
       <button id="tab-btn-eval" onclick="switchTab('eval')"
-        class="tab-btn px-3 py-1 text-xs rounded-r border border-gray-600 text-gray-300 hover:bg-gray-700">Eval</button>
+        class="tab-btn px-3 py-1 text-xs border border-gray-600 text-gray-300 hover:bg-gray-700">Eval</button>
+      <button id="tab-btn-experiment" onclick="switchTab('experiment')"
+        class="tab-btn px-3 py-1 text-xs border border-gray-600 text-gray-300 hover:bg-gray-700">Experiment</button>
+      <button id="tab-btn-pipeline" onclick="switchTab('pipeline')"
+        class="tab-btn px-3 py-1 text-xs rounded-r border border-gray-600 text-gray-300 hover:bg-gray-700">Pipeline</button>
     </div>
     <div class="ml-auto flex items-center gap-3 text-xs text-gray-400">
       <span id="stat-total"></span>
@@ -307,9 +311,400 @@
     <div class="flex-1 overflow-auto" id="qd-body"></div>
   </div>
 
+  <!-- ─── Experiment panel ─── -->
+  <div id="experiment-panel" class="hidden flex-1 overflow-auto bg-gray-50">
+    <div class="max-w-6xl mx-auto p-5 flex flex-col gap-4">
+
+      <!-- Header + n_queries + run -->
+      <div class="bg-white border rounded-lg px-5 py-4 flex flex-wrap items-center gap-4">
+        <div class="font-semibold text-gray-700 text-sm">A/B Experiment</div>
+        <div class="w-px h-5 bg-gray-200"></div>
+        <div class="flex items-center gap-2 text-xs text-gray-600">
+          <span class="font-medium">Queries:</span>
+          <div class="flex gap-0.5" id="exp-n-btn-group">
+            <button class="exp-n-btn px-2.5 py-1 rounded-l border text-xs" data-n="5"   onclick="setExpN(5)">5</button>
+            <button class="exp-n-btn px-2.5 py-1 border text-xs"           data-n="10"  onclick="setExpN(10)">10</button>
+            <button class="exp-n-btn px-2.5 py-1 border text-xs"           data-n="25"  onclick="setExpN(25)">25</button>
+            <button class="exp-n-btn px-2.5 py-1 border text-xs"           data-n="50"  onclick="setExpN(50)">50</button>
+            <button class="exp-n-btn px-2.5 py-1 rounded-r border text-xs" data-n="100" onclick="setExpN(100)">100</button>
+          </div>
+        </div>
+        <button id="exp-run-btn" onclick="runExperiment()"
+          class="ml-auto px-5 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 disabled:opacity-50 font-medium flex items-center gap-2">
+          <span id="exp-run-icon">▶</span> Run Experiment
+        </button>
+      </div>
+
+      <!-- Config panels -->
+      <div class="grid grid-cols-2 gap-4">
+
+        <!-- Control -->
+        <div class="bg-white border-2 border-gray-300 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></span>
+            <span class="font-bold text-gray-700">Control</span>
+            <span class="text-xs text-gray-400 ml-1">baseline</span>
+          </div>
+          <div class="flex flex-col gap-3 text-xs text-gray-600" id="ctrl-config">
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Model</span>
+              <select id="ctrl-model" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="gpt-4o-mini">gpt-4o-mini</option>
+                <option value="gpt-4o">gpt-4o</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">k (final docs)</span>
+              <input id="ctrl-k" type="number" value="5" min="1" max="20"
+                class="flex-1 px-2 py-1.5 border border-gray-300 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Retrieval mode</span>
+              <select id="ctrl-mode" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="hybrid">hybrid (BM25 + vector, RRF)</option>
+                <option value="semantic">semantic (vector only)</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Reranking</span>
+              <select id="ctrl-rerank" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="true">on — cross-encoder/ms-marco-MiniLM-L-6</option>
+                <option value="false">off</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Query rewrite</span>
+              <select id="ctrl-rewrite" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="true">on — gpt-4o-mini expands query</option>
+                <option value="false">off — use raw question</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <!-- Experiment -->
+        <div class="bg-white border-2 border-indigo-300 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-3 h-3 rounded-full bg-indigo-500 shrink-0"></span>
+            <span class="font-bold text-gray-700">Experiment</span>
+            <span class="text-xs text-gray-400 ml-1">variant</span>
+            <button onclick="copyCtrlToExp()"
+              class="ml-auto text-xs text-indigo-500 hover:underline">↩ copy from control</button>
+          </div>
+          <div class="flex flex-col gap-3 text-xs text-gray-600" id="exp-config">
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Model</span>
+              <select id="exp-model" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="gpt-4o-mini">gpt-4o-mini</option>
+                <option value="gpt-4o">gpt-4o</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">k (final docs)</span>
+              <input id="exp-k" type="number" value="5" min="1" max="20"
+                class="flex-1 px-2 py-1.5 border border-gray-300 rounded" />
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Retrieval mode</span>
+              <select id="exp-mode" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="hybrid">hybrid (BM25 + vector, RRF)</option>
+                <option value="semantic">semantic (vector only)</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Reranking</span>
+              <select id="exp-rerank" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="true">on — cross-encoder/ms-marco-MiniLM-L-6</option>
+                <option value="false">off</option>
+              </select>
+            </label>
+            <label class="flex items-center justify-between gap-2">
+              <span class="font-medium w-28">Query rewrite</span>
+              <select id="exp-rewrite" class="flex-1 px-2 py-1.5 border border-gray-300 rounded bg-white">
+                <option value="true">on — gpt-4o-mini expands query</option>
+                <option value="false">off — use raw question</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+      </div><!-- end config grid -->
+
+      <!-- Progress (hidden until running) -->
+      <div id="exp-progress-row" class="hidden bg-white border rounded-lg p-4 flex flex-col gap-3">
+        <div>
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="text-gray-500 font-medium flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-gray-400 inline-block"></span> Control
+            </span>
+            <span id="exp-ctrl-pct" class="text-gray-400"></span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2">
+            <div id="exp-ctrl-bar" class="bg-gray-400 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+          </div>
+          <div class="text-xs text-gray-400 mt-0.5 truncate" id="exp-ctrl-label"></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="text-gray-500 font-medium flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> Experiment
+            </span>
+            <span id="exp-exp-pct" class="text-gray-400"></span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2">
+            <div id="exp-exp-bar" class="bg-indigo-500 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+          </div>
+          <div class="text-xs text-gray-400 mt-0.5 truncate" id="exp-exp-label">Waiting for control to finish…</div>
+        </div>
+      </div>
+
+      <!-- Results (hidden until done) -->
+      <div id="exp-results" class="hidden flex flex-col gap-4">
+
+        <!-- Verdict banner -->
+        <div id="exp-verdict" class="rounded-lg px-5 py-3 text-sm font-semibold"></div>
+
+        <!-- Side-by-side metric cards -->
+        <div class="grid grid-cols-5 gap-3" id="exp-metric-cards"></div>
+
+        <!-- Chart + delta table -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white border rounded-xl p-4">
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Control vs Experiment</div>
+            <canvas id="exp-compare-chart"></canvas>
+          </div>
+          <div class="bg-white border rounded-xl p-4">
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Delta (Experiment − Control)</div>
+            <table class="w-full text-xs" id="exp-delta-table">
+              <thead class="border-b">
+                <tr>
+                  <th class="text-left py-1.5 text-gray-400 font-medium">Metric</th>
+                  <th class="text-right py-1.5 text-gray-400 font-medium">Control</th>
+                  <th class="text-right py-1.5 text-gray-400 font-medium">Experiment</th>
+                  <th class="text-right py-1.5 text-gray-400 font-medium">Δ</th>
+                </tr>
+              </thead>
+              <tbody id="exp-delta-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Per-query comparison table -->
+        <div class="bg-white border rounded-xl overflow-hidden">
+          <div class="px-4 py-2.5 border-b bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Per-Query Comparison — click any row to inspect
+          </div>
+          <div class="overflow-auto" style="max-height:420px">
+            <table class="w-full text-xs border-collapse">
+              <thead class="bg-gray-50 sticky top-0 z-10">
+                <tr>
+                  <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">#</th>
+                  <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">Query</th>
+                  <th class="text-left px-3 py-2 font-medium text-gray-500 border-b">Topic</th>
+                  <th colspan="4" class="text-center px-2 py-2 font-medium text-gray-400 border-b border-r bg-gray-100">Control</th>
+                  <th colspan="4" class="text-center px-2 py-2 font-medium text-indigo-400 border-b bg-indigo-50">Experiment</th>
+                  <th class="text-center px-2 py-2 font-medium text-gray-400 border-b">Δ avg</th>
+                </tr>
+                <tr class="text-gray-400 border-b">
+                  <th colspan="3" class="py-1 border-b"></th>
+                  <th class="text-center px-1 py-1 border-b bg-gray-100 text-xs font-normal">Rel</th>
+                  <th class="text-center px-1 py-1 border-b bg-gray-100 text-xs font-normal">Faith</th>
+                  <th class="text-center px-1 py-1 border-b bg-gray-100 text-xs font-normal">Ctx</th>
+                  <th class="text-center px-1 py-1 border-b bg-gray-100 text-xs font-normal border-r">R@5</th>
+                  <th class="text-center px-1 py-1 border-b bg-indigo-50 text-xs font-normal">Rel</th>
+                  <th class="text-center px-1 py-1 border-b bg-indigo-50 text-xs font-normal">Faith</th>
+                  <th class="text-center px-1 py-1 border-b bg-indigo-50 text-xs font-normal">Ctx</th>
+                  <th class="text-center px-1 py-1 border-b bg-indigo-50 text-xs font-normal">R@5</th>
+                  <th class="border-b py-1"></th>
+                </tr>
+              </thead>
+              <tbody id="exp-table-body">
+                <tr><td colspan="12" class="text-center py-8 text-gray-400">Run experiment to see per-query results</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- end exp-results -->
+
+    </div>
+  </div>
+
+  <!-- ─── Pipeline panel ─── -->
+  <div id="pipeline-panel" class="hidden flex-1 overflow-auto bg-gray-50">
+    <div class="max-w-5xl mx-auto p-6 flex flex-col gap-6">
+
+      <!-- Header -->
+      <div>
+        <h2 class="text-lg font-bold text-gray-800">RAG Pipeline Architecture</h2>
+        <p class="text-xs text-gray-400 mt-0.5">Click any step to see implementation details and tuning advice</p>
+      </div>
+
+      <!-- Flow diagram -->
+      <div class="bg-white border rounded-xl p-6 overflow-x-auto">
+
+        <!-- Data sources row (above retrieve) -->
+        <div class="flex items-end mb-1" style="padding-left:calc(2*(160px + 32px) + 16px)">
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center gap-1">
+              <div class="text-xs text-center text-gray-400 px-2 py-1 rounded border border-dashed border-gray-300 bg-gray-50 w-36">
+                <div class="font-semibold text-gray-500">ChromaDB</div>
+                <div class="text-gray-400">~8,394 modules</div>
+                <div class="text-gray-400">text-embedding-3-small</div>
+              </div>
+              <div class="w-px h-4 bg-gray-300"></div>
+            </div>
+            <div class="flex flex-col items-center gap-1">
+              <div class="text-xs text-center text-gray-400 px-2 py-1 rounded border border-dashed border-gray-300 bg-gray-50 w-36">
+                <div class="font-semibold text-gray-500">BM25 Index</div>
+                <div class="text-gray-400">~8,394 modules</div>
+                <div class="text-gray-400">BM25Okapi, rank_bm25</div>
+              </div>
+              <div class="w-px h-4 bg-gray-300"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main flow row -->
+        <div class="flex items-center gap-0" id="pipeline-flow-row">
+          <!-- User query -->
+          <div class="flex flex-col items-center shrink-0">
+            <div class="w-20 text-center">
+              <div class="text-2xl mb-1">💬</div>
+              <div class="text-xs font-semibold text-gray-600">User Query</div>
+            </div>
+          </div>
+          <!-- Arrow -->
+          <div class="flex items-center shrink-0 mx-1 text-gray-300 text-lg">→</div>
+
+          <!-- Step 1: Rewrite -->
+          <div class="pipeline-step shrink-0 cursor-pointer rounded-lg border-2 p-3 w-36 transition-all hover:shadow-md"
+               data-step="rewrite" onclick="selectPipelineStep('rewrite')"
+               style="border-color:#8b5cf6; background:#faf5ff">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <span class="text-xs font-bold text-white px-1.5 py-0.5 rounded" style="background:#8b5cf6">1</span>
+              <span class="text-xs font-bold" style="color:#6d28d9">Rewrite</span>
+            </div>
+            <div class="text-xs text-gray-500 leading-snug">gpt-4o-mini</div>
+            <div class="text-xs text-gray-400">temp=0</div>
+            <div class="text-xs text-gray-400 mt-1 font-mono">rewrite.py</div>
+          </div>
+          <!-- Arrow -->
+          <div class="flex items-center shrink-0 mx-1 text-gray-300 text-lg">→</div>
+
+          <!-- Step 2: Retrieve -->
+          <div class="pipeline-step shrink-0 cursor-pointer rounded-lg border-2 p-3 w-36 transition-all hover:shadow-md"
+               data-step="retrieve" onclick="selectPipelineStep('retrieve')"
+               style="border-color:#0ea5e9; background:#f0f9ff">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <span class="text-xs font-bold text-white px-1.5 py-0.5 rounded" style="background:#0ea5e9">2</span>
+              <span class="text-xs font-bold" style="color:#0369a1">Retrieve</span>
+            </div>
+            <div class="text-xs text-gray-500 leading-snug">Hybrid RRF</div>
+            <div class="text-xs text-gray-400">k=50 each</div>
+            <div class="text-xs text-gray-400">→ top 50</div>
+            <div class="text-xs text-gray-400 mt-1 font-mono">hybrid.py</div>
+          </div>
+          <!-- Arrow -->
+          <div class="flex items-center shrink-0 mx-1 text-gray-300 text-lg">→</div>
+
+          <!-- Step 3: Rerank -->
+          <div class="pipeline-step shrink-0 cursor-pointer rounded-lg border-2 p-3 w-36 transition-all hover:shadow-md"
+               data-step="rerank" onclick="selectPipelineStep('rerank')"
+               style="border-color:#f59e0b; background:#fffbeb">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <span class="text-xs font-bold text-white px-1.5 py-0.5 rounded" style="background:#f59e0b">3</span>
+              <span class="text-xs font-bold" style="color:#b45309">Rerank</span>
+            </div>
+            <div class="text-xs text-gray-500 leading-snug">MiniLM-L-6</div>
+            <div class="text-xs text-gray-400">cross-encoder</div>
+            <div class="text-xs text-gray-400">top n×2 → top n</div>
+            <div class="text-xs text-gray-400 mt-1 font-mono">rerank.py</div>
+          </div>
+          <!-- Arrow -->
+          <div class="flex items-center shrink-0 mx-1 text-gray-300 text-lg">→</div>
+
+          <!-- Step 4: Generate -->
+          <div class="pipeline-step shrink-0 cursor-pointer rounded-lg border-2 p-3 w-36 transition-all hover:shadow-md"
+               data-step="generate" onclick="selectPipelineStep('generate')"
+               style="border-color:#10b981; background:#f0fdf4">
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <span class="text-xs font-bold text-white px-1.5 py-0.5 rounded" style="background:#10b981">4</span>
+              <span class="text-xs font-bold" style="color:#047857">Generate</span>
+            </div>
+            <div class="text-xs text-gray-500 leading-snug">gpt-4o-mini</div>
+            <div class="text-xs text-gray-400">temp=0</div>
+            <div class="text-xs text-gray-400">n docs context</div>
+            <div class="text-xs text-gray-400 mt-1 font-mono">pipeline.py</div>
+          </div>
+          <!-- Arrow -->
+          <div class="flex items-center shrink-0 mx-1 text-gray-300 text-lg">→</div>
+
+          <!-- Answer -->
+          <div class="flex flex-col items-center shrink-0">
+            <div class="w-20 text-center">
+              <div class="text-2xl mb-1">✅</div>
+              <div class="text-xs font-semibold text-gray-600">Answer</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional grounding note -->
+        <div class="mt-4 flex items-center gap-2 text-xs text-gray-400">
+          <span class="px-2 py-0.5 rounded border border-dashed border-gray-300 bg-gray-50 font-medium text-gray-500">Optional: Grounding check</span>
+          <span>— pass <code class="bg-gray-100 px-1 rounded font-mono">ground=True</code> to run_pipeline() to verify the answer against sources after generation</span>
+        </div>
+      </div>
+
+      <!-- Step detail panel (shown on click) -->
+      <div id="pipeline-detail" class="hidden bg-white border rounded-xl overflow-hidden">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Tuning guide -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-700 mb-3">Tuning Reference — all levers sorted by impact</h3>
+        <div class="bg-white border rounded-xl overflow-hidden">
+          <table class="w-full text-xs">
+            <thead class="bg-gray-50 border-b">
+              <tr>
+                <th class="text-left px-4 py-2.5 font-semibold text-gray-500">Change</th>
+                <th class="text-left px-4 py-2.5 font-semibold text-gray-500">File · Location</th>
+                <th class="text-left px-4 py-2.5 font-semibold text-gray-500">Expected Effect</th>
+                <th class="text-center px-3 py-2.5 font-semibold text-gray-500">Impact</th>
+              </tr>
+            </thead>
+            <tbody id="tuning-table-body"><!-- injected by JS --></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ─── Eval panel (hidden by default) ─── -->
   <div id="eval-panel" class="hidden flex-1 overflow-auto bg-gray-50">
     <div class="max-w-6xl mx-auto p-5 flex flex-col gap-4">
+
+      <!-- Loaded-run banner (hidden by default) -->
+      <div id="loaded-run-banner" class="hidden bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 flex items-center gap-3">
+        <span class="text-xs text-blue-500">📂</span>
+        <span class="text-xs text-blue-700 flex-1" id="loaded-run-label"></span>
+        <button onclick="clearLoadedRun()" class="text-xs text-blue-400 hover:text-blue-700 shrink-0">✕ dismiss</button>
+      </div>
+
+      <!-- Saved runs history -->
+      <div class="bg-white border rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2.5">
+          <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Saved Runs <span id="runs-badge" class="font-normal normal-case text-gray-400"></span>
+          </div>
+          <button onclick="loadRunHistory()" class="text-xs text-blue-500 hover:underline">↺ refresh</button>
+        </div>
+        <div id="runs-list" class="flex gap-3 overflow-x-auto pb-1 min-h-12 items-center">
+          <span class="text-xs text-gray-400 italic">Loading…</span>
+        </div>
+      </div>
 
       <!-- Config + Run row -->
       <div class="bg-white border rounded-lg px-5 py-4 flex flex-wrap items-center gap-4">
@@ -420,20 +815,26 @@
   function switchTab(tab) {
     currentTab = tab;
     const panels = {
-      compare: document.getElementById('main-layout'),
-      query:   document.getElementById('query-panel'),
-      eval:    document.getElementById('eval-panel'),
+      compare:  document.getElementById('main-layout'),
+      query:    document.getElementById('query-panel'),
+      eval:     document.getElementById('eval-panel'),
+      experiment: document.getElementById('experiment-panel'),
+      pipeline:   document.getElementById('pipeline-panel'),
     };
     const btns = {
       compare: document.getElementById('tab-btn-compare'),
-      query:   document.getElementById('tab-btn-query'),
-      eval:    document.getElementById('tab-btn-eval'),
+      query:    document.getElementById('tab-btn-query'),
+      eval:     document.getElementById('tab-btn-eval'),
+      experiment: document.getElementById('tab-btn-experiment'),
+      pipeline:   document.getElementById('tab-btn-pipeline'),
     };
 
     // Hide all panels
     panels.compare.classList.add('hidden');   panels.compare.classList.remove('flex');
     panels.query.classList.add('hidden');
     panels.eval.classList.add('hidden');
+    panels.experiment.classList.add('hidden');
+    panels.pipeline.classList.add('hidden');
 
     // Deactivate all tab buttons
     Object.values(btns).forEach(b => {
@@ -450,6 +851,10 @@
       setTimeout(() => document.getElementById('q-input').focus(), 50);
     } else if (tab === 'eval') {
       panels.eval.classList.remove('hidden');
+    } else if (tab === 'experiment') {
+      panels.experiment.classList.remove('hidden');
+    } else if (tab === 'pipeline') {
+      panels.pipeline.classList.remove('hidden');
     }
     btns[tab].classList.add('bg-blue-600', 'text-white');
     btns[tab].classList.remove('text-gray-300');
@@ -891,12 +1296,11 @@
     return `<td class="text-center px-2 py-2 rounded ${cls}"${title}>${v.toFixed(2)}</td>`;
   }
 
-  function addEvalTableRow(r) {
+  function addEvalTableRow(r, idx) {
+    if (idx === undefined) idx = evalResults.length - 1;
     const tbody = document.getElementById('eval-table-body');
     const ph = document.getElementById('eval-table-placeholder');
     if (ph) ph.remove();
-
-    const idx = evalResults.length - 1;   // index into evalResults for this row
     const tr = document.createElement('tr');
     tr.className = 'eval-row border-t border-gray-100 cursor-pointer';
     tr.title = 'Click to inspect this query';
@@ -1056,6 +1460,335 @@
   // Close on Escape key
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeQueryDetail(); });
 
+  // ═══════════════════════════════════════════════════════════════
+  // Pipeline tab
+  // ═══════════════════════════════════════════════════════════════
+
+  const PIPELINE_STEPS = {
+    rewrite: {
+      num: 1, name: 'Query Rewriting', color: '#8b5cf6', bg: '#faf5ff',
+      file: 'src/services/rewrite.py',
+      summary: 'Rewrites the raw user question into a more precise, retrieval-friendly search query before any document lookup happens.',
+      params: [
+        { label: 'Model',        value: 'gpt-4o-mini  (hardcoded, rewrite.py:21)' },
+        { label: 'Temperature',  value: '0  — fully deterministic' },
+        { label: 'Strategy',     value: 'Expand abbreviations · add "OpenShift" if implied · make query specific' },
+        { label: 'Fallback',     value: 'Returns original query unchanged if rewriting fails' },
+      ],
+      howItWorks: [
+        'The original question is sent to gpt-4o-mini with a system prompt that instructs it to produce a single, clean search query — no explanation, no markdown.',
+        'The rewrite prompt tells the model to expand abbreviations (e.g. "CPMSO" → "Control Plane Machine Set Operator"), add the product name when implied, and make the query concrete.',
+        'The rewritten query is then used for <strong>all downstream steps</strong> — BM25 tokenisation, vector embedding, and the final generation prompt.',
+        'If rewriting throws an exception, the original question is used as-is so the pipeline never fails silently.',
+      ],
+      tips: [
+        { impact: 'high',   change: 'Tune the rewrite prompt',          where: 'rewrite.py  _REWRITE_PROMPT',      effect: 'Add domain-specific expansion rules, OCP version hints, or require output in a structured format' },
+        { impact: 'high',   change: 'Generate multiple query variants',  where: 'rewrite.py  rewrite_query()',      effect: 'Return 3 paraphrases and retrieve for each — union the results before RRF (HyDE-style)' },
+        { impact: 'medium', change: 'Upgrade to gpt-4o',                 where: 'rewrite.py:21  model=',           effect: 'Better abbreviation expansion and intent understanding on ambiguous queries' },
+        { impact: 'low',    change: 'Skip rewriting for short queries',  where: 'pipeline.py  rewrite=True param', effect: 'Pass rewrite=False for < 5-word queries to save one LLM call (~200ms)' },
+      ],
+    },
+    retrieve: {
+      num: 2, name: 'Hybrid Retrieval', color: '#0ea5e9', bg: '#f0f9ff',
+      file: 'src/retrieval/hybrid.py',
+      summary: 'Runs BM25 (keyword) and vector (semantic) search in parallel, then merges both ranked lists with Reciprocal Rank Fusion.',
+      params: [
+        { label: 'BM25 library',      value: 'BM25Okapi from rank_bm25  — tokenises with .lower().split()' },
+        { label: 'BM25 candidates',   value: 'k=50  (hybrid.py:92)' },
+        { label: 'Vector store',       value: 'ChromaDB  (persistent, cosine similarity)' },
+        { label: 'Embedding model',   value: 'text-embedding-3-small  (OpenAI, pipeline.py:48)' },
+        { label: 'Vector candidates', value: 'k=50  (hybrid.py:96)' },
+        { label: 'Merge algorithm',   value: 'RRF — score = Σ 1 / (60 + rank)  (hybrid.py:121)' },
+        { label: 'RRF k constant',    value: '60  (lower = top ranks weighted more aggressively)' },
+        { label: 'Output',            value: 'Top 50 merged documents with rrf_score metadata' },
+        { label: 'Corpus',            value: '~8,394 modules from openshift-docs/modules/' },
+      ],
+      howItWorks: [
+        'Two independent searches run on the <strong>rewritten query</strong>:',
+        '<strong>BM25</strong> — splits the query into tokens, scores every document using BM25Okapi (TF-IDF variant), normalises scores to [0, 1], returns top-50 stems.',
+        '<strong>Vector</strong> — embeds the query with text-embedding-3-small and retrieves the 50 most similar chunks from ChromaDB by cosine distance.',
+        'Both result sets are merged with <strong>Reciprocal Rank Fusion</strong>: each document gets RRF_score = 1/(60 + BM25_rank) + 1/(60 + vector_rank). Documents in both lists get a score boost. Documents only in one list still appear.',
+        'The top-50 merged documents (with rrf_score attached to metadata) are passed to the reranker.',
+      ],
+      tips: [
+        { impact: 'high',   change: 'Upgrade embedding model',       where: 'pipeline.py:48  OpenAIEmbeddings()',    effect: 'Switch to text-embedding-3-large — requires re-indexing, ~3× cost, meaningfully better semantic recall' },
+        { impact: 'high',   change: 'Add metadata pre-filtering',    where: 'routes.py  filter_topic param',         effect: 'Pass filter_topic or filter_content_type to restrict search to relevant sections before retrieval' },
+        { impact: 'medium', change: 'Increase candidate pool',       where: 'pipeline.py:127  k_retrieve=50',        effect: 'Raise to 100 to expose more candidates to the reranker — higher recall at cost of rerank latency' },
+        { impact: 'medium', change: 'Tune RRF k constant',           where: 'hybrid.py:121  K = 60',                 effect: 'Lower to 20–30 to weight top-ranked hits more heavily; raise to 100+ for flatter blending' },
+        { impact: 'medium', change: 'Improve BM25 tokenisation',     where: 'hybrid.py:31  query.lower().split()',   effect: 'Add stop-word removal or a stemmer (e.g. NLTK PorterStemmer) for better keyword matching' },
+        { impact: 'low',    change: 'Use semantic-only for short queries', where: 'pipeline.py  hybrid= param',     effect: 'BM25 underperforms on < 3-word queries — pass hybrid=False to use vector-only' },
+      ],
+    },
+    rerank: {
+      num: 3, name: 'Cross-Encoder Rerank', color: '#f59e0b', bg: '#fffbeb',
+      file: 'src/retrieval/rerank.py',
+      summary: 'A local cross-encoder model scores each candidate by reading the query and document text together — far more accurate than embedding similarity alone.',
+      params: [
+        { label: 'Model',           value: 'cross-encoder/ms-marco-MiniLM-L-6-v2  (sentence-transformers, local)' },
+        { label: 'Input',           value: 'Top n_results×2 documents from retrieval (10 docs when k=5)' },
+        { label: 'Doc truncation',  value: '512 chars per document  (rerank.py:24)' },
+        { label: 'Output',          value: 'Top n_results documents with rerank_score metadata' },
+        { label: 'Runs where',      value: 'Locally on CPU/GPU — no API call, no extra cost' },
+        { label: 'Model loading',   value: 'Lazy-loaded on first call, cached for subsequent requests' },
+      ],
+      howItWorks: [
+        'Retrieval (BM25 + vector) scores query and documents <em>independently</em>. Reranking scores them <strong>jointly</strong>, which captures fine-grained term interactions.',
+        'The model receives (query, doc[:512]) pairs — one per candidate. It outputs a relevance score for each pair.',
+        'The input pool is n_results×2 (e.g. 10 docs when n_results=5) — a deliberate 2× oversampling so the reranker has room to promote lower-ranked gems.',
+        'Documents are sorted by rerank_score descending and the top n_results are kept. The rerank_score is stored in doc.metadata["rerank_score"] for inspection.',
+        'Because the model runs locally, it adds ~50–200ms of CPU time but <strong>zero API cost</strong>.',
+      ],
+      tips: [
+        { impact: 'high',   change: 'Use a larger cross-encoder',      where: 'rerank.py:7  _MODEL_NAME',              effect: 'Switch to ms-marco-MiniLM-L-12-v2 (2× layers) — significantly better ranking at ~2× latency' },
+        { impact: 'high',   change: 'Expand reranker input pool',       where: 'pipeline.py:143  top_k=n_results*2',    effect: 'Raise to n_results*4 — gives reranker more candidates to choose from, improves recall@k' },
+        { impact: 'medium', change: 'Increase doc content window',      where: 'rerank.py:24  page_content[:512]',      effect: 'Raise to 1024 chars to give the cross-encoder more document context (slightly slower)' },
+        { impact: 'medium', change: 'Use a GPT-based listwise reranker',where: 'rerank.py  rerank()',                   effect: 'Replace cross-encoder with an LLM that sees all docs at once and outputs a ranked list' },
+        { impact: 'low',    change: 'GPU inference',                    where: 'rerank.py  CrossEncoder()',             effect: 'Add device="cuda" to CrossEncoder constructor — ~10× faster on GPU hardware' },
+      ],
+    },
+    generate: {
+      num: 4, name: 'Generation', color: '#10b981', bg: '#f0fdf4',
+      file: 'src/services/pipeline.py',
+      summary: 'The LLM synthesises an answer from the retrieved context, strictly grounded — it must not add any information not present in the provided documents.',
+      params: [
+        { label: 'Model',         value: 'gpt-4o-mini  (default — configurable via model= param)' },
+        { label: 'Temperature',   value: '0  — deterministic, reproducible answers' },
+        { label: 'Context',       value: 'All n_results docs joined with \\n\\n  (pipeline.py:153)' },
+        { label: 'Prompt format', value: 'System prompt (rules) + Human turn (question)  via ChatPromptTemplate' },
+        { label: 'Output parser', value: 'StrOutputParser — plain text string' },
+        { label: 'Rules in prompt', value: '① Use only context  ② Include exact commands/YAML  ③ State cluster-admin needs  ④ Say "not covered" if absent' },
+      ],
+      howItWorks: [
+        'The top-k reranked documents are concatenated into a single context string (full content, no truncation) and injected into the system prompt via the {context} placeholder.',
+        'The system prompt is the main guardrail: it prohibits the model from adding any information not present in the retrieved excerpts. Rule ③ says "say exactly: The provided documentation does not cover this" if the answer isn\'t there.',
+        'Temperature=0 makes answers <strong>deterministic</strong> — the same query + same context always produces the same answer, which is important for benchmarking.',
+        'The model used for generation is the <strong>same one used for query rewriting</strong> (both share the ChatOpenAI(model=model) instance created at the top of run_pipeline()).',
+        'Optional: pass <code>ground=True</code> to run a second grounding pass that checks whether the answer is fully supported by the sources.',
+      ],
+      tips: [
+        { impact: 'high',   change: 'Use gpt-4o for generation',       where: 'pipeline.py  model= param',          effect: 'Better multi-document reasoning, fewer hallucinations on complex queries — ~3× API cost' },
+        { impact: 'high',   change: 'Tune the system prompt',          where: 'pipeline.py:20  SYSTEM_PROMPT',      effect: 'Add OCP version constraints, output format requirements (YAML blocks, numbered steps), or domain terminology' },
+        { impact: 'medium', change: 'Increase context window (k docs)', where: 'pipeline.py  n_results= param',     effect: 'Pass n_results=8–10 to feed more documents — helps for multi-doc questions at cost of token usage' },
+        { impact: 'medium', change: 'Enable grounding check',          where: 'pipeline.py  ground=True',          effect: 'Post-generation verification pass: strips unsupported claims and sets is_grounded=False if answer drifts' },
+        { impact: 'low',    change: 'Separate rewrite and generation models', where: 'rewrite.py:21  model=',      effect: 'Use gpt-4o-mini for rewriting (cheap) and gpt-4o only for generation (expensive) to balance cost' },
+      ],
+    },
+  };
+
+  const ALL_TIPS = Object.entries(PIPELINE_STEPS).flatMap(([stepId, step]) =>
+    step.tips.map(t => ({ ...t, step: step.name, stepColor: step.color }))
+  ).sort((a, b) => {
+    const order = { high: 0, medium: 1, low: 2 };
+    return order[a.impact] - order[b.impact];
+  });
+
+  let activePipelineStep = null;
+
+  function renderTuningTable() {
+    const impactBadge = (i) => ({
+      high:   '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-red-100 text-red-700">high</span>',
+      medium: '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-yellow-100 text-yellow-700">medium</span>',
+      low:    '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-gray-100 text-gray-500">low</span>',
+    }[i]);
+
+    document.getElementById('tuning-table-body').innerHTML = ALL_TIPS.map((t, i) => `
+      <tr class="border-t border-gray-100 hover:bg-gray-50">
+        <td class="px-4 py-2.5">
+          <span class="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style="background:${t.stepColor}"></span>
+          <span class="font-medium text-gray-700">${escapeHtml(t.change)}</span>
+        </td>
+        <td class="px-4 py-2.5 font-mono text-gray-400 text-xs">${escapeHtml(t.where)}</td>
+        <td class="px-4 py-2.5 text-gray-500">${escapeHtml(t.effect)}</td>
+        <td class="px-3 py-2.5 text-center">${impactBadge(t.impact)}</td>
+      </tr>`).join('');
+  }
+
+  function selectPipelineStep(stepId) {
+    // Toggle off if same step clicked again
+    if (activePipelineStep === stepId) {
+      activePipelineStep = null;
+      document.getElementById('pipeline-detail').classList.add('hidden');
+      document.querySelectorAll('.pipeline-step').forEach(el => el.classList.remove('ring-2', 'ring-offset-1'));
+      return;
+    }
+    activePipelineStep = stepId;
+
+    // Highlight active step card
+    document.querySelectorAll('.pipeline-step').forEach(el => {
+      el.classList.remove('ring-2', 'ring-offset-1');
+    });
+    const activeCard = document.querySelector(`[data-step="${stepId}"]`);
+    if (activeCard) activeCard.classList.add('ring-2', 'ring-offset-1');
+
+    const s = PIPELINE_STEPS[stepId];
+    const impactBadge = (i) => ({
+      high:   '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-red-100 text-red-700">● high</span>',
+      medium: '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-yellow-100 text-yellow-700">◑ medium</span>',
+      low:    '<span class="px-1.5 py-0.5 rounded text-xs font-bold bg-gray-100 text-gray-500">○ low</span>',
+    }[i]);
+
+    document.getElementById('pipeline-detail').innerHTML = `
+      <!-- Detail header -->
+      <div class="flex items-center gap-3 px-5 py-3.5 border-b" style="background:${s.bg}">
+        <span class="text-sm font-bold text-white px-2 py-1 rounded" style="background:${s.color}">${s.num}</span>
+        <div>
+          <div class="font-bold text-gray-800">${s.name}</div>
+          <div class="text-xs text-gray-500 mt-0.5">${escapeHtml(s.summary)}</div>
+        </div>
+        <div class="ml-auto font-mono text-xs text-gray-400 bg-white px-2 py-1 rounded border">${s.file}</div>
+      </div>
+
+      <div class="grid grid-cols-2 divide-x">
+
+        <!-- Left: how it works + params -->
+        <div class="p-5 flex flex-col gap-4">
+          <div>
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">How It Works</div>
+            <ol class="flex flex-col gap-2 text-xs text-gray-600 leading-relaxed list-decimal list-inside">
+              ${s.howItWorks.map(h => `<li>${h}</li>`).join('')}
+            </ol>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Parameters</div>
+            <div class="flex flex-col gap-1.5">
+              ${s.params.map(p => `
+                <div class="flex gap-2 text-xs">
+                  <span class="text-gray-400 shrink-0 w-32">${p.label}</span>
+                  <span class="font-mono text-gray-700">${escapeHtml(p.value)}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: tuning tips -->
+        <div class="p-5">
+          <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">How to Improve</div>
+          <div class="flex flex-col gap-3">
+            ${s.tips.map(t => `
+              <div class="rounded-lg border p-3 bg-gray-50">
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <span class="font-semibold text-gray-700 text-xs">${escapeHtml(t.change)}</span>
+                  ${impactBadge(t.impact)}
+                </div>
+                <div class="font-mono text-xs text-blue-600 mb-1">${escapeHtml(t.where)}</div>
+                <div class="text-xs text-gray-500 leading-snug">${escapeHtml(t.effect)}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    document.getElementById('pipeline-detail').classList.remove('hidden');
+    // Scroll detail into view
+    document.getElementById('pipeline-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderTuningTable();
+    loadRunHistory();
+  });
+
+  // ═══════════════════════════════════════════════════════════════
+  // Saved-run history
+  // ═══════════════════════════════════════════════════════════════
+
+  async function loadRunHistory() {
+    const list = document.getElementById('runs-list');
+    if (!list) return;
+    list.innerHTML = '<span class="text-xs text-gray-400 italic">Loading…</span>';
+
+    try {
+      const res = await fetch('/api/eval/runs');
+      const runs = await res.json();
+      document.getElementById('runs-badge').textContent = `(${runs.length})`;
+
+      if (runs.length === 0) {
+        list.innerHTML = '<span class="text-xs text-gray-400 italic">No saved runs yet — run an evaluation to see it here.</span>';
+        return;
+      }
+
+      list.innerHTML = runs.map(r => {
+        const d = new Date(r.timestamp);
+        const ts = isNaN(d) ? r.timestamp : d.toLocaleString('en-GB', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+        const agg = r.aggregate || {};
+
+        const sc = (v, label) => v != null
+          ? `<span class="text-gray-500">${label} <strong style="color:${v >= 0.8 ? '#10b981' : v >= 0.6 ? '#f59e0b' : '#ef4444'}">${v.toFixed(2)}</strong></span>`
+          : '';
+
+        const sourceTag = r.source === 'cli'
+          ? '<span class="bg-gray-100 text-gray-500 px-1 rounded">CLI</span>'
+          : '<span class="bg-blue-100 text-blue-600 px-1 rounded">UI</span>';
+
+        return `
+          <div class="shrink-0 w-44 border rounded-lg p-3 bg-gray-50 hover:bg-white hover:shadow-sm transition-all cursor-pointer"
+               onclick="loadRun('${escapeHtml(r.id)}')">
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-xs font-semibold text-gray-700 truncate">${ts}</span>
+              ${sourceTag}
+            </div>
+            <div class="text-xs text-gray-400 mb-2">${r.n_results}q · k=${r.config.k_retrieve || '?'} · ${r.config.model || '?'}</div>
+            <div class="flex flex-col gap-0.5 text-xs">${sc(agg.answer_relevance,'rel')} ${sc(agg.faithfulness,'faith')}</div>
+            <div class="flex flex-col gap-0.5 text-xs">${sc(agg['recall@5'],'r@5')} ${sc(agg.mrr,'mrr')}</div>
+            <div class="mt-2 text-xs text-blue-500 font-medium">Load →</div>
+          </div>`;
+      }).join('');
+    } catch (e) {
+      list.innerHTML = `<span class="text-xs text-red-500">Failed: ${e.message}</span>`;
+    }
+  }
+
+  async function loadRun(runId) {
+    try {
+      const res = await fetch('/api/eval/runs/' + encodeURIComponent(runId));
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error); }
+      const data = await res.json();
+
+      // Populate global state
+      evalResults = data.results || [];
+
+      // Show banner
+      const d = new Date(data.timestamp);
+      const ts = isNaN(d) ? data.timestamp : d.toLocaleString();
+      const cfg = data.config || {};
+      document.getElementById('loaded-run-label').textContent =
+        `Viewing saved run · ${ts} · ${evalResults.length} queries · model: ${cfg.model || '?'} · k=${cfg.k_retrieve || '?'} · source: ${data.source || '?'}`;
+      document.getElementById('loaded-run-banner').classList.remove('hidden');
+
+      // Reset cards/charts then populate from loaded data
+      EVAL_METRICS.forEach(m => {
+        const ev = document.getElementById('eval-card-val-' + m.key);
+        const eb = document.getElementById('eval-card-bar-' + m.key);
+        const en = document.getElementById('eval-card-n-'   + m.key);
+        if (ev) { ev.textContent = '—'; ev.style.color = '#374151'; }
+        if (eb) { eb.style.width = '0%'; }
+        if (en) en.textContent = '—';
+      });
+      if (evalBarChart)  { evalBarChart.data.datasets[0].data  = [0,0,0,0,0]; evalBarChart.update('none'); }
+      if (evalLineChart) { evalLineChart.data.labels = []; evalLineChart.data.datasets.forEach(d => d.data = []); evalLineChart.update('none'); }
+
+      updateEvalCards();
+      updateEvalCharts();
+
+      // Rebuild table
+      const tbody = document.getElementById('eval-table-body');
+      tbody.innerHTML = '';
+      document.getElementById('eval-table-count').textContent = `${evalResults.length} / ${evalResults.length}`;
+      evalResults.forEach((r, idx) => addEvalTableRow(r, idx));
+
+      // Scroll table into view
+      tbody.closest('.bg-white')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    } catch (e) {
+      alert('Failed to load run: ' + e.message);
+    }
+  }
+
+  function clearLoadedRun() {
+    document.getElementById('loaded-run-banner').classList.add('hidden');
+  }
+
   async function runEval() {
     if (evalRunning) return;
     evalRunning = true;
@@ -1127,7 +1860,10 @@
           let data;
           try { data = JSON.parse(line.slice(6)); } catch { continue; }
 
-          if (data.type === 'result') {
+          if (data.type === 'saved') {
+            loadRunHistory();   // refresh history panel once run is persisted
+
+          } else if (data.type === 'result') {
             evalResults.push(data);
             const pct = Math.round(data.i / data.n * 100);
             document.getElementById('eval-progress-bar').style.width = pct + '%';
@@ -1161,6 +1897,392 @@
       }
     }
   }
+
+  // ═══════════════════════════════════════════════════════
+  //  EXPERIMENT TAB
+  // ═══════════════════════════════════════════════════════
+
+  let expN = 10;
+  let expRunning = false;
+  let expControlResults   = [];
+  let expExperimentResults = [];
+  let expCompareChart = null;
+  let expComparison = null;   // last comparison object from backend
+
+  // ── n_queries selector ──────────────────────────────────
+  function setExpN(n) {
+    expN = n;
+    document.querySelectorAll('#exp-n-btn-group .exp-n-btn').forEach(b => {
+      const active = parseInt(b.dataset.n) === n;
+      b.className = active
+        ? 'exp-n-btn px-2.5 py-1 border text-xs bg-indigo-600 text-white border-indigo-600'
+        : 'exp-n-btn px-2.5 py-1 border text-xs bg-white text-gray-600 hover:bg-gray-50';
+      // preserve rounded corners for first/last
+      if (b === document.querySelector('#exp-n-btn-group .exp-n-btn:first-child'))
+        b.classList.add('rounded-l');
+      if (b === document.querySelector('#exp-n-btn-group .exp-n-btn:last-child'))
+        b.classList.add('rounded-r');
+    });
+  }
+
+  // ── copy control → experiment ───────────────────────────
+  function copyCtrlToExp() {
+    document.getElementById('exp-model').value  = document.getElementById('ctrl-model').value;
+    document.getElementById('exp-k').value      = document.getElementById('ctrl-k').value;
+    document.getElementById('exp-mode').value   = document.getElementById('ctrl-mode').value;
+    document.getElementById('exp-rerank').value = document.getElementById('ctrl-rerank').value;
+    document.getElementById('exp-rewrite').value= document.getElementById('ctrl-rewrite').value;
+  }
+
+  // ── read config from DOM ────────────────────────────────
+  function getExpConfig(prefix) {
+    return {
+      model:    document.getElementById(prefix + '-model').value,
+      k_final:  parseInt(document.getElementById(prefix + '-k').value) || 5,
+      mode:     document.getElementById(prefix + '-mode').value,
+      rerank:   document.getElementById(prefix + '-rerank').value === 'true',
+      rewrite:  document.getElementById(prefix + '-rewrite').value === 'true',
+    };
+  }
+
+  // ── progress helpers ─────────────────────────────────────
+  function updateExpProgress(arm, i, n, label) {
+    const pct = n > 0 ? Math.round(i / n * 100) : 0;
+    if (arm === 'control') {
+      document.getElementById('exp-ctrl-bar').style.width = pct + '%';
+      document.getElementById('exp-ctrl-pct').textContent = pct + '%';
+      document.getElementById('exp-ctrl-label').textContent = `[${i}/${n}] ${label}`;
+    } else {
+      document.getElementById('exp-exp-bar').style.width = pct + '%';
+      document.getElementById('exp-exp-pct').textContent = pct + '%';
+      document.getElementById('exp-exp-label').textContent = `[${i}/${n}] ${label}`;
+    }
+  }
+
+  // ── run experiment ───────────────────────────────────────
+  async function runExperiment() {
+    if (expRunning) return;
+    expRunning = true;
+    expControlResults = [];
+    expExperimentResults = [];
+    expComparison = null;
+
+    const runBtn = document.getElementById('exp-run-btn');
+    runBtn.disabled = true;
+    document.getElementById('exp-run-icon').textContent = '⏳';
+
+    // Show progress, hide old results
+    document.getElementById('exp-progress-row').classList.remove('hidden');
+    document.getElementById('exp-ctrl-bar').style.width = '0%';
+    document.getElementById('exp-ctrl-pct').textContent = '';
+    document.getElementById('exp-ctrl-label').textContent = 'Starting control arm…';
+    document.getElementById('exp-exp-bar').style.width = '0%';
+    document.getElementById('exp-exp-pct').textContent = '';
+    document.getElementById('exp-exp-label').textContent = 'Waiting for control to finish…';
+    document.getElementById('exp-results').classList.add('hidden');
+
+    const body = {
+      n_queries:  expN,
+      control:    getExpConfig('ctrl'),
+      experiment: getExpConfig('exp'),
+    };
+
+    try {
+      const res = await fetch('/api/experiment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(errData.error || res.statusText);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          let data;
+          try { data = JSON.parse(line.slice(6)); } catch { continue; }
+
+          if (data.type === 'result') {
+            const arm = data.arm;   // 'control' or 'experiment'
+            if (arm === 'control') {
+              expControlResults.push(data);
+            } else {
+              expExperimentResults.push(data);
+            }
+            updateExpProgress(arm, data.i, data.n, data.id || '');
+
+          } else if (data.type === 'comparison') {
+            expComparison = data.data;
+            renderExpComparison(expComparison);
+            renderExpTable();
+            document.getElementById('exp-results').classList.remove('hidden');
+            document.getElementById('exp-run-icon').textContent = '✓';
+
+          } else if (data.type === 'error') {
+            throw new Error(data.message);
+          }
+        }
+      }
+
+    } catch (e) {
+      document.getElementById('exp-ctrl-label').textContent = '❌ ' + e.message;
+      document.getElementById('exp-run-icon').textContent = '▶';
+    } finally {
+      expRunning = false;
+      runBtn.disabled = false;
+      if (document.getElementById('exp-run-icon').textContent === '⏳') {
+        document.getElementById('exp-run-icon').textContent = '▶';
+      }
+    }
+  }
+
+  // ── render verdict + cards + chart + delta table ────────
+  function renderExpComparison(cmp) {
+    if (!cmp) return;
+
+    // Verdict banner
+    const verdict = document.getElementById('exp-verdict');
+    const summary = cmp.summary || {};
+    const imp = summary.improvements || 0;
+    const reg = summary.regressions  || 0;
+    if (imp > reg) {
+      verdict.className = 'rounded-lg px-5 py-3 text-sm font-semibold bg-green-50 text-green-700 border border-green-200';
+      verdict.textContent = `✓ Experiment improved ${imp} metric(s), regressed ${reg}`;
+    } else if (reg > imp) {
+      verdict.className = 'rounded-lg px-5 py-3 text-sm font-semibold bg-red-50 text-red-700 border border-red-200';
+      verdict.textContent = `✗ Experiment regressed ${reg} metric(s), improved ${imp}`;
+    } else {
+      verdict.className = 'rounded-lg px-5 py-3 text-sm font-semibold bg-gray-50 text-gray-600 border';
+      verdict.textContent = `≈ No significant difference (${imp} improved, ${reg} regressed, threshold ±0.02)`;
+    }
+
+    // Metric cards
+    const metricDefs = [
+      { key: 'answer_relevance', label: 'Answer Relevance', color: '#6366f1' },
+      { key: 'faithfulness',     label: 'Faithfulness',     color: '#10b981' },
+      { key: 'context_relevance',label: 'Context Relevance',color: '#f59e0b' },
+      { key: 'recall_5',         label: 'Recall@5',         color: '#3b82f6' },
+      { key: 'mrr',              label: 'MRR',               color: '#8b5cf6' },
+    ];
+    const ctrl = cmp.control   || {};
+    const expt = cmp.experiment|| {};
+    const cards = document.getElementById('exp-metric-cards');
+    cards.innerHTML = metricDefs.map(m => {
+      const cv = ctrl[m.key]; const ev = expt[m.key];
+      const delta = (cv != null && ev != null) ? (ev - cv) : null;
+      const sign  = delta == null ? '' : delta > 0.001 ? '+' : delta < -0.001 ? '' : '≈';
+      const col   = delta == null ? '#9ca3af' : delta > 0.001 ? '#10b981' : delta < -0.001 ? '#ef4444' : '#9ca3af';
+      const fmtV  = v => v != null ? v.toFixed(3) : '—';
+      return `
+        <div class="bg-white border rounded-xl p-4 text-center">
+          <div class="text-xs text-gray-400 font-medium mb-2">${m.label}</div>
+          <div class="flex justify-around items-end gap-1 mb-2">
+            <div>
+              <div class="text-xs text-gray-400 mb-0.5">Control</div>
+              <div class="text-base font-bold text-gray-700">${fmtV(cv)}</div>
+            </div>
+            <div>
+              <div class="text-xs text-indigo-400 mb-0.5">Expt</div>
+              <div class="text-base font-bold" style="color:${col}">${fmtV(ev)}</div>
+            </div>
+          </div>
+          <div class="text-xs font-semibold" style="color:${col}">${sign}${delta != null ? delta.toFixed(3) : '—'}</div>
+        </div>`;
+    }).join('');
+
+    // Delta table
+    const tbody = document.getElementById('exp-delta-body');
+    tbody.innerHTML = metricDefs.map(m => {
+      const cv = ctrl[m.key]; const ev = expt[m.key];
+      const delta = (cv != null && ev != null) ? (ev - cv) : null;
+      const col = delta == null ? '' : delta > 0.02 ? 'color:#10b981;font-weight:600' : delta < -0.02 ? 'color:#ef4444;font-weight:600' : '';
+      const icon = delta == null ? '' : Math.abs(delta) < 0.02 ? '≈' : delta > 0 ? '▲' : '▼';
+      return `<tr class="border-b last:border-0 hover:bg-gray-50">
+        <td class="py-2 text-gray-600">${m.label}</td>
+        <td class="text-right py-2 text-gray-500">${cv != null ? cv.toFixed(3) : '—'}</td>
+        <td class="text-right py-2 text-gray-500">${ev != null ? ev.toFixed(3) : '—'}</td>
+        <td class="text-right py-2" style="${col}">${icon} ${delta != null ? (delta >= 0 ? '+' : '') + delta.toFixed(3) : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    // Grouped bar chart
+    initExpCompareChart(metricDefs, ctrl, expt);
+  }
+
+  // ── grouped bar chart ────────────────────────────────────
+  function initExpCompareChart(metricDefs, ctrl, expt) {
+    const ctx = document.getElementById('exp-compare-chart').getContext('2d');
+    if (expCompareChart) expCompareChart.destroy();
+    expCompareChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: metricDefs.map(m => m.label.replace(' Relevance','Rel.').replace('Faithfulness','Faith.').replace('Context Rel.','Ctx Rel.')),
+        datasets: [
+          {
+            label: 'Control',
+            data: metricDefs.map(m => ctrl[m.key] ?? null),
+            backgroundColor: 'rgba(107,114,128,0.7)',
+            borderColor: 'rgba(107,114,128,1)',
+            borderWidth: 1,
+          },
+          {
+            label: 'Experiment',
+            data: metricDefs.map(m => expt[m.key] ?? null),
+            backgroundColor: 'rgba(99,102,241,0.7)',
+            borderColor: 'rgba(99,102,241,1)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
+        scales: {
+          y: { min: 0, max: 1, ticks: { font: { size: 10 } } },
+          x: { ticks: { font: { size: 10 } } },
+        },
+      },
+    });
+  }
+
+  // ── per-query comparison table ────────────────────────────
+  function renderExpTable() {
+    const tbody = document.getElementById('exp-table-body');
+    tbody.innerHTML = '';
+    const n = expControlResults.length;
+    if (n === 0) {
+      tbody.innerHTML = '<tr><td colspan="12" class="text-center py-6 text-gray-400">No results</td></tr>';
+      return;
+    }
+
+    const fmt = v => v != null ? v.toFixed(2) : '—';
+    const cell = (v, bg) => {
+      const col = v == null ? '#9ca3af' : v >= 0.8 ? '#10b981' : v >= 0.5 ? '#f59e0b' : '#ef4444';
+      return `<td class="text-center px-1 py-2 ${bg}" style="color:${col}">${fmt(v)}</td>`;
+    };
+
+    for (let i = 0; i < n; i++) {
+      const c = expControlResults[i]   || {};
+      const e = expExperimentResults[i]|| {};
+
+      const cAvg = avg3(c.answer_relevance, c.faithfulness, c.context_relevance);
+      const eAvg = avg3(e.answer_relevance, e.faithfulness, e.context_relevance);
+      const delta = (cAvg != null && eAvg != null) ? (eAvg - cAvg) : null;
+      const dCol  = delta == null ? '#9ca3af' : delta > 0.01 ? '#10b981' : delta < -0.01 ? '#ef4444' : '#9ca3af';
+      const dStr  = delta != null ? (delta >= 0 ? '+' : '') + delta.toFixed(2) : '—';
+
+      const row = document.createElement('tr');
+      row.className = 'border-b last:border-0 hover:bg-indigo-50 cursor-pointer';
+      row.innerHTML = `
+        <td class="px-3 py-2 text-gray-400">${i + 1}</td>
+        <td class="px-3 py-2 text-gray-700 max-w-xs truncate" title="${escapeHtml(c.query || '')}">${escapeHtml((c.query || '').substring(0, 60))}${(c.query || '').length > 60 ? '…' : ''}</td>
+        <td class="px-3 py-2 text-gray-400 max-w-[80px] truncate">${escapeHtml(c.topic || '')}</td>
+        ${cell(c.answer_relevance,  'bg-gray-50')}
+        ${cell(c.faithfulness,      'bg-gray-50')}
+        ${cell(c.context_relevance, 'bg-gray-50')}
+        ${cell(c.recall_5,          'bg-gray-50 border-r')}
+        ${cell(e.answer_relevance,  'bg-indigo-50')}
+        ${cell(e.faithfulness,      'bg-indigo-50')}
+        ${cell(e.context_relevance, 'bg-indigo-50')}
+        ${cell(e.recall_5,          'bg-indigo-50')}
+        <td class="text-center px-2 py-2 font-medium" style="color:${dCol}">${dStr}</td>
+      `;
+      row.addEventListener('click', () => showExpDetail(i));
+      tbody.appendChild(row);
+    }
+  }
+
+  function avg3(a, b, c) {
+    const vals = [a, b, c].filter(v => v != null);
+    return vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+  }
+
+  // ── click a row → drawer showing both arms ──────────────
+  function showExpDetail(idx) {
+    const c = expControlResults[idx]   || {};
+    const e = expExperimentResults[idx]|| {};
+
+    function scoreIcon(v) {
+      if (v == null) return '?';
+      return v >= 0.8 ? '✓' : v >= 0.5 ? '◑' : '✗';
+    }
+    function scoreColor(v) {
+      if (v == null) return '#9ca3af';
+      return v >= 0.8 ? '#10b981' : v >= 0.5 ? '#f59e0b' : '#ef4444';
+    }
+    function scoreRow(label, cv, ev, cExp, eExp) {
+      return `
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div class="p-3 rounded-lg bg-gray-50 border">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span style="color:${scoreColor(cv)};font-weight:700">${scoreIcon(cv)}</span>
+              <span class="text-xs font-semibold text-gray-600">${label} (ctrl): ${cv != null ? cv.toFixed(2) : '—'}</span>
+            </div>
+            <div class="text-xs text-gray-400">${escapeHtml(cExp || '')}</div>
+          </div>
+          <div class="p-3 rounded-lg bg-indigo-50 border border-indigo-100">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span style="color:${scoreColor(ev)};font-weight:700">${scoreIcon(ev)}</span>
+              <span class="text-xs font-semibold text-indigo-600">${label} (expt): ${ev != null ? ev.toFixed(2) : '—'}</span>
+            </div>
+            <div class="text-xs text-gray-400">${escapeHtml(eExp || '')}</div>
+          </div>
+        </div>`;
+    }
+
+    function answerBlock(label, r, bgClass) {
+      const md = (r.answer || '').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
+      return `
+        <div class="${bgClass} rounded-lg p-4 border mb-3">
+          <div class="text-xs font-bold text-gray-500 mb-2">${label}</div>
+          ${r.rewritten_query ? `<div class="text-xs text-gray-400 italic mb-2">Rewritten: "${escapeHtml(r.rewritten_query)}"</div>` : ''}
+          <div class="text-xs text-gray-700 leading-relaxed">${md}</div>
+        </div>`;
+    }
+
+    const html = `
+      <div class="text-sm font-semibold text-gray-700 mb-1">Query #${idx+1}</div>
+      <div class="text-sm text-gray-800 mb-4">${escapeHtml(c.query || '')}</div>
+
+      ${scoreRow('Answer Relevance', c.answer_relevance, e.answer_relevance, c.ar_explanation, e.ar_explanation)}
+      ${scoreRow('Faithfulness',     c.faithfulness,     e.faithfulness,     c.faith_explanation, e.faith_explanation)}
+      ${scoreRow('Context Relevance',c.context_relevance,e.context_relevance,c.ctx_explanation, e.ctx_explanation)}
+
+      <div class="grid grid-cols-4 gap-2 text-xs text-center mb-4">
+        ${['Recall@5','MRR','Latency ctrl','Latency expt'].map((l,i) => {
+          const v = i===0 ? `${(c.recall_5||0).toFixed(2)} / ${(e.recall_5||0).toFixed(2)}`
+                  : i===1 ? `${(c.mrr||0).toFixed(2)} / ${(e.mrr||0).toFixed(2)}`
+                  : i===2 ? `${c.elapsed_ms||'—'}ms`
+                  :         `${e.elapsed_ms||'—'}ms`;
+          return `<div class="bg-gray-50 rounded p-2"><div class="text-gray-400">${l}</div><div class="font-semibold text-gray-700">${v}</div></div>`;
+        }).join('')}
+      </div>
+
+      <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Answers</div>
+      ${answerBlock('Control answer', c, 'bg-gray-50')}
+      ${answerBlock('Experiment answer', e, 'bg-indigo-50')}
+    `;
+
+    document.getElementById('qd-content').innerHTML = html;
+    document.getElementById('qd-drawer').classList.add('open');
+    document.getElementById('qd-overlay').classList.remove('hidden');
+  }
+
+  // initialise exp n_queries button highlight on load
+  setExpN(10);
 </script>
 </body>
 </html>

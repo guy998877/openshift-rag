@@ -58,8 +58,49 @@ def _save_run(run_dir: Path, report: dict) -> None:
             }
             f.write(json.dumps(line) + "\n")
 
+    # run.json — full data loadable by the UI history feature
+    n = report["config"]["n_queries"]
+    flat_results = []
+    for r in report["results"]:
+        gm = r["generation_metrics"]
+        rm = r["retrieval_metrics"]
+        flat_results.append({
+            "i": r.get("i", 0),
+            "n": n,
+            "id": r["id"],
+            "query": r["query"],
+            "topic": r["topic"],
+            "gold_doc_ids": r.get("gold_doc_ids", []),
+            "rewritten_query": r.get("rewritten_query", ""),
+            "answer": r.get("answer", ""),
+            "sources": r.get("sources", []),
+            "pipeline_log": r.get("pipeline_log", {}),
+            "answer_relevance": gm.get("answer_relevance", {}).get("score"),
+            "faithfulness":     gm.get("faithfulness",     {}).get("score"),
+            "context_relevance":gm.get("context_relevance",{}).get("score"),
+            "ar_explanation":   gm.get("answer_relevance", {}).get("explanation", ""),
+            "faith_explanation":gm.get("faithfulness",     {}).get("explanation", ""),
+            "ctx_explanation":  gm.get("context_relevance",{}).get("explanation", ""),
+            "recall_5":   rm.get("recall@5"),
+            "mrr":        rm.get("mrr"),
+            "gold_found": rm.get("gold_found", []),
+            "gold_missed":rm.get("gold_missed", []),
+            "elapsed_ms": r["elapsed_ms"],
+        })
+    run_json = {
+        "type": "generation",
+        "source": "cli",
+        "timestamp": report["timestamp"],
+        "config": report["config"],
+        "aggregate": report["aggregate"],
+        "results": flat_results,
+        "total_seconds": report.get("total_seconds"),
+    }
+    (run_dir / "run.json").write_text(json.dumps(run_json, indent=2))
+
     print(f"  metrics.json      → {run_dir / 'metrics.json'}")
     print(f"  predictions.jsonl → {run_dir / 'predictions.jsonl'}")
+    print(f"  run.json          → {run_dir / 'run.json'}")
 
 
 # ── Generation benchmark ───────────────────────────────────────────────────────
@@ -138,12 +179,15 @@ def run_generation_benchmark(
         elapsed_ms = round((time.monotonic() - t0) * 1000)
 
         results.append({
+            "i": i,
             "id": qid,
             "query": query,
             "topic": q.get("topic", ""),
             "gold_doc_ids": gold_ids,
             "answer": result.answer,
+            "sources": result.sources,
             "rewritten_query": result.rewritten_query,
+            "pipeline_log": result.pipeline_log,
             "retrieval_metrics": ret_metrics,
             "generation_metrics": gen_metrics,
             "elapsed_ms": elapsed_ms,
