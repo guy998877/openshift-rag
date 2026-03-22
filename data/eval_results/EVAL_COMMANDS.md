@@ -126,6 +126,44 @@ python -m eval --baseline data/eval_results/2026-03-19T15-29_hybrid_k20/metrics.
 
 ---
 
+---
+
+## Generation Evaluation (LLM-as-Judge)
+
+Metrics: **answer relevance**, **faithfulness**, **context relevance**.
+Each query runs the full RAG pipeline (rewrite → retrieve → rerank → generate)
+then scores the output with gpt-4o-mini. ~2–3 min for 100 queries.
+
+Output goes to a timestamped subdirectory, e.g.
+`data/eval_results/2026-03-22T10-00_gen_k5/` containing
+`metrics.json` and `predictions.jsonl`.
+
+### Full generation eval
+
+```bash
+python -m eval --gen
+```
+
+### Quick sanity check (10 queries)
+
+```bash
+python -m eval --gen --n 10
+```
+
+### With a different model for judging
+
+```bash
+python -m eval --gen --model gpt-4o
+```
+
+### Skip saving to disk
+
+```bash
+python -m eval --gen --no-save
+```
+
+---
+
 ## Baseline Numbers (hybrid, k=20, 2026-03-19)
 
 | Metric        | Value |

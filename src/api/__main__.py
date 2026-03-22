@@ -15,7 +15,7 @@ def main() -> None:
 
     app = create_app(args.docs_root, args.processed_dir)
     print(f"Viewer running at http://{args.host}:{args.port}")
-    app.run(host=args.host, port=args.port, debug=False)
+    app.run(host=args.host, port=args.port, debug=False, threaded=True)
 
 
 main()

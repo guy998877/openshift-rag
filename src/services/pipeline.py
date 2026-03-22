@@ -37,6 +37,7 @@ Context:
 class QAResult:
     answer: str
     sources: list[dict] = field(default_factory=list)
+    docs: list[Document] = field(default_factory=list)
     model: str = ""
     rewritten_query: str = ""
     is_grounded: bool = True
@@ -173,6 +174,7 @@ def run_pipeline(
     return QAResult(
         answer=answer,
         sources=sources,
+        docs=docs,
         model=model,
         rewritten_query=rewritten if rewritten != question else "",
         is_grounded=is_grounded,
