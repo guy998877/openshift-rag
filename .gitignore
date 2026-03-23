@@ -6,11 +6,18 @@ dist/
 wheels/
 *.egg-info
 data/
+.gitignore
+.openshift-docs/
+
 
 # Virtual environments
-.venv
-
+.venv/
+prd.md
+claude.md
 # RAG pipeline
 .env
 data/processed/
 chroma_db/
+data/eval_results/
+data/pipeline.log
+data/skipped.jsonl
