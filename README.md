@@ -1,41 +1,56 @@
 # openshift-rag
 
-RAG system for OpenShift documentation — answers operational questions from platform engineers, cluster admins, and SREs using the official OpenShift docs corpus.
+> RAG system for OpenShift documentation — answers operational questions from platform engineers, cluster admins, and SREs using the official OpenShift docs corpus.
+
+![Python](https://img.shields.io/badge/python-3.13%2B-blue?logo=python&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?logo=openai&logoColor=white)
+![ChromaDB](https://img.shields.io/badge/vector--store-ChromaDB-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 <video src="https://github.com/user-attachments/assets/56261b95-a12f-4167-a48d-8b5c99d284a9" controls width="100%"></video>
 
 ---
 
-## Prerequisites
+## What it does
 
-- Python ≥ 3.13
-- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) package manager
-- An OpenAI API key
-- The `openshift-docs/` corpus cloned in the repo root (already present if you cloned this repo with submodules)
+Ask operational questions in plain English and get answers grounded in the official OpenShift documentation:
+
+```
+"How do I drain a node before maintenance?"
+"What is the difference between a Route and an Ingress?"
+"How do I configure cluster autoscaling on ROSA?"
+```
+
+The pipeline runs **query rewriting → hybrid BM25 + vector retrieval → cross-encoder reranking → GPT-4o-mini generation**, all against ~11,000 AsciiDoc modules from the OpenShift docs corpus.
 
 ---
 
-## Setup
+## Getting started
+
+### Prerequisites
+
+| Requirement | Version |
+|---|---|
+| Python | ≥ 3.13 |
+| [`uv`](https://docs.astral.sh/uv/getting-started/installation/) | latest |
+| OpenAI API key | — |
+
+### Install
 
 ```bash
-# 1. Install dependencies
 uv sync
-
-# 2. Set your OpenAI API key
-cp .env.example .env   # or create .env manually
-echo "OPENAI_API_KEY=sk-..." >> .env
 ```
 
-`.env` file format:
+### Configure
+
+```bash
+# Create .env with your OpenAI key
+echo "OPENAI_API_KEY=sk-..." > .env
 ```
-OPENAI_API_KEY=sk-...
-```
 
----
+### Ingest the docs corpus
 
-## Ingest the documentation corpus
-
-This preprocesses the AsciiDoc files and loads them into ChromaDB. **Only needs to be run once** (or again if the corpus changes).
+> Only needs to be run once (or again if the corpus changes).
 
 ```bash
 uv run python -m retrieval --verbose
@@ -46,47 +61,27 @@ This will:
 2. Convert AsciiDoc → Markdown (resolving attributes and conditionals)
 3. Embed with `text-embedding-3-small` and store in `chroma_db/`
 
-Processed files are cached in `data/processed/` so re-runs are fast.
-
 ---
 
-## Start the web UI
+## Usage
+
+### Web UI
 
 ```bash
 uv run python -m api
 ```
 
-Then open **http://127.0.0.1:5000** in your browser.
-
-### Query tab
-
-Click the **Query** tab at the top to ask questions. The pipeline runs:
-- Query rewriting (improves search recall)
-- Hybrid BM25 + vector retrieval
-- Cross-encoder reranking
-- GPT-4o-mini answer generation
-
-You can adjust the number of results, filter by topic or content type, and choose the model.
-
-### Optional flags
+Open **http://127.0.0.1:5000** — use the **Query** tab to ask questions and adjust retrieval settings (model, k, topic filter, content type).
 
 ```bash
-# Different port
-uv run python -m api --port 8080
-
-# Custom corpus / processed dir
-uv run python -m api --docs-root /path/to/openshift-docs --processed-dir /path/to/data/processed
+uv run python -m api --port 8080   # custom port
 ```
 
----
-
-## CLI query (no UI)
+### CLI
 
 ```bash
 uv run python -m services "how do I drain a node before maintenance?"
 ```
-
-Useful flags:
 
 | Flag | Effect |
 |---|---|
@@ -100,24 +95,39 @@ Useful flags:
 
 ---
 
-## Evaluate retrieval quality
+## Evaluation
+
+The project includes a full eval suite with LLM-as-judge scoring, a hyperparameter grid search, and both synthetic and real-user (Stack Overflow) benchmarks.
+
+### Run retrieval benchmark
 
 ```bash
-# Run hybrid eval (default)
-uv run python -m eval
-
-# Semantic (vector only) and keyword (BM25 only)
-uv run python -m eval --mode semantic
-uv run python -m eval --mode keyword
-
-# Quick sanity check on first 10 queries
-uv run python -m eval --n 10
-
-# Compare against a previous run
-uv run python -m eval --baseline data/eval_results/2026-03-19T15-29_hybrid_k20/metrics.json
+uv run python -m eval                        # hybrid (default)
+uv run python -m eval --mode semantic        # vector only
+uv run python -m eval --mode keyword         # BM25 only
+uv run python -m eval --n 10                 # quick sanity check
 ```
 
-See `data/eval_results/EVAL_COMMANDS.md` for the full command reference and baseline numbers.
+### Run LLM-as-judge grid search
+
+Sweeps all combinations of model / k / retrieval mode / rerank / rewrite and ranks by composite score:
+
+```bash
+uv run python -m eval.grid_search
+uv run python -m eval.grid_search --n 10 --workers 8
+```
+
+### Collect real-user benchmark from Stack Overflow
+
+```bash
+uv run python -m eval.collect_so_benchmark --max 500
+```
+
+### Analyse grid search results
+
+```bash
+uv run python -m eval.analysis --results-dir data/eval_results/grid_search/<run>
+```
 
 ---
 
@@ -125,15 +135,14 @@ See `data/eval_results/EVAL_COMMANDS.md` for the full command reference and base
 
 ```
 src/
-├── core/        # Shared config (paths, embedding model, hardcoded attributes)
-├── retrieval/   # Ingestion pipeline + BM25/vector/hybrid search
-├── services/    # RAG pipeline (rewrite → retrieve → rerank → generate → ground)
-├── api/         # Flask web UI (routes + templates)
-└── eval/        # Retrieval benchmark runner
+├── core/        # Shared config (paths, embedding model, attributes)
+├── retrieval/   # Ingestion pipeline + BM25 / vector / hybrid search
+├── services/    # RAG pipeline (rewrite → retrieve → rerank → generate)
+├── api/         # Flask web UI
+└── eval/        # Benchmarks, grid search, LLM-as-judge, SO collector
 data/
-├── processed/   # Preprocessed Markdown files (generated by python -m retrieval)
-├── ground_truth/queries.json   # 100-query benchmark
-└── eval_results/               # Timestamped eval runs
-chroma_db/       # ChromaDB vector store (generated by python -m retrieval)
-openshift-docs/  # AsciiDoc corpus (~11k files)
+└── ground_truth/
+    └── queries.json    # 100-query synthetic benchmark
+chroma_db/              # ChromaDB vector store (generated)
+openshift-docs/         # AsciiDoc corpus (~11k files)
 ```
