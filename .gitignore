@@ -5,19 +5,24 @@ build/
 dist/
 wheels/
 *.egg-info
-data/
-.gitignore
-.openshift-docs/
-
 
 # Virtual environments
 .venv/
-prd.md
-claude.md
+
 # RAG pipeline
 .env
-data/processed/
 chroma_db/
-data/eval_results/
-data/pipeline.log
-data/skipped.jsonl
+
+# Data — keep only ground_truth
+data/
+!data/
+!data/ground_truth/
+!data/ground_truth/**
+
+# Docs corpus
+openshift-docs/
+
+# Project-specific files
+interview.txt
+prd.md
+CLAUDE.md
