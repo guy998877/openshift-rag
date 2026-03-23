@@ -2,6 +2,8 @@
 
 RAG system for OpenShift documentation — answers operational questions from platform engineers, cluster admins, and SREs using the official OpenShift docs corpus.
 
+<video src="assets/demo.mov" controls width="100%"></video>
+
 ---
 
 ## Prerequisites
