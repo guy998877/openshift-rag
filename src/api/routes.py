@@ -59,6 +59,11 @@ def create_app(docs_root: Path, processed_dir: Path) -> Flask:
 _bp = Blueprint("viewer", __name__)
 
 
+@_bp.route("/healthz")
+def healthz():
+    return jsonify({"status": "ok"})
+
+
 @_bp.route("/")
 def index():
     return render_template("index.html")
