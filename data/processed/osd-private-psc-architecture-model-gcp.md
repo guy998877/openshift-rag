@@ -1,0 +1,7 @@
+# Private OpenShift Container Platform on {GCP} with Private Service Connect architecture model
+
+With a private Google Cloud Private Service Connect (PSC) network configuration, your cluster API server endpoint and application routes are private. Public subnets or NAT gateways are not required in your VPC for egress.
+Red Hat SRE management access the cluster over the Google Cloud PSC-enabled private connectivity. The default ingress controller are private. Additional ingress controllers can be public or private. The following diagram shows network connectivity of a private cluster with PSC.
+
+.OpenShift Container Platform on {GCP} deployed on a private network with PSC
+image::484_a_OpenShift_osd_gcp_private_psc_arch_0525.png[Private with PSC architecture model]

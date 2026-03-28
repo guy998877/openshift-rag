@@ -1,0 +1,20 @@
+{
+  "config": {
+    "model": "gpt-4o",
+    "k": 3,
+    "mode": "keyword",
+    "rerank": true,
+    "rewrite": true,
+    "n_queries": 5
+  },
+  "aggregate": {
+    "answer_relevance": 0.0,
+    "faithfulness": null,
+    "context_relevance": null,
+    "recall@5": 0.5,
+    "mrr": 0.6,
+    "avg_ms": 10245,
+    "composite": 0.3667
+  },
+  "total_seconds": 13.6
+}

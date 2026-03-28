@@ -1,0 +1,7 @@
+# Connectivity issues on clusters with private Network Load Balancers
+
+OpenShift Container Platform clusters created with version 4.21 deploy AWS Network Load Balancers (NLB) by default for the `default` ingress controller. In the case of a private NLB, the NLB's client IP address preservation might cause connections to be dropped where the source and destination are the same host. See the AWS's documentation about how to [Troubleshoot your Network Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-troubleshooting.html#loopback-timeout). This IP address preservation has the implication that any customer workloads cohabitating on the same node with the router pods, may not be able send traffic to the private NLB fronting the ingress controller router.
+
+.Procedure
+
+- To mitigate this impact, reschedule your workloads onto nodes separate from those where the router pods are scheduled. Alternatively, rely on the internal pod and service networks for accessing other workloads co-located within the same cluster.

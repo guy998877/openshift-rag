@@ -1,0 +1,121 @@
+# Disabling boot image management
+
+You can disable the boot image management feature so that the Machine Config Operator (MCO) no longer manages or updates the boot image in the affected machine sets. For example, you could disable this feature for the worker nodes in order to use a custom boot image that you do not want changed.
+
+You disable the boot image management feature for the control plane or worker machine sets in your cluster by editing the `MachineConfiguration` object.
+
+> **NOTE:** include::snippets/mco-update-boot-images-intro.adoc[]
+
+Disabling this feature does not rollback the nodes or machine sets to the originally-installed boot image. The machine sets retain the boot image version that was present when the feature was disabled and is not updated if the cluster is upgraded to a new OpenShift Container Platform version in the future. This feature has no effect on existing nodes.
+
+After disabling the feature, you can re-enable the feature at any time. For more information, see "Enabling updated boot images".
+
+.Procedure
+
+1. Edit the `MachineConfiguration` object, named `cluster`, by using the following command::
+```bash
+$ oc edit MachineConfiguration cluster
+```
+
+1. Disable the feature for some or all of your machine sets:
+```yaml
+apiVersion: operator.openshift.io/v1
+kind: MachineConfiguration
+metadata:
+  name: cluster
+spec:
+# ...
+  managedBootImages:
+    machineManagers:
+    - apiGroup: machine.openshift.io
+      resource: machinesets
+      selection:
+        mode: None
+    - apiGroup: machine.openshift.io
+      resource: controlplanemachinesets
+      selection:
+        mode: None
+```
+--
+where:
+
+`spec.managedBootImages`:: Configures the boot image management feature.
+
+`spec.managedBootImages.machineManagers.selection.mode.None`:: Specifies that the feature is disabled for all machine sets in the cluster. Set the selection mode to `None` for one or both of the following resources to disable the feature for that resource.
+
+- `controlplanemachinesets`: Disable boot image management for control plane machine sets.
+
+- `machinesets`: Disables boot image management for worker machine sets.
+--
+
+////
+Hiding per djoshy https://github.com/openshift/openshift-docs/pull/93065#pullrequestreview-2844549815
+- Optional: Disable the default behavior for specific machine sets:
+```yaml
+apiVersion: operator.openshift.io/v1
+kind: MachineConfiguration
+metadata:
+  name: cluster
+spec:
+# ...
+  managedBootImages:
+    machineManagers:
+    - apiGroup: machine.openshift.io
+      resource: machinesets
+      selection:
+        mode: Partial
+        partial:
+          machineResourceSelector:
+            matchLabels:
+              region: "east"
+```
+where:
+
+`spec.managedBootImages`:: Specifies the configuration of the boot image management feature.
+`spec.managedBootImages.machineManagers.apiGroup`:: Specifies an API group. This must be `machine.openshift.io`.
+`spec.managedBootImages.machineManagers.resource`:: Specifies the resource within the specified API group to apply the change. This must be `machinesets`.
+`spec.managedBootImages.machineManagers.selection.mode`:: Specifies that the feature is disabled for specific machine sets.
+`spec.managedBootImages.machineManagers.selection.partial.machineResourceSelector`:: Specifies that the feature is enabled only for machine sets with these labels. The feature is disabled for any machine set that does not contain the listed labels. 
+////
+
+.Verification
+
+- View the current state of the boot image management feature by using the following command to view the machine configuration object:
+```bash
+$ oc get machineconfiguration cluster -o yaml
+```
+.Example machine set with the boot image reference
+```yaml
+kind: MachineConfiguration
+metadata:
+  name: cluster
+# ...
+status:
+  conditions:
+  - lastTransitionTime: "2025-05-01T20:11:49Z"
+    message: Reconciled 2 of 4 MAPI MachineSets | Reconciled 0 of 0 CAPI MachineSets
+      | Reconciled 0 of 0 CAPI MachineDeployments
+    reason: BootImageUpdateConfigurationUpdated
+    status: "True"
+    type: BootImageUpdateProgressing
+  - lastTransitionTime: "2025-05-01T19:30:13Z"
+    message: 0 Degraded MAPI MachineSets | 0 Degraded CAPI MachineSets | 0 CAPI MachineDeployments
+    reason: BootImageUpdateConfigurationUpdated
+    status: "False"
+    type: BootImageUpdateDegraded
+  managedBootImagesStatus:
+    machineManagers:
+    - apiGroup: machine.openshift.io
+      resource: controlplanemachinesets
+      selection:
+        mode: None
+    - apiGroup: machine.openshift.io
+      resource: machinesets
+      selection:
+        mode: All
+```
+--
+where:
+
+`status.managedBootImagesStatus.machineManagers.selection.mode`:: Specifies that the boot image management feature is disabled when set to `None`. In this example, the boot image management feature is disabled for control plane machine sets and enabled for worker machine sets.
+--

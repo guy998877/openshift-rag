@@ -1,0 +1,10 @@
+# Application support for {cloud-auth-short} service account tokens
+
+Applications in customer workloads on OpenShift Container Platform clusters that use {cloud-auth-first} can authenticate by using {cloud-auth-short}.
+To use this authentication method with your applications, you must complete configuration steps on the cloud provider console and your OpenShift Container Platform cluster.
+
+// Unsetting attributes defined in authentication/managing_cloud_provider_credentials/cco-short-term-creds.adoc above include:: line
+:!context:
+:!cloud-auth-first:
+:!cloud-auth-full:
+:!cloud-auth-short:

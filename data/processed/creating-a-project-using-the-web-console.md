@@ -1,0 +1,34 @@
+# Creating a project by using the web console
+
+You can use the OpenShift Container Platform web console to create a project in your cluster.
+
+> **NOTE:** Projects starting with `openshift-` and `kube-` are considered critical by OpenShift Container Platform. As such, OpenShift Container Platform does not allow you to create projects starting with `openshift-` using the web console.
+
+.Prerequisites
+
+- Ensure that you have the appropriate roles and permissions to create projects, applications, and other workloads in OpenShift Container Platform.
+
+.Procedure
+
+- If you are using the *Administrator* perspective:
+.. Navigate to *Home* -> *Projects*.
+.. Click *Create Project*:
+... In the *Create Project* dialog box, enter a unique name, such as `myproject`, in the *Name* field.
+... Optional: Add the *Display name* and *Description* details for the project.
+... Click *Create*.
+The dashboard for your project is displayed.
+
+.. Optional: Select the *Details* tab to view the project details.
+.. Optional: If you have adequate permissions for a project, you can use the *Project Access* tab to provide or revoke admin, edit, and view privileges for the project.
+
+- If you are using the *Developer* perspective:
+.. Click the *Project* menu and select *Create Project*:
+.Create project
+image::odc_create_project.png[]
+
+... In the *Create Project* dialog box, enter a unique name, such as `myproject`, in the *Name* field.
+... Optional: Add the *Display name* and *Description* details for the project.
+... Click *Create*.
+.. Optional: Use the left navigation panel to navigate to the *Project* view and see the dashboard for your project.
+.. Optional: In the project dashboard, select the *Details* tab to view the project details.
+.. Optional: If you have adequate permissions for a project, you can use the *Project Access* tab of the project dashboard to provide or revoke admin, edit, and view privileges for the project.

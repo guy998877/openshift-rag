@@ -1,0 +1,34 @@
+# Setting Velero CPU and memory resource allocations
+
+You set the CPU and memory resource allocations for the `Velero` pod by editing the  `DataProtectionApplication` custom resource (CR) manifest.
+
+.Prerequisites
+
+- You must have the OpenShift API for Data Protection (OADP) Operator installed.
+
+.Procedure
+
+- Edit the values in the `spec.configuration.velero.podConfig.ResourceAllocations` block of the `DataProtectionApplication` CR manifest, as in the following example:
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: <dpa_sample>
+spec:
+# ...
+  configuration:
+    velero:
+      podConfig:
+        nodeSelector: <node_selector>
+        resourceAllocations:
+          limits:
+            cpu: "1"
+            memory: 1024Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+```
+where:
+`nodeSelector`:: Specifies the node selector to be supplied to Velero podSpec.
+`resourceAllocations`:: Specifies the resource allocations listed for average usage.
+> **NOTE:** Kopia is an option in OADP 1.3 and later releases. You can use Kopia for file system backups, and Kopia is your only option for Data Mover cases with the built-in Data Mover. Kopia is more resource intensive than Restic, and you might need to adjust the CPU and memory requirements accordingly.

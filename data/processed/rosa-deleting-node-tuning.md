@@ -1,0 +1,24 @@
+# Deleting node tuning configurations
+
+You can delete tuning configurations if you no longer need them by using the OpenShift Container Platform (ROSA) CLI, `rosa`.
+
+> **NOTE:** You cannot delete a tuning configuration referenced in a machine pool. You must first remove the tuning configuration from all machine pools before you can delete  it.
+
+.Prerequisites
+
+- You have downloaded the latest version of the ROSA CLI.
+- You have a cluster on the latest version .
+- Your cluster has a node tuning configuration that you want delete.
+
+.Procedure
+
+- To delete the tuning configurations, run the following command:
+```bash
+$ rosa delete tuning-config -c <cluster_id> <name_of_tuning>
+```
+The tuning configuration on the cluster is deleted
+.Example output
+```bash
+? Are you sure you want to delete tuning config sample-tuning on cluster sample-cluster? Yes
+I: Successfully deleted tuning config 'sample-tuning' from cluster 'sample-cluster'
+```

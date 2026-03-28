@@ -1,0 +1,25 @@
+{
+  "config": {
+    "model": "gpt-4.1",
+    "k": 5,
+    "mode": "keyword",
+    "rerank": false,
+    "rewrite": true,
+    "n_queries": 20
+  },
+  "aggregate": {
+    "answer_relevance": 0.9375,
+    "faithfulness": 0.5833,
+    "context_relevance": 0.4105,
+    "recall@1": 0.575,
+    "recall@3": 0.8083,
+    "recall@5": 0.8083,
+    "precision@1": 0.6,
+    "precision@3": 0.3,
+    "precision@5": 0.18,
+    "mrr": 0.7417,
+    "avg_ms": 32448,
+    "composite": 0.6963
+  },
+  "total_seconds": 186.8
+}

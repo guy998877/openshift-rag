@@ -1,0 +1,132 @@
+# Restarting the cluster
+
+You can restart your cluster after it has been shut down gracefully.
+
+.Prerequisites
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+- This procedure assumes that you gracefully shut down the cluster.
+
+.Procedure
+
+1. Turn on the control plane nodes.
+- If you are using the `admin.kubeconfig` from the cluster installation and the API virtual IP address (VIP) is up, complete the following steps:
+.. Set the `KUBECONFIG` environment variable to the `admin.kubeconfig` path.
+.. For each control plane node in the cluster, run the following command:
+```bash
+$ oc adm uncordon <node>
+```
+- If you do not have access to your `admin.kubeconfig` credentials, complete the following steps:
+.. Use SSH to connect to a control plane node.
+.. Copy the `localhost-recovery.kubeconfig` file to the `/root` directory.
+.. Use that file to run the following command for each control plane node in the cluster:
+```bash
+$ oc adm uncordon <node>
+```
+
+1. Power on any cluster dependencies, such as external storage or an LDAP server.
+
+1. Start all cluster machines.
+Use the appropriate method for your cloud environment to start the machines, for example, from your cloud provider's web console.
+Wait approximately 10 minutes before continuing to check the status of control plane nodes.
+
+1. Verify that all control plane nodes are ready.
+```bash
+$ oc get nodes -l node-role.kubernetes.io/master
+```
+The control plane nodes are ready if the status is `Ready`, as shown in the following output:
+```bash
+NAME                           STATUS   ROLES                  AGE   VERSION
+ip-10-0-168-251.ec2.internal   Ready    control-plane,master   75m   v1.34.2
+ip-10-0-170-223.ec2.internal   Ready    control-plane,master   75m   v1.34.2
+ip-10-0-211-16.ec2.internal    Ready    control-plane,master   75m   v1.34.2
+```
+
+1. If the control plane nodes are _not_ ready, then check whether there are any pending certificate signing requests (CSRs) that must be approved.
+
+.. Get the list of current CSRs:
+```bash
+$ oc get csr
+```
+
+.. Review the details of a CSR to verify that it is valid:
+```bash
+$ oc describe csr <csr_name> <1>
+```
+<1> `<csr_name>` is the name of a CSR from the list of current CSRs.
+
+.. Approve each valid CSR:
+```bash
+$ oc adm certificate approve <csr_name>
+```
+
+1. After the control plane nodes are ready, verify that all worker nodes are ready.
+```bash
+$ oc get nodes -l node-role.kubernetes.io/worker
+```
+The worker nodes are ready if the status is `Ready`, as shown in the following output:
+```bash
+NAME                           STATUS   ROLES    AGE   VERSION
+ip-10-0-179-95.ec2.internal    Ready    worker   64m   v1.34.2
+ip-10-0-182-134.ec2.internal   Ready    worker   64m   v1.34.2
+ip-10-0-250-100.ec2.internal   Ready    worker   64m   v1.34.2
+```
+
+1. If the worker nodes are _not_ ready, then check whether there are any pending certificate signing requests (CSRs) that must be approved.
+
+.. Get the list of current CSRs:
+```bash
+$ oc get csr
+```
+
+.. Review the details of a CSR to verify that it is valid:
+```bash
+$ oc describe csr <csr_name> <1>
+```
+<1> `<csr_name>` is the name of a CSR from the list of current CSRs.
+
+.. Approve each valid CSR:
+```bash
+$ oc adm certificate approve <csr_name>
+```
+
+1. After the control plane and compute nodes are ready, mark all the nodes in the cluster as schedulable by running the following command:
+```bash
+$ for node in $(oc get nodes -o jsonpath='{.items[*].metadata.name}'); do echo ${node} ; oc adm uncordon ${node} ; done
+```
+
+1. Verify that the cluster started properly.
+
+.. Check that there are no degraded cluster Operators.
+```bash
+$ oc get clusteroperators
+```
+Check that there are no cluster Operators with the `DEGRADED` condition set to `True`.
+```bash
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
+authentication                             4.21.0    True        False         False      59m
+cloud-credential                           4.21.0    True        False         False      85m
+cluster-autoscaler                         4.21.0    True        False         False      73m
+config-operator                            4.21.0    True        False         False      73m
+console                                    4.21.0    True        False         False      62m
+csi-snapshot-controller                    4.21.0    True        False         False      66m
+dns                                        4.21.0    True        False         False      76m
+etcd                                       4.21.0    True        False         False      76m
+...
+```
+
+.. Check that all nodes are in the `Ready` state:
+```bash
+$ oc get nodes
+```
+Check that the status for all nodes is `Ready`.
+```bash
+NAME                           STATUS   ROLES                  AGE   VERSION
+ip-10-0-168-251.ec2.internal   Ready    control-plane,master   82m   v1.34.2
+ip-10-0-170-223.ec2.internal   Ready    control-plane,master   82m   v1.34.2
+ip-10-0-179-95.ec2.internal    Ready    worker                 70m   v1.34.2
+ip-10-0-182-134.ec2.internal   Ready    worker                 70m   v1.34.2
+ip-10-0-211-16.ec2.internal    Ready    control-plane,master   82m   v1.34.2
+ip-10-0-250-100.ec2.internal   Ready    worker                 69m   v1.34.2
+```
+If the cluster did not start properly, you might need to restore your cluster using an etcd backup. For more information, see "Restoring to a previous cluster state".

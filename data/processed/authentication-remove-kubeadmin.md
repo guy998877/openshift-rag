@@ -1,0 +1,19 @@
+# Removing the kubeadmin user
+
+After you define an identity provider and create a new `cluster-admin`
+user, you can remove the `kubeadmin` to improve cluster security.
+
+> **WARNING:** If you follow this procedure before another user is a `cluster-admin`, then OpenShift Container Platform must be reinstalled. It is not possible to undo this command.
+
+.Prerequisites
+
+- You must have configured at least one identity provider.
+- You must have added the `cluster-admin` role to a user.
+- You must be logged in as an administrator.
+
+.Procedure
+
+- Remove the `kubeadmin` secrets:
+```bash
+$ oc delete secrets kubeadmin -n kube-system
+```

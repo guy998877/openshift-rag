@@ -1,0 +1,5 @@
+# Validation lifecycle
+
+Preflight validation attempts to validate every module loaded in the cluster. Preflight stops running validation on a `Module` resource after the validation is successful. If module validation fails, you can change the module definitions and Preflight tries to validate the module again in the next loop.
+
+If you want to run Preflight validation for an additional kernel, then you should create another `PreflightValidationOCP` resource for that kernel. After all the modules have been validated, it is recommended to delete the `PreflightValidationOCP` resource.

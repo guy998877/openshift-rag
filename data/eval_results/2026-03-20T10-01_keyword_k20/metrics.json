@@ -1,0 +1,105 @@
+{
+  "type": "retrieval",
+  "timestamp": "2026-03-20T10:01:58.743540Z",
+  "config": {
+    "k_retrieve": 20,
+    "mode": "keyword",
+    "use_rerank": false,
+    "n_queries": 3,
+    "collection": "openshift_docs_v0"
+  },
+  "aggregate": {
+    "recall@1": 1.0,
+    "precision@1": 1.0,
+    "recall@3": 1.0,
+    "precision@3": 0.3333,
+    "recall@5": 1.0,
+    "precision@5": 0.2,
+    "recall@10": 1.0,
+    "precision@10": 0.1,
+    "recall@20": 1.0,
+    "precision@20": 0.05,
+    "mrr": 1.0,
+    "any_hit@5": 1.0,
+    "any_hit@10": 1.0,
+    "avg_ms": 8
+  },
+  "total_seconds": 0.0,
+  "results": [
+    {
+      "id": "cpmso-config-options",
+      "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "cpmso-config-options"
+      ],
+      "elapsed_ms": 11,
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "cpmso-config-options"
+      ],
+      "gold_missed": []
+    },
+    {
+      "id": "oadp-creating-alerting-rule",
+      "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-creating-alerting-rule"
+      ],
+      "elapsed_ms": 7,
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "oadp-creating-alerting-rule"
+      ],
+      "gold_missed": []
+    },
+    {
+      "id": "olm-arch-olm-operator",
+      "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-arch-olm-operator"
+      ],
+      "elapsed_ms": 6,
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "olm-arch-olm-operator"
+      ],
+      "gold_missed": []
+    }
+  ]
+}

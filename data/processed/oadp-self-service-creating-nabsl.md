@@ -1,0 +1,149 @@
+# Creating a NonAdminBackupStorageLocation CR
+
+Create a `NonAdminBackupStorageLocation` (NABSL) custom resource (CR) to define backup storage locations in your authorized namespace. With this feature, you can store backups in a cloud storage that meets your application requirements.
+
+.Prerequisites
+
+- You are logged in to the cluster as a namespace admin user.
+- The cluster administrator has installed the OADP Operator.
+- The cluster administrator has configured the `DataProtectionApplication` (DPA) CR to enable OADP Self-Service.
+- The cluster administrator has created a namespace for you and has authorized you to operate from that namespace.
+
+.Procedure
+
+1. Create a `Secret` CR by using the cloud credentials file content for your cloud provider. Run the following command:
+```bash
+$ oc create secret generic cloud-credentials -n test-nac-ns --from-file <cloud_key_name>=<cloud_credentials_file>
+```
+where:
+`<cloud_key_name>`:: Specifies the cloud provider key name. In this example, the `Secret` name is `cloud-credentials` and the authorized namespace name is `test-nac-ns`.
+
+`<cloud_credentials_file>`:: Specifies the cloud credentials file name.
+
+1. To create a `NonAdminBackupStorageLocation` CR, create a YAML manifest file with the following configuration:
+.Example `NonAdminBackupStorageLocation` CR
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: NonAdminBackupStorageLocation
+metadata:
+  name: test-nabsl 
+  namespace: test-nac-ns
+spec:
+  backupStorageLocationSpec:
+    config:
+      profile: default
+      region: <region_name>
+    credential:
+      key: cloud
+      name: cloud-credentials
+    objectStorage:
+      bucket: <bucket_name>
+      prefix: velero
+    provider: aws
+```
+where:
+`namespace`:: Specifies the namespace you are authorized to operate from. For example, `test-nac-ns`.
+`<region_name>`:: Specifies the region name for your cloud provider.
+`<bucket_name>`:: Specifies the bucket name for storing backups.
+
+1. To apply the NABSL CR configuration, run the following command:
+```bash
+$ oc apply -f <nabsl_cr_filename>
+```
+Replace `<nabsl_cr_filename>` with the file name containing the NABSL CR configuration.
+
+.Verification
+
+1. To verify that the NABSL CR is in the `New` phase and is pending administrator approval, run the following command:
+```bash
+$ oc get nabsl test-nabsl -o yaml
+```
+.Example output
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: NonAdminBackupStorageLocation
+...
+status:
+  conditions:
+  - lastTransitionTime: "2025-02-26T09:07:15Z"
+    message: NonAdminBackupStorageLocation spec validation successful
+    reason: BslSpecValidation
+    status: "True"
+    type: Accepted
+  - lastTransitionTime: "2025-02-26T09:07:15Z"
+    message: NonAdminBackupStorageLocationRequest approval pending
+    reason: BslSpecApprovalPending
+    status: "False"
+    type: ClusterAdminApproved
+  phase: New
+  veleroBackupStorageLocation:
+    nacuuid: test-nac-test-bsl-c...d4389a1930
+    name: test-nac-test-bsl-cd....1930
+    namespace: openshift-adp
+```
+where:
+
+`message`:: Contains the `NonAdminBackupStorageLocationRequest approval pending` message.
+`phase`:: Specifies the status of the phase. In this example, the phase is `New`.
+
+1. After the cluster administrator approves the `NonAdminBackupStorageLocationRequest` CR request, verify that the NABSL CR is successfully created by running the following command:
+```bash
+$ oc get nabsl test-nabsl -o yaml
+```
+.Example output
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: NonAdminBackupStorageLocation
+metadata:
+  creationTimestamp: "2025-02-19T09:30:34Z"
+  finalizers:
+  - nonadminbackupstoragelocation.oadp.openshift.io/finalizer
+  generation: 1
+  name: test-nabsl
+  namespace: test-nac-ns
+  resourceVersion: "159973"
+  uid: 4a..80-3260-4ef9-a3..5a-00...d1922
+spec:
+  backupStorageLocationSpec:
+    credential:
+      key: cloud
+      name: cloud-credentials
+    objectStorage:
+      bucket: oadp...51rrdqj
+      prefix: velero
+    provider: aws
+status:
+  conditions:
+  - lastTransitionTime: "2025-02-19T09:30:34Z"
+    message: NonAdminBackupStorageLocation spec validation successful
+    reason: BslSpecValidation
+    status: "True"
+    type: Accepted
+  - lastTransitionTime: "2025-02-19T09:30:34Z"
+    message: Secret successfully created in the OADP namespace
+    reason: SecretCreated
+    status: "True"
+    type: SecretSynced
+  - lastTransitionTime: "2025-02-19T09:30:34Z"
+    message: BackupStorageLocation successfully created in the OADP namespace
+    reason: BackupStorageLocationCreated
+    status: "True"
+    type: BackupStorageLocationSynced
+  phase: Created
+  veleroBackupStorageLocation:
+    nacuuid: test-nac-..f933a-4ec1-4f6a-8099-ee...b8b26
+    name: test-nac-test-nabsl-36...11ab8b26
+    namespace: openshift-adp
+    status:
+      lastSyncedTime: "2025-02-19T11:47:10Z"
+      lastValidationTime: "2025-02-19T11:47:31Z"
+      phase: Available
+```
+where:
+
+`message: NonAdminBackupStorageLocation spec validation successful`:: Specifies that the NABSL `spec` is validated and approved by the cluster administrator.
+`message: Secret successfully created in the OADP namespace`:: Specifies that the `secret` object is successfully created in the `openshift-adp` namespace.
+`message: BackupStorageLocation successfully created in the OADP namespace`:: Specifies that the associated `Velero` `BackupStorageLocation` is successfully created in the `openshift-adp` namespace.
+`nacuuid`:: Specifies the NAC that is orchestrating the NABSL CR.
+`name`:: Specifies the name of the associated `Velero` backup storage location object.
+`phase: Available`:: Specifies that the NABSL is ready for use.

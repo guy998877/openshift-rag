@@ -1,0 +1,60 @@
+// Module included in the following assemblies:
+//
+// * storage/understanding-persistent-storage.adoc
+//* microshift_storage/understanding-persistent-storage-microshift.adoc
+
+# Changing fsGroup at the pod level
+
+You can set the set the `fsGroupChangePolicy` parameter in a new or existing deployment, and then the pods that it manages will have this parameter value. You can similarly do this for a statefulset. You cannot edit an existing pod to set `fsGroupChangePolicy`; however, you can set this parameter when creating a new pod.
+
+This procedure describes how to set the `fsGroupChangePolicy` parameter in an existing deployment.
+
+.Prerequisites
+
+- Access to the OpenShift Container Platform console.
+
+.Procedure
+
+To set the `fsGroupChangePolicy` parameter in an existing deployment:
+
+1. Click *Workloads* > *Deployments*.
+
+1. On the *Deployment* page, click the desired deployment.
+
+1. On the *Deployment details* page, click the *YAML* tab.
+
+1. Edit the deployment's YAML file under `spec.template.spec.securityContext` using the following example file:
+.Example deployment YAML file setting `fsGroupChangePolicy`
+```yaml
+...
+spec:
+replicas: 3
+selector:
+matchLabels:
+app: my-app
+template:
+metadata:
+creationTimestamp: null
+labels:
+app: my-app
+spec:
+containers:
+- name: container
+image: 'image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest'
+ports:
+- containerPort: 8080
+protocol: TCP
+resources: {}
+terminationMessagePath: /dev/termination-log
+terminationMessagePolicy: File
+imagePullPolicy: Always
+restartPolicy: Always
+terminationGracePeriodSeconds: 30
+dnsPolicy: ClusterFirst
+securityContext:
+  fsGroupChangePolicy: OnRootMismatch <1>
+...
+```
+<1> `OnRootMismatch` specifies skipping recursive permission change, thus helping to avoid pod timeout problems. The default value is `Always`, which always changes permission and ownership of the volume when a volume is mounted.
+
+1. Click *Save*.

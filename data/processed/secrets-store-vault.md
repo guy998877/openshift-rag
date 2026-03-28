@@ -1,0 +1,300 @@
+# Mounting secrets from HashiCorp Vault
+
+You can use the Secrets Store CSI Driver Operator to mount secrets from HashiCorp Vault to a Container Storage Interface (CSI) volume in OpenShift Container Platform.
+
+> **IMPORTANT:** Mounting secrets from HashiCorp Vault by using the Secrets Store CSI Driver Operator has been tested with the following cloud providers: * Amazon Web Services (AWS) * Microsoft Azure Other cloud providers might work, but have not been tested yet. Additional cloud providers might be tested in the future.
+
+.Prerequisites
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+- You have installed the Secrets Store CSI Driver Operator. See "Installing the Secrets Store CSI driver" for instructions.
+- You have installed Helm.
+
+.Procedure
+
+1. Add the HashiCorp Helm repository by running the following command:
+```bash
+$ helm repo add hashicorp https://helm.releases.hashicorp.com
+```
+
+1. Update all repositories to ensure that Helm is aware of the latest versions by running the following command:
+```bash
+$ helm repo update
+```
+
+1. Install the HashiCorp Vault provider:
+
+.. Create a new project for Vault by running the following command:
+```bash
+$ oc new-project vault
+```
+
+.. Label the `vault` namespace for pod security admission by running the following command:
+```bash
+$ oc label ns vault security.openshift.io/scc.podSecurityLabelSync=false pod-security.kubernetes.io/enforce=privileged pod-security.kubernetes.io/audit=privileged pod-security.kubernetes.io/warn=privileged --overwrite
+```
+
+.. Grant privileged access to the `vault` service account by running the following command:
+```bash
+$ oc adm policy add-scc-to-user privileged -z vault -n vault
+```
+
+.. Grant privileged access to the `vault-csi-provider` service account by running the following command:
+```bash
+$ oc adm policy add-scc-to-user privileged -z vault-csi-provider -n vault
+```
+
+.. Deploy HashiCorp Vault by running the following command:
+```bash
+$ helm install vault hashicorp/vault --namespace=vault \
+  --set "server.dev.enabled=true" \
+  --set "injector.enabled=false" \
+  --set "csi.enabled=true" \
+  --set "global.openshift=true" \
+  --set "injector.agentImage.repository=docker.io/hashicorp/vault" \
+  --set "server.image.repository=docker.io/hashicorp/vault" \
+  --set "csi.image.repository=docker.io/hashicorp/vault-csi-provider" \
+  --set "csi.agent.image.repository=docker.io/hashicorp/vault" \
+  --set "csi.daemonSet.providersDir=/var/run/secrets-store-csi-providers"
+```
+
+.. Patch the `vault-csi-driver` daemon set to set the `securityContext` to `privileged` by running the following command:
+```bash
+$ oc patch daemonset -n vault vault-csi-provider --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/securityContext", "value": {"privileged": true} }]'
+```
+
+.. Verify that the `vault-csi-provider` pods have started properly by running the following command:
+```bash
+$ oc get pods -n vault
+```
+.Example output
+```bash
+NAME                       READY   STATUS    RESTARTS   AGE
+vault-0                    1/1     Running   0          24m
+vault-csi-provider-87rgw   1/2     Running   0          5s
+vault-csi-provider-bd6hp   1/2     Running   0          4s
+vault-csi-provider-smlv7   1/2     Running   0          5s
+```
+
+1. Configure HashiCorp Vault to store the required secrets:
+
+.. Create a secret by running the following command:
+```bash
+$ oc exec vault-0 --namespace=vault -- vault kv put secret/example1 testSecret1=my-secret-value
+```
+
+.. Verify that the secret is readable at the path `secret/example1` by running the following command:
+```bash
+$ oc exec vault-0 --namespace=vault -- vault kv get secret/example1
+```
+.Example output
+```bash
+= Secret Path =
+secret/data/example1
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2024-04-05T07:05:16.713911211Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            1
+
+=== Data ===
+Key            Value
+---            -----
+testSecret1    my-secret-value
+```
+
+1. Configure Vault to use Kubernetes authentication:
+
+.. Enable the Kubernetes auth method by running the following command:
+```bash
+$ oc exec vault-0 --namespace=vault -- vault auth enable kubernetes
+```
+.Example output
+```bash
+Success! Enabled kubernetes auth method at: kubernetes/
+```
+
+.. Configure the Kubernetes auth method:
+
+... Set the token reviewer as an environment variable by running the following command:
+```bash
+$ TOKEN_REVIEWER_JWT="$(oc exec vault-0 --namespace=vault -- cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+```
+... Set the Kubernetes service IP address as an environment variable by running the following command:
+```bash
+$ KUBERNETES_SERVICE_IP="$(oc get svc kubernetes --namespace=default -o go-template="{{ .spec.clusterIP }}")"
+```
+
+... Update the Kubernetes auth method by running the following command:
+```bash
+$ oc exec -i vault-0 --namespace=vault -- vault write auth/kubernetes/config \
+  issuer="https://kubernetes.default.svc.cluster.local" \
+  token_reviewer_jwt="${TOKEN_REVIEWER_JWT}" \
+  kubernetes_host="https://${KUBERNETES_SERVICE_IP}:443" \
+  kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+```
+.Example output
+```bash
+Success! Data written to: auth/kubernetes/config
+```
+
+.. Create a policy for the application by running the following command:
+```bash
+$ oc exec -i vault-0 --namespace=vault -- vault policy write csi -<<EOF
+  path "secret/data/*" {
+  capabilities = ["read"]
+  }
+  EOF
+```
+.Example output
+```bash
+Success! Uploaded policy: csi
+```
+
+.. Create an authentication role to access the application by running the following command:
+```bash
+$ oc exec -i vault-0 --namespace=vault -- vault write auth/kubernetes/role/csi \
+  bound_service_account_names=default \
+  bound_service_account_namespaces=default,test-ns,negative-test-ns,my-namespace \
+  policies=csi \
+  ttl=20m
+```
+.Example output
+```bash
+Success! Data written to: auth/kubernetes/role/csi
+```
+
+1. Create a secret provider class to define your secrets store provider:
+
+.. Create a YAML file that defines the `SecretProviderClass` object:
+.Example `secret-provider-class-vault.yaml`
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: my-vault-provider                   #<1>
+  namespace: my-namespace                   #<2>
+spec:
+  provider: vault                           #<3>
+  parameters:                               #<4>
+    roleName: "csi"
+    vaultAddress: "http://vault.vault:8200"
+    objects:  |
+      - secretPath: "secret/data/example1"
+        objectName: "testSecret1"
+        secretKey: "testSecret1"
+```
+<1> Specify the name for the secret provider class.
+<2> Specify the namespace for the secret provider class.
+<3> Specify the provider as `vault`.
+<4> Specify the provider-specific configuration parameters.
+
+.. Create the `SecretProviderClass` object by running the following command:
+```bash
+$ oc create -f secret-provider-class-vault.yaml
+```
+
+1. Create a deployment to use this secret provider class:
+
+.. Create a YAML file that defines the `Deployment` object:
+.Example `deployment.yaml`
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-deployment                                    #<1>
+  namespace: my-namespace                                     #<2>
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - image: registry.k8s.io/e2e-test-images/busybox:1.29-4
+        name: busybox
+        imagePullPolicy: IfNotPresent
+        command:
+        - "/bin/sleep"
+        - "10000"
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "my-vault-provider"        #<3>
+```
+<1> Specify the name for the deployment.
+<2> Specify the namespace for the deployment. This must be the same namespace as the secret provider class.
+<3> Specify the name of the secret provider class.
+
+.. Create the `Deployment` object by running the following command:
+```bash
+$ oc create -f deployment.yaml
+```
+
+.Verification
+
+.. Verify that all of the `vault` pods are running properly by running the following command:
+```bash
+$ oc get pods -n vault
+```
+.Example output
+```bash
+NAME                       READY   STATUS    RESTARTS   AGE
+vault-0                    1/1     Running   0          43m
+vault-csi-provider-87rgw   2/2     Running   0          19m
+vault-csi-provider-bd6hp   2/2     Running   0          19m
+vault-csi-provider-smlv7   2/2     Running   0          19m
+```
+
+.. Verify that all of the `secrets-store-csi-driver` pods are running by running the following command:
+```bash
+$ oc get pods -n openshift-cluster-csi-drivers | grep -E "secrets"
+```
+.Example output
+```bash
+secrets-store-csi-driver-node-46d2g                  3/3     Running   0             45m
+secrets-store-csi-driver-node-d2jjn                  3/3     Running   0             45m
+secrets-store-csi-driver-node-drmt4                  3/3     Running   0             45m
+secrets-store-csi-driver-node-j2wlt                  3/3     Running   0             45m
+secrets-store-csi-driver-node-v9xv4                  3/3     Running   0             45m
+secrets-store-csi-driver-node-vlz28                  3/3     Running   0             45m
+secrets-store-csi-driver-operator-84bd699478-fpxrw   1/1     Running   0             47m
+```
+
+1. Verify that you can access the secrets from your HashiCorp Vault in the pod volume mount:
+
+.. List the secrets in the pod mount by running the following command:
+```bash
+$ oc exec busybox-deployment-<hash> -n my-namespace -- ls /mnt/secrets-store/
+```
+.Example output
+```bash
+testSecret1
+```
+
+.. View a secret in the pod mount by running the following command:
+```bash
+$ oc exec busybox-deployment-<hash> -n my-namespace -- cat /mnt/secrets-store/testSecret1
+```
+.Example output
+```bash
+my-secret-value
+```

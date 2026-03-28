@@ -1,0 +1,12 @@
+# Creating the LDAP secret
+
+To use the identity provider, you must define an OpenShift Container Platform `Secret` object that contains the `bindPassword` field.
+
+.Procedure
+
+- Create a `Secret` object that contains the `bindPassword` field:
+```bash
+$ oc create secret generic ldap-secret --from-literal=bindPassword=<secret> -n openshift-config <1>
+```
+<1> The secret key containing the bindPassword for the `--from-literal` argument must be called `bindPassword`.
+> **TIP:** You can alternatively apply the following YAML to create the secret: [source,yaml] ---- apiVersion: v1 kind: Secret metadata: name: ldap-secret namespace: openshift-config type: Opaque data: bindPassword: <base64_encoded_bind_password> ----

@@ -1,0 +1,67 @@
+# Hibernating a cluster
+
+You can hibernate a cluster for up to 90 days. The cluster can recover if certificates expire while the cluster was in hibernation.
+
+.Prerequisites
+
+- The cluster has been running for at least 24 hours to allow the first certificate rotation to complete.
+> **IMPORTANT:** If you must hibernate your cluster before the 24 hour certificate rotation, use the following procedure instead: link:https://www.redhat.com/en/blog/enabling-openshift-4-clusters-to-stop-and-resume-cluster-vms[Enabling OpenShift 4 Clusters to Stop and Resume Cluster VMs].
+
+- You have taken an etcd backup.
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+.Procedure
+
+1. Confirm that your cluster has been installed for at least 24 hours.
+
+1. Ensure that all nodes are in a good state by running the following command:
+```bash
+$ oc get nodes
+```
+.Example output
+```bash
+NAME                                      STATUS  ROLES                 AGE   VERSION
+ci-ln-812tb4k-72292-8bcj7-master-0        Ready	  control-plane,master  32m   v1.34.2
+ci-ln-812tb4k-72292-8bcj7-master-1        Ready	  control-plane,master  32m   v1.34.2
+ci-ln-812tb4k-72292-8bcj7-master-2        Ready	  control-plane,master  32m   v1.34.2
+Ci-ln-812tb4k-72292-8bcj7-worker-a-zhdvk  Ready	  worker                19m   v1.34.2
+ci-ln-812tb4k-72292-8bcj7-worker-b-9hrmv  Ready	  worker                19m   v1.34.2
+ci-ln-812tb4k-72292-8bcj7-worker-c-q8mw2  Ready	  worker                19m   v1.34.2
+```
+All nodes should show `Ready` in the `STATUS` column.
+
+1. Ensure that all cluster Operators are in a good state by running the following command:
+```bash
+$ oc get clusteroperators
+```
+.Example output
+```bash
+NAME                      VERSION   AVAILABLE  PROGRESSING  DEGRADED  SINCE   MESSAGE
+authentication            4.21.0-0  True       False        False     51m
+baremetal                 4.21.0-0  True       False        False     72m
+cloud-controller-manager  4.21.0-0  True       False        False     75m
+cloud-credential          4.21.0-0  True       False        False     77m
+cluster-api               4.21.0-0  True       False        False     42m
+cluster-autoscaler        4.21.0-0  True       False        False     72m
+config-operator           4.21.0-0  True       False        False     72m
+console                   4.21.0-0  True       False        False     55m
+...
+```
+All cluster Operators should show `AVAILABLE`=`True`, `PROGRESSING`=`False`, and `DEGRADED`=`False`.
+
+1. Ensure that all machine config pools are in a good state by running the following command:
+```bash
+$ oc get mcp
+```
+.Example output
+```bash
+NAME    CONFIG                                            UPDATED  UPDATING  DEGRADED  MACHINECOUNT  READYMACHINECOUNT  UPDATEDMACHINECOUNT  DEGRADEDMACHINECOUNT  AGE
+master  rendered-master-87871f187930e67233c837e1d07f49c7  True     False     False     3             3                  3                    0                     96m
+worker  rendered-worker-3c4c459dc5d90017983d7e72928b8aed  True     False     False     3             3                  3                    0                     96m
+```
+All machine config pools should show `UPDATING`=`False` and `DEGRADED`=`False`.
+
+1. Stop the cluster virtual machines:
+Use the tools native to your cluster's cloud environment to shut down the cluster's virtual machines.
+> **IMPORTANT:** If you use a bastion virtual machine, do not shut down this virtual machine.

@@ -1,0 +1,65 @@
+# Removing a local volume or local volume set
+
+Occasionally, you need to delete local volumes (LVs) and local volume sets (LVSs). 
+
+.Prerequisites
+
+- The persistent volume (PV) must be in a `Released` or `Available` state.
+> **WARNING:** Deleting a persistent volume that is still in use can result in data loss or corruption.
+
+.Procedure
+
+To delete LVs or LVSs, complete the following steps:
+
+1. If there are any bound PVs owned by the LV or LVS that is being deleted, delete the corresponding persistent volume claims (PVCs) to release the PVs:
+
+.. To find bound PVs owned by a particular LV or LVS, run the following command:
+```bash
+$ oc get pv --selector storage.openshift.com/owner-name=<LV_LVS_name> <1>
+```
+<1> `<LV_LVS_name>` is the name of the LV or LVS.
+.Example output
+```bash
+NAME                CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+local-pv-3fa1c73    5Gi        RWO            Delete           Available                         slow           <unset>                          28s
+local-pv-1cec77cf   30Gi       RWX            Retain           Bound       openshift/storage     my-sc          <unset>                          168d
+```
+Bound PVs have a status of `Bound` and their corresponding PVCs appear in the `CLAIM` column. In the preceding example, PV `local-pv-1cec77cf` is bound, and its PVC is `openshift/storage`.
+
+.. Delete corresponding PVCs of bound PVs owned by the LV or LVS being deleted by running the following command:
+```bash
+$ oc delete pvc <name>
+```
+In this example, you would delete PVC `openshift/storage`.
+
+1. Delete the LVs or LVSs by running the applicable following command:
+.Command for deleting LV
+```bash
+$ oc delete lv <name>
+```
+or
+.Command for deleting LVS
+```bash
+$ oc delete lvs <name>
+```
+
+1. If any PV owned by the LV or LVS has a `Retain` reclaim policy, back up any important data, and then delete the PV:
+> **NOTE:** PVs with a `Delete` policy are automatically deleted when you delete the LVs or LVS.
+.. To find PVs with `Retain` reclaim policy, run the following command:
+```bash
+$ oc get pv
+```
+.Example output
+```bash
+NAME                CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                STORAGECLASS   REASON   AGE
+local-pv-1cec77cf   30Gi       RWX            Retain           Available                        my-sc                   168d
+```
+In this example,  PV `local-pv-1cec77cf` has a `Retain` reclaim policy and needs to be manually deleted.
+
+.. Back up any important data on this volume.
+
+.. Delete the PV by running the following command:
+```bash
+$ oc delete pv <name>
+```
+In this example, delete PV `local-pv-1cec77cf`.

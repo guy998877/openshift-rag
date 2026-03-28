@@ -1,0 +1,4 @@
+{"file": "rbac-creating-local-role.adoc", "stage": "preprocess", "reason": "output too short (likely ROSA-only content)"}
+{"file": "rbac-creating-cluster-role.adoc", "stage": "preprocess", "reason": "output too short (likely ROSA-only content)"}
+{"file": "security-context-constraints-pre-allocated-values.adoc", "stage": "preprocess", "reason": "output too short (likely ROSA-only content)"}
+{"file": "ocm-addons-tab.adoc", "stage": "preprocess", "reason": "output too short (likely ROSA-only content)"}

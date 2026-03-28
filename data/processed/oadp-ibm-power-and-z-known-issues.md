@@ -1,0 +1,3 @@
+# Known issue of OADP using IBM Power(R) and IBM Z(R) platforms
+
+- Currently, there are backup method restrictions for Single-node OpenShift clusters deployed on IBM Power(R) and IBM Z(R) platforms. Only NFS storage is currently compatible with Single-node OpenShift clusters on these platforms. In addition, only the File System Backup (FSB) methods such as Kopia and Restic are supported for backup and restore operations. There is currently no workaround for this issue.

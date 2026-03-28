@@ -1,0 +1,25 @@
+# Implementing velero default item operation timeout
+
+Configure the `defaultItemOperationTimeout` parameter in the `DataProtectionApplication`ccustom resource (CR) to define how long Velero waits for backup and restore operations to finish. Adjusting this timeout helps you prevent errors during Container Storage Interface (CSI) Data Mover tasks.
+
+The default value is `1h`.
+
+Use the `defaultItemOperationTimeout` for the following scenarios:
+
+- Only with Data Mover 1.2.x.
+- When `defaultItemOperationTimeout` is defined in the Data Protection Application (DPA)  using the `defaultItemOperationTimeout`, it applies to both backup and restore operations. You can use `itemOperationTimeout` to define only the backup or only the restore of those CRs, as described in the following "Item operation timeout - restore", and "Item operation timeout - backup" sections.
+
+.Procedure
+
+- Edit the values in the `spec.configuration.velero.defaultItemOperationTimeout` block of the `DataProtectionApplication` CR manifest, as shown in the following example:
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+ name: <dpa_name>
+spec:
+  configuration:
+    velero:
+      defaultItemOperationTimeout: 1h
+# ...
+```

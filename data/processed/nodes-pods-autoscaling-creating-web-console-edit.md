@@ -1,0 +1,13 @@
+# Editing a horizontal pod autoscaler by using the web console
+
+From the web console, you can modify a horizontal pod autoscaler (HPA) that specifies the minimum and maximum number of pods you want to run on a `Deployment` or `DeploymentConfig` object. You can also define the amount of CPU or memory usage that your pods should target.
+
+.Procedure
+
+1. In the *Topology* view, click the node to reveal the side pane.
+
+1. From the *Actions* drop-down list, select *Edit HorizontalPodAutoscaler* to open the *Edit Horizontal Pod Autoscaler* form.
+
+1. From the *Edit Horizontal Pod Autoscaler* form, edit the minimum and maximum pod limits and the CPU and memory usage, and click *Save*.
+
+> **NOTE:** While creating or editing the horizontal pod autoscaler in the web console, you can switch from *Form view* to *YAML view*.

@@ -1,0 +1,46 @@
+# Deleting a volume snapshot
+
+You can configure how OpenShift Container Platform deletes volume snapshots.
+
+.Procedure
+
+1. Specify the deletion policy that you require in the `VolumeSnapshotClass` object, as shown in the following example:
+.Example volumesnapshotclass.yaml file
+```yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-hostpath-snap
+driver: hostpath.csi.k8s.io
+deletionPolicy: Delete
+# ...
+```
+- `deletionPolicy`: When deleting the volume snapshot, if the `Delete` value is set, the underlying snapshot is deleted along with the `VolumeSnapshotContent` object. If the `Retain` value is set, both the underlying snapshot and `VolumeSnapshotContent` object remain.
+> **NOTE:** If the `Retain` value is set and the `VolumeSnapshot` object is deleted without deleting the corresponding `VolumeSnapshotContent` object, the content remains. The snapshot itself is also retained in the storage back end.
+
+1. Delete the volume snapshot by entering the following command:
+```bash
+$ oc delete volumesnapshot _<volumesnapshot_name>_
+```
+- Replace `_<volumesnapshot_name>_` with the name of the volume snapshot you want to delete.
+.Example output
+```bash
+volumesnapshot.snapshot.storage.k8s.io "mysnapshot" deleted
+```
+
+1. If the deletion policy is set to `Retain`, delete the volume snapshot content by entering the following command:
+```bash
+$ oc delete volumesnapshotcontent _<volumesnapshotcontent_name>_
+```
+- Replace `_<volumesnapshotcontent_name>_` with the content you want to delete.
+
+1. Optional: If the `VolumeSnapshot` object is not successfully deleted, enter the following command to remove any finalizers for the leftover resource so that the delete operation can continue:
+> **IMPORTANT:** Only remove the finalizers if you are confident that there are no existing references from either persistent volume claims or volume snapshot contents to the `VolumeSnapshot` object. Even with the `--force` option, the delete operation does not delete snapshot objects until all finalizers are removed.
+```bash
+$ oc patch -n $PROJECT volumesnapshot/$NAME --type=merge -p '{"metadata": {"finalizers":null}}'
+```
+.Example output
+```bash
+volumesnapshotclass.snapshot.storage.k8s.io "csi-ocs-rbd-snapclass" deleted
+```
+The finalizers are removed and the volume snapshot is deleted.

@@ -1,0 +1,78 @@
+// * backup_and_restore/application_backup_and_restore/installing/installing-oadp-azure.adoc
+
+# Using a service principal or a storage account access key
+
+You create a default `Secret` object and reference it in the backup storage location custom resource. The credentials file for the `Secret` object can contain information about the Azure service principal or a storage account access key.
+
+The default name of the `Secret` is `{credentials}`.
+
+> **NOTE:** The `DataProtectionApplication` custom resource (CR) requires a default `Secret`.  Otherwise, the installation will fail. If the name of the backup location `Secret` is not specified, the default name is used. If you do not want to use the backup location credentials during the installation, you can create a `Secret` with the default name by using an empty `credentials-velero` file.
+
+.Prerequisites
+
+- You have access to the OpenShift cluster as a user with `cluster-admin` privileges.
+- You have an Azure subscription with appropriate permissions.
+- You have installed OADP.
+- You have configured an object storage for storing the backups.
+
+.Procedure
+
+1. Create a `credentials-velero` file for the backup storage location in the appropriate format for your cloud provider.
+You can use one of the following two methods to authenticate OADP with Azure.
+
+- Use the service principal with secret-based authentication. See the following example:
+```bash
+AZURE_SUBSCRIPTION_ID=<azure_subscription_id>
+AZURE_TENANT_ID=<azure_tenant_id>
+AZURE_CLIENT_ID=<azure_client_id>
+AZURE_CLIENT_SECRET=<azure_client_secret>
+AZURE_RESOURCE_GROUP=<azure_resource_group>
+AZURE_CLOUD_NAME=<azure_cloud_name>
+```
+
+- Use a storage account access key. See the following example:
+```bash
+AZURE_STORAGE_ACCOUNT_ACCESS_KEY=<azure_storage_account_access_key>
+AZURE_SUBSCRIPTION_ID=<azure_subscription_id> 
+AZURE_RESOURCE_GROUP=<azure_resource_group>
+AZURE_CLOUD_NAME=<azure_cloud_name> 
+```
+
+1. Create a `Secret` custom resource (CR) with the default name:
+```bash
+$ oc create secret generic {credentials} -n openshift-adp --from-file cloud=credentials-velero
+```
+
+1. Reference the `Secret` in the `spec.backupLocations.velero.credential` block of the `DataProtectionApplication` CR when you install the Data Protection Application as shown in the following example:
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: <dpa_sample>
+  namespace: openshift-adp
+spec:
+...
+  backupLocations:
+    - velero:
+        config:
+          resourceGroup: <azure_resource_group>
+          storageAccount: <azure_storage_account_id>
+          subscriptionId: <azure_subscription_id>
+        credential:
+          key: cloud
+          name: <custom_secret>
+        provider: azure
+        default: true
+        objectStorage:
+          bucket: <bucket_name>
+          prefix: <prefix>
+  snapshotLocations:
+    - velero:
+        config:
+          resourceGroup: <azure_resource_group>
+          subscriptionId: <azure_subscription_id>
+          incremental: "true"
+        provider: {provider}
+```
+where:
+`<custom_secret>`:: Specifies the backup location `Secret` with custom name.

@@ -1,0 +1,351 @@
+{
+  "timestamp": "2026-03-19T13:32:48.454617Z",
+  "model": "gpt-4o-mini",
+  "n_results": 5,
+  "pipeline_kwargs": {
+    "rewrite": true,
+    "hybrid": true,
+    "do_rerank": true
+  },
+  "aggregate": {
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "precision@5": 0.4,
+    "any_relevant@5": 0.9,
+    "faithfulness": 4.0,
+    "correctness": 3.4,
+    "avg_score": 3.7,
+    "avg_ms": 7965
+  },
+  "results": [
+    {
+      "id": "node-drain-maintenance",
+      "query": "how do I drain a node before maintenance in OpenShift",
+      "topic": "nodes",
+      "answer": "To drain a node before maintenance in OpenShift Container Platform, use the following command:\n\n```bash\n$ oc adm drain <node_name> --force=true\n```\n\n**IMPORTANT:** This step might fail if the node is offline or unresponsive. If you are running a single-node OpenShift cluster, the option to drain the node is unavailable.",
+      "rewritten_query": "how to drain a node before maintenance in OpenShift Container Platform",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "any_relevant@5": 0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "any_relevant@10": 0,
+        "gold_found": [],
+        "gold_missed": [
+          "machine-config-node-drain",
+          "nodes-nodes-rebooting-gracefully"
+        ]
+      },
+      "generation": {
+        "faithfulness": 3,
+        "correctness": 2,
+        "avg": 2.5
+      },
+      "elapsed_ms": 9948
+    },
+    {
+      "id": "etcd-backup",
+      "query": "how do I back up etcd in OpenShift",
+      "topic": "backup_and_restore",
+      "answer": "To back up the etcd database in OpenShift Container Platform, follow these steps:\n\n1. Start a debug session as root for a control plane node:\n   ```bash\n   $ oc debug --as-root node/<node_name>\n   ```\n\n2. Change your root directory to `/host` in the debug shell:\n   ```bash\n   sh-4.4# chroot /host\n   ```\n\n3. If the cluster-wide proxy is enabled, export the `NO_PROXY`, `HTTP_PROXY`, and `HTTPS_PROXY` environment variables by running the following commands:\n   ```bash\n   $ export HTTP_PROXY=http://<your_proxy.example.com>:8080\n   ```\n   ```bash\n   $ export HTTPS_PROXY=https://<your_proxy.example.com>:8080\n   ```\n   ```bash\n   $ export NO_PROXY=<example.com>\n   ```\n\n4. Run the `cluster-backup.sh` script in the debug shell and pass in the location to save the backup to:\n   ```bash\n   sh-4.4# /usr/local/bin/cluster-backup.sh /home/core/assets/backup\n   ```\n\nThis will create an etcd snapshot and save it to the specified location.",
+      "rewritten_query": "how to back up etcd database in OpenShift Container Platform",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.2,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.1,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "backup-etcd",
+          "creating-single-etcd-backup",
+          "creating-recurring-etcd-backups"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 5,
+        "avg": 5.0
+      },
+      "elapsed_ms": 7631
+    },
+    {
+      "id": "cluster-upgrade",
+      "query": "how do I upgrade an OpenShift cluster to a new version",
+      "topic": "updating",
+      "answer": "To upgrade an OpenShift Container Platform cluster to a new version, you can use the ROSA CLI or OpenShift Cluster Manager. Here are the steps for both methods:\n\n### Using the ROSA CLI\n\n1. **Verify the current version of your cluster:**\n   ```bash\n   $ rosa describe cluster --cluster=<cluster_name|cluster_id>\n   ```\n\n2. **Check if an upgrade is available:**\n   ```bash\n   $ rosa list upgrade --cluster=<cluster_name|cluster_id>\n   ```\n\n3. **Upgrade the cluster immediately within the next hour:**\n   ```bash\n   $ rosa upgrade cluster --cluster=<cluster_name|cluster_id> --version <version-id>\n   ```\n\n4. **Alternatively, to upgrade at a future time:**\n   ```bash\n   $ rosa upgrade cluster --cluster=<cluster_name|cluster_id>   \\\n             --version <version-id>   \\\n             --schedule-date yyyy-mm-dd \\\n             --schedule-time HH:mm\n   ```\n\n5. **To customize the grace period for node draining:**\n   ```bash\n   $ rosa upgrade cluster --cluster=<cluster_name|cluster_id>   \\\n             --version <version-id>   \\\n             --node-drain-grace-period 15 minutes\n   ```\n\n### Using OpenShift Cluster Manager\n\n1. **Log in to OpenShift Cluster Manager.**\n2. **Select your cluster.**\n3. **Click the *Upgrade settings* tab.**\n4. **Select *Individual updates*.**\n5. **Click *Update* and select the version you want to upgrade to.**\n6. **If required, provide an administrator's acknowledgment.**\n7. **Schedule your upgrade:**\n   - Click *Upgrade now* for an immediate upgrade.\n   - Click *Schedule a different time* for a future upgrade.\n8. **Review and confirm the upgrade.**\n\nMake sure your cluster is in a `Ready` state before starting the upgrade process.",
+      "rewritten_query": "how to upgrade an OpenShift Container Platform cluster to a new version",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.8,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.4,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "updating-cluster-within-minor",
+          "updating-cluster-prepare"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 3,
+        "avg": 4.0
+      },
+      "elapsed_ms": 10208
+    },
+    {
+      "id": "machine-config-operator",
+      "query": "what is the Machine Config Operator and what does it manage",
+      "topic": "machine_configuration",
+      "answer": "The Machine Config Operator (MCO) in Red Hat OpenShift manages and applies configuration and updates of Red Hat Enterprise Linux CoreOS (RHCOS) and container runtime, including everything between the kernel and kubelet. \n\nThe MCO manages updates to:\n- systemd\n- CRI-O\n- Kubelet\n- the kernel\n- Network Manager\n- other system features\n\nIt offers a `MachineConfig` custom resource definition (CRD) that can write configuration files onto the host. The MCO also manages two special custom resources for modifying CRI-O container runtime settings (`ContainerRuntime` CR) and the Kubelet service (`Kubelet` CR).",
+      "rewritten_query": "What is the Machine Config Operator in Red Hat OpenShift and what resources does it manage?",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.6,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.3,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "architecture-machine-config-pools",
+          "machine-config-node-disruption-config"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 5,
+        "avg": 5.0
+      },
+      "elapsed_ms": 4352
+    },
+    {
+      "id": "node-troubleshoot-not-ready",
+      "query": "a node shows NotReady status, how do I troubleshoot it",
+      "topic": "support",
+      "answer": "To troubleshoot a node showing `NotReady` status in OpenShift, follow these steps:\n\n1. **Check kubelet status** (requires `cluster-admin` privileges):\n   - Start a debug pod for the node:\n     ```bash\n     $ oc debug node/my-node\n     ```\n   - Set `/host` as the root directory within the debug shell:\n     ```bash\n     # chroot /host\n     ```\n   - Check whether the `kubelet` systemd service is active on the node:\n     ```bash\n     # systemctl is-active kubelet\n     ```\n   - Output a more detailed `kubelet.service` status summary:\n     ```bash\n     # systemctl status kubelet\n     ```\n\n2. **Retrieve logs from the node**:\n   ```bash\n   $ oc adm node-logs <node_name> -u crio\n   ```\n\n3. **Use debugging**:\n   ```bash\n   $ oc debug node/<node_name>\n   ```\n\n4. **Optional: Use SSH to connect to the node** (only if you cannot connect with `oc debug`):\n   ```bash\n   $ ssh core@<node_name>\n   ```\n\nThese steps will help you gather information to diagnose the issue with the node.",
+      "rewritten_query": "How to troubleshoot a node showing NotReady status in OpenShift?",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.2,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.1,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "checking-mco-node-status",
+          "checking-mco-node-status-configuring"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 3,
+        "avg": 4.0
+      },
+      "elapsed_ms": 11097
+    },
+    {
+      "id": "persistent-storage-class",
+      "query": "how do I create a storage class for dynamic provisioning in OpenShift",
+      "topic": "storage",
+      "answer": "To create a storage class for dynamic provisioning in OpenShift Container Platform, follow these steps:\n\n1. Create a storage class using the following example YAML file:\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: <storage-class> <1>\nprovisioner: <provisioner-name> <2>\nparameters:\n  csi.storage.k8s.io/fstype: xfs  <3>\nEOF\n```\nReplace `<storage-class>` with the desired name and `<provisioner-name>` with the name of the installed CSI driver.\n\n2. If you want to create a default storage class, add the annotation:\n```yaml\nannotations:\n  storageclass.kubernetes.io/is-default-class: \"true\"\n```\n\n3. Apply the YAML file using the command:\n```bash\n$ oc create -f <file_name>.yaml\n```\nReplace `<file_name>` with the name of your YAML file.\n\nMake sure you are logged in to the running OpenShift Container Platform cluster.",
+      "rewritten_query": "how to create a storage class for dynamic provisioning in OpenShift Container Platform",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.6,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.3,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "dynamic-provisioning-defining-storage-class"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 4,
+        "avg": 4.5
+      },
+      "elapsed_ms": 5941
+    },
+    {
+      "id": "ldap-identity-provider",
+      "query": "how do I configure LDAP as an identity provider in OpenShift",
+      "topic": "authentication",
+      "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+      "rewritten_query": "how to configure Lightweight Directory Access Protocol as an identity provider in OpenShift Container Platform",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.2,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.1,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "config-ldap-idp",
+          "identity-provider-about-ldap",
+          "identity-provider-ldap-secret"
+        ]
+      },
+      "generation": {
+        "faithfulness": 1,
+        "correctness": 1,
+        "avg": 1.0
+      },
+      "elapsed_ms": 2830
+    },
+    {
+      "id": "install-operator-operatorhub",
+      "query": "how do I install an operator from OperatorHub using the CLI",
+      "topic": "operators",
+      "answer": "To install an Operator from OperatorHub using the OpenShift Command Line Interface (CLI), follow these steps:\n\n1. View the list of Operators available to the cluster from the software catalog:\n   ```bash\n   $ oc get packagemanifests -n openshift-marketplace\n   ```\n\n2. Inspect your desired Operator to verify its supported install modes and available channels:\n   ```bash\n   $ oc describe packagemanifests <operator_name> -n openshift-marketplace\n   ```\n\n3. If the Operator supports the `SingleNamespace` install mode, ensure an appropriate Operator group exists in the related namespace. Create an `OperatorGroup` object YAML file, for example `operatorgroup.yaml`:\n   ```yaml\n   apiVersion: operators.coreos.com/v1\n   kind: OperatorGroup\n   metadata:\n     name: <operatorgroup_name>\n     namespace: <namespace>\n   spec:\n     targetNamespaces:\n     - <namespace>\n   ```\n\n4. Create the `OperatorGroup` object:\n   ```bash\n   $ oc apply -f operatorgroup.yaml\n   ```\n\n5. Create a `Subscription` object to subscribe a namespace to an Operator. Create a YAML file for the `Subscription` object, for example `subscription.yaml`:\n   ```yaml\n   apiVersion: operators.coreos.com/v1alpha1\n   kind: Subscription\n   metadata:\n     name: <subscription_name>\n     namespace: <namespace_per_install_mode>\n   spec:\n     channel: <channel_name>\n     name: <operator_name>\n     source: <catalog_name>\n     sourceNamespace: <catalog_source_namespace>\n   ```\n\n6. Create the `Subscription` object by running the following command:\n   ```bash\n   $ oc apply -f subscription.yaml\n   ```\n\n7. If you set the `installPlanApproval` field to `Manual`, manually approve the pending install plan to complete the Operator installation.\n\n8. Verify the installation by checking the status of the `Subscription` object:\n   ```bash\n   $ oc describe subscription <subscription_name> -n <namespace>\n   ```",
+      "rewritten_query": "how to install an operator from OperatorHub using the OpenShift Command Line Interface",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.2,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.1,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "olm-installing-from-software-catalog-using-cli",
+          "olm-installing-operators-from-software-catalog"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 5,
+        "avg": 5.0
+      },
+      "elapsed_ms": 19101
+    },
+    {
+      "id": "machineset-scale",
+      "query": "how do I scale a MachineSet to add more worker nodes",
+      "topic": "machine_management",
+      "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+      "rewritten_query": "how to scale a MachineSet in OpenShift to add more worker nodes",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 0.2,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.1,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "differences-between-machinesets-and-machineconfigpool"
+        ]
+      },
+      "generation": {
+        "faithfulness": 1,
+        "correctness": 1,
+        "avg": 1.0
+      },
+      "elapsed_ms": 2327
+    },
+    {
+      "id": "node-taints-tolerations",
+      "query": "how do I use taints and tolerations to restrict workloads to specific nodes",
+      "topic": "nodes",
+      "answer": "To restrict workloads to specific nodes using taints and tolerations in Red Hat OpenShift, follow these steps:\n\n1. **Add a taint to the desired nodes**:\n   Use the following command to add a taint to a node:\n   ```bash\n   $ oc adm taint nodes <node_name> <key>=<value>:<effect>\n   ```\n   For example:\n   ```bash\n   $ oc adm taint nodes node1 dedicated=groupName:NoSchedule\n   ```\n\n2. **Add a toleration to the pods**:\n   Modify the pod specification to include a `tolerations` stanza. Here\u2019s an example:\n   ```yaml\n   apiVersion: v1\n   kind: Pod\n   metadata:\n     name: my-pod\n   spec:\n     tolerations:\n       - key: \"dedicated\"\n         value: \"groupName\"\n         effect: \"NoSchedule\"\n         operator: \"Equal\"\n   ```\n\n3. **(Optional)** To ensure that pods are scheduled only on those tainted nodes, you can also add a label to the nodes and use node affinity in the pod specification.\n\nBy following these steps, you can effectively restrict workloads to specific nodes in your OpenShift cluster.",
+      "rewritten_query": "how to use taints and tolerations in Red Hat OpenShift to restrict workloads to specific nodes",
+      "retrieval": {
+        "retrieved_ids": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "recall@5": 0.0,
+        "precision@5": 1.0,
+        "any_relevant@5": 1,
+        "recall@10": 0.0,
+        "precision@10": 0.5,
+        "any_relevant@10": 1,
+        "gold_found": [],
+        "gold_missed": [
+          "binding-infra-node-workloads-using-taints-tolerations"
+        ]
+      },
+      "generation": {
+        "faithfulness": 5,
+        "correctness": 5,
+        "avg": 5.0
+      },
+      "elapsed_ms": 6218
+    }
+  ]
+}

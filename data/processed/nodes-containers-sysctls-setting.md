@@ -1,0 +1,58 @@
+# Starting a pod with unsafe sysctls
+
+You can run a pod that is configured to use unsafe sysctls on a node where a cluster administrator explicitly enabled unsafe sysctls. You might use unsafe sysctls for situations such as high performance or real-time application tuning.
+
+You can use the taints and toleration feature or labels on nodes to schedule those pods onto the right nodes.
+
+The following example uses the pod `securityContext` to set a safe sysctl `kernel.shm_rmid_forced` and two unsafe sysctls, `net.core.somaxconn` and `kernel.msgmax`. There is no distinction between _safe_ and _unsafe_ sysctls in the specification.
+
+> **WARNING:** To avoid destabilizing your operating system, modify sysctl parameters only after you understand their effects.
+
+The following example illustrates what happens when you add safe and unsafe sysctls to a pod specification:
+
+.Procedure
+
+1. Create a YAML file `sysctl-example-unsafe.yaml` that defines an example pod and add the `securityContext` specification, as shown in the following example:
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sysctl-example-unsafe
+spec:
+  containers:
+  - name: podexample
+    image: centos
+    command: ["bin/bash", "-c", "sleep INF"]
+    securityContext:
+      runAsUser: 2000
+      runAsGroup: 3000
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+    sysctls:
+    - name: kernel.shm_rmid_forced
+      value: "0"
+    - name: net.core.somaxconn
+      value: "1024"
+    - name: kernel.msgmax
+      value: "65536"
+```
+
+1. Create the pod by using the following command:
+```bash
+$ oc apply -f sysctl-example-unsafe.yaml
+```
+
+1. Verify that the pod is scheduled but does not deploy because unsafe sysctls are not allowed for the node using the following command:
+```bash
+$ oc get pod
+```
+.Example output
+```bash
+NAME                       READY             STATUS            RESTARTS   AGE
+sysctl-example-unsafe      0/1               SysctlForbidden   0          14s
+```

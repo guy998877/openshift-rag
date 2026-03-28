@@ -1,0 +1,18 @@
+# Implementing CSI snapshot timeout
+
+Configure the `CSISnapshotTimeout` parameter in the `Backup` custom resource (CR) to define how long to wait for a CSI snapshot to become ready. Adjusting this timeout prevents errors when using the CSI plugin to take snapshots of large storage volumes that require more time. The default value is `10m`.
+
+> **NOTE:** Typically, the default value for `CSISnapshotTimeout` does not require adjustment, because the default setting can accommodate large storage volumes.
+
+.Procedure
+
+- Edit the values in the `spec.csiSnapshotTimeout` block of the `Backup` CR manifest, as shown in the following example:
+```yaml
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+ name: <backup_name>
+spec:
+ csiSnapshotTimeout: 10m
+# ...
+```

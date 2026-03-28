@@ -1,0 +1,9 @@
+# Setting deployment triggers
+
+.Procedure
+
+1. You can set deployment triggers for a `DeploymentConfig` object using the `oc set triggers` command. For example, to set a image change trigger, use the following command:
+```bash
+$ oc set triggers dc/<dc_name> \
+    --from-image=<project>/<image>:<tag> -c <container_name>
+```

@@ -1,0 +1,26 @@
+# Implementing velero resource timeout
+
+Configure the `resourceTimeout` parameter in the `DataProtectionApplication` custom resource (CR) to define how long Velero waits for resource availability. Adjusting this timeout helps you prevent errors during large backups, repository readiness checks, and restore operations.
+
+Use the `resourceTimeout` for the following scenarios:
+
+- For backups with total PV data usage that is greater than 1 TB. Use the parameter as a timeout value when Velero tries to clean up or delete the Container Storage Interface (CSI) snapshots, before marking the backup as complete.
+- A sub-task of this cleanup tries to patch VSC, and this timeout can be used for that task.
+
+- To create or ensure a backup repository is ready for filesystem based backups for Restic or Kopia.
+- To check if the Velero CRD is available in the cluster before restoring the custom resource (CR) or resource from the backup.
+
+.Procedure
+
+- Edit the values in the `spec.configuration.velero.resourceTimeout` block of the `DataProtectionApplication` CR manifest, as shown in the following example:
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+ name: <dpa_name>
+spec:
+  configuration:
+    velero:
+      resourceTimeout: 10m
+# ...
+```

@@ -1,0 +1,27 @@
+# Identifying pod security violations
+
+The `PodSecurityViolation` alert does not provide details on which workloads are causing pod security violations. You can identify the affected workloads by reviewing the Kubernetes API server audit logs. This procedure uses the `must-gather` tool to gather the audit logs and then searches for the `pod-security.kubernetes.io/audit-violations` annotation.
+
+.Prerequisites
+
+- You have installed `jq`.
+- You have access to the cluster as a user with the `cluster-admin` role.
+
+.Procedure
+
+1. To gather the audit logs, enter the following command:
+```bash
+$ oc adm must-gather -- /usr/bin/gather_audit_logs
+```
+
+1. To output the affected workload details, enter the following command:
+```bash
+$ zgrep -h pod-security.kubernetes.io/audit-violations must-gather.local.<archive_id>/<image_digest_id>/audit_logs/kube-apiserver/*log.gz \
+  | jq -r 'select((.annotations["pod-security.kubernetes.io/audit-violations"] != null) and (.objectRef.resource=="pods")) | .objectRef.namespace + " " + .objectRef.name' \
+  | sort | uniq -c
+```
+Replace `<archive_id>` and `<image_digest_id>` with the actual path names.
+.Example output
+```text
+1 test-namespace my-pod
+```

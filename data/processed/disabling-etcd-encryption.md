@@ -1,0 +1,60 @@
+# Disabling etcd encryption
+
+You can disable encryption of etcd data in your cluster.
+
+.Prerequisites
+
+- Access to the cluster as a user with the `cluster-admin` role.
+
+.Procedure
+
+1. Modify the `APIServer` object:
+```bash
+$ oc edit apiserver
+```
+
+1. Set the `encryption` field type to `identity`:
+```yaml
+spec:
+  encryption:
+    type: identity <1>
+```
+<1> The `identity` type is the default value and means that no encryption is performed.
+
+1. Save the file to apply the changes.
+The decryption process starts. It can take 20 minutes or longer for this process to complete, depending on the size of your cluster.
+
+1. Verify that etcd decryption was successful.
+
+.. Review the `Encrypted` status condition for the OpenShift API server to verify that its resources were successfully decrypted:
+```bash
+$ oc get openshiftapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+```
+The output shows `DecryptionCompleted` upon successful decryption:
+```bash
+DecryptionCompleted
+Encryption mode set to identity and everything is decrypted
+```
+If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+
+.. Review the `Encrypted` status condition for the Kubernetes API server to verify that its resources were successfully decrypted:
+```bash
+$ oc get kubeapiserver -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+```
+The output shows `DecryptionCompleted` upon successful decryption:
+```bash
+DecryptionCompleted
+Encryption mode set to identity and everything is decrypted
+```
+If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.
+
+.. Review the `Encrypted` status condition for the OpenShift OAuth API server to verify that its resources were successfully decrypted:
+```bash
+$ oc get authentication.operator.openshift.io -o=jsonpath='{range .items[0].status.conditions[?(@.type=="Encrypted")]}{.reason}{"\n"}{.message}{"\n"}'
+```
+The output shows `DecryptionCompleted` upon successful decryption:
+```bash
+DecryptionCompleted
+Encryption mode set to identity and everything is decrypted
+```
+If the output shows `DecryptionInProgress`, decryption is still in progress. Wait a few minutes and try again.

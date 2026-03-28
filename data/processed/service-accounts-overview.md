@@ -1,0 +1,33 @@
+# Service accounts overview
+
+A service account is an OpenShift Container Platform account that allows a component to
+directly access the API. Service accounts are API objects that exist within each project.
+Service accounts provide a flexible way to control API
+access without sharing a regular user's credentials.
+
+When you use the OpenShift Container Platform CLI or web console, your API token
+authenticates you to the API. You can associate a component with a service account
+so that they can access the API without using a regular user's credentials.
+
+Each service account's user name is derived from its project and name:
+
+```text
+system:serviceaccount:<project>:<name>
+```
+
+Every service account is also a member of two groups:
+
+[cols="1,2",options="header"]
+|===
+
+|Group
+|Description
+
+|system:serviceaccounts
+|Includes all service accounts in the system.
+
+|system:serviceaccounts:<project>
+|Includes all service accounts in the
+specified project.
+
+|===

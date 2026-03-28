@@ -1,0 +1,18 @@
+# Managing proxy certificates
+
+Proxy certificates allow users to specify one or more custom certificate authority (CA) certificates that are used by platform components when making egress connections.
+
+> **NOTE:** Certain CAs set expiration dates and you might need to renew these certificates every two years.
+
+If you did not originally set the requested certificates, you can determine the certificate expiration in several ways.
+Most Cloud-native Network Functions (CNFs) use certificates that are not specifically designed for browser-based connectivity.
+Therefore, you need to pull the certificate from the `ConfigMap` object of your deployment.
+
+.Procedure
+
+- To get the expiration date, run the following command against the certificate file:
+```bash
+$ openssl x509 -enddate -noout -in <cert_file_name>.pem
+```
+
+For more information about determining how and when to renew your proxy certificates, see "Proxy certificates" in _Security and compliance_.

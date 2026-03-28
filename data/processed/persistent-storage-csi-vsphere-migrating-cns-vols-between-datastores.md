@@ -1,0 +1,16 @@
+# Migrating CNS volumes between datastores for vSphere
+
+If you are running out of space in your current datastore, or want to move to a more performant datastore, you can migrate VMware vSphere Cloud Native Storage (CNS) volumes between datastores. This applies to both attached and detached volumes.
+
+.Limitations
+- Requires VMware vSphere 8.0.2 or later, or VMware vSphere Foundation (VVF) 9, or VMware Cloud Foundation (VCF) 9
+
+- Only one volume can be migrated at a time.
+
+- RWX volumes are not supported.
+
+- CNS volume should only be migrated to a datastore that is shared with all hosts that make up the OpenShift Container Platform cluster.
+
+- Migrating volumes between different datastore in different datacenters is not supported.
+
+- VMware HCX is not supported.

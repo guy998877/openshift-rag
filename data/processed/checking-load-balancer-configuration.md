@@ -1,0 +1,31 @@
+# Checking a load balancer configuration before OpenShift Container Platform installation
+
+Check your load balancer configuration prior to starting an OpenShift Container Platform installation.
+
+.Prerequisites
+
+- You have configured an external load balancer of your choosing, in preparation for an OpenShift Container Platform installation. The following example is based on a Red Hat Enterprise Linux (RHEL) host using HAProxy to provide load balancing services to a cluster.
+- You have configured DNS in preparation for an OpenShift Container Platform installation.
+- You have SSH access to your load balancer.
+
+.Procedure
+
+1. Check that the `haproxy` systemd service is active:
+```bash
+$ ssh <user_name>@<load_balancer> systemctl status haproxy
+```
+
+1. Verify that the load balancer is listening on the required ports. The following example references ports `80`, `443`, `6443`, and `22623`.
+- For HAProxy instances running on Red Hat Enterprise Linux (RHEL) 6, verify port status by using the `netstat` command:
+```bash
+$ ssh <user_name>@<load_balancer> netstat -nltupe | grep -E ':80|:443|:6443|:22623'
+```
+- For HAProxy instances running on Red Hat Enterprise Linux (RHEL) 7 or 8, verify port status by using the `ss` command:
+```bash
+$ ssh <user_name>@<load_balancer> ss -nltupe | grep -E ':80|:443|:6443|:22623'
+```
+> **NOTE:** Red Hat recommends the `ss` command instead of `netstat` in Red Hat Enterprise Linux (RHEL) 7 or later. `ss` is provided by the iproute package. For more information on the `ss` command, see the link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/performance_tuning_guide/sect-red_hat_enterprise_linux-performance_tuning_guide-tool_reference-ss[Red Hat Enterprise Linux (RHEL) 7 Performance Tuning Guide].
+1. Check that the wildcard DNS record resolves to the load balancer:
+```bash
+$ dig <wildcard_fqdn> @<dns_server>
+```

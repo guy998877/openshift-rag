@@ -1,0 +1,5 @@
+# OADP testing and support for target backup locations using IBM Z
+
+- IBM Z(R) running with OpenShift Container Platform 4.12, 4.13, 4.14, and 4.15, and 1.3.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z(R) with OpenShift Container Platform 4.13 4.14, and 4.15, and 1.3.6 against all S3 backup location targets, which are not AWS, as well.
+- IBM Z(R) running with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and 1.4.6 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z(R) with OpenShift Container Platform 4.14, 4.15, 4.16, and 4.17, and 1.4.6 against all S3 backup location targets, which are not AWS, as well.
+- IBM Z(R) running with OpenShift Container Platform 4.19 and OADP 1.5.5 was tested successfully against an AWS S3 backup location target. Although the test involved only an AWS S3 target, Red Hat supports running IBM Z(R) with OpenShift Container Platform 4.19 and OADP 1.5.5 against all S3 backup location targets, which are not AWS, as well.

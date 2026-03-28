@@ -1,0 +1,34 @@
+# Enabling self-signed CA certificates
+
+You must enable a self-signed CA certificate for object storage by editing the `DataProtectionApplication` custom resource (CR) manifest to prevent a `certificate signed by unknown authority` error.
+
+.Prerequisites
+
+- You must have the OpenShift API for Data Protection (OADP) Operator installed.
+
+.Procedure
+
+- Edit the `spec.backupLocations.velero.objectStorage.caCert` parameter and `spec.backupLocations.velero.config` parameters of the `DataProtectionApplication` CR manifest:
+```yaml
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: <dpa_sample>
+spec:
+# ...
+  backupLocations:
+    - name: default
+      velero:
+        provider: aws
+        default: true
+        objectStorage:
+          bucket: <bucket>
+          prefix: <prefix>
+          caCert: <base64_encoded_cert_string>
+        config:
+          insecureSkipTLSVerify: "false"
+# ...
+```
+where:
+`caCert`:: Specifies the Base64-encoded CA certificate string.
+`insecureSkipTLSVerify`:: Specifies the `insecureSkipTLSVerify` configuration. The configuration can be set to either `"true"` or `"false"`. If set to `"true"`, SSL/TLS security is disabled. If set to `"false"`, SSL/TLS security is enabled.

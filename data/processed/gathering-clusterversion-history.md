@@ -1,0 +1,7 @@
+# Gathering ClusterVersion history
+
+The Cluster Version Operator (CVO) records updates made to a cluster, known as the ClusterVersion history. The entries can reveal correlation between changes in cluster behavior with potential triggers, although correlation does not imply causation.
+
+> **NOTE:** The initial, minor, and z-stream version updates are stored by the ClusterVersion history. However, the ClusterVersion history has a size limit. If the limit is reached, the oldest z-stream updates in previous minor versions are pruned to accommodate the limit.
+
+You can view the ClusterVersion history by using the OpenShift Container Platform web console or by using the OpenShift CLI (`oc`).

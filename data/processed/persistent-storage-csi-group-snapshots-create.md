@@ -1,0 +1,105 @@
+# Creating a volume group snapshot
+
+When you create a `VolumeGroupSnapshot` object, OpenShift Container Platform creates a volume group snapshot.
+
+.Prerequisites
+- Logged in to a running OpenShift Container Platform cluster.
+- Enabled this feature using feature gates. For information about how to use feature gates, see _Enabling features sets by using feature gates_.
+- The persistent volume claims (PVCs) that you want to group for the snapshot have been created using a CSI driver that supports `VolumeGroupSnapshot` objects.
+- A storage class to provision the storage back end.
+- Administrator has created the `VolumeGroupSnapshotClass` object.
+
+.Procedure
+
+To create a volume group snapshot:
+
+1. Locate (or create) the PVCs that you want to include in the volume group snapshot:
+```bash
+$ oc get pvc
+```
+.Example command output
+```bash
+NAME        STATUS    VOLUME                                     CAPACITY   ACCESSMODES   AGE
+pvc-0       Bound     pvc-a42d7ea2-e3df-11ed-b5ea-0242ac120002   1Gi        RWO           48s
+pvc-1       Bound     pvc-a42d81b8-e3df-11ed-b5ea-0242ac120002   1Gi        RWO           48S
+```
+This example uses two PVCs
+
+1. Label the PVCs to belong to a snapshot group:
+.. Label PVC pvc-0 by running the following command:
+```bash
+$ oc label pvc pvc-0 group=myGroup
+```
+.Example output
+```bash
+persistentvolumeclaim/pvc-0 labeled
+```
+.. Label PVC pvc-1 by running the following command:
+```bash
+$ oc label pvc pvc-1 group=myGroup
+```
+.Example output
+```bash
+persistentvolumeclaim/pvc-1 labeled
+```
+In this example, you are labeling PVC "pvc-0" and "pvc-1" to belong to group "myGroup".
+
+1. Create a `VolumeGroupSnapshot` object to specify your volume group snapshot:
+.. Create a `VolumeGroupSnapshot` object YAML file with the following example file:
+.Example VolumeGroupSnapshot YAML file
+```yaml
+apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+kind: VolumeGroupSnapshot <1>
+metadata:
+  name: <volume-group-snapshot-name> <2>
+  namespace: <namespace> <3>
+spec:
+  volumeGroupSnapshotClassName: <volume-group-snapshot-class-name> <4>
+  source:
+    selector:
+      matchLabels:
+        group: myGroup <5>
+```
+<1> The `VolumeGroupSnapshot` object requests creation of a volume group snapshot for multiple PVCs.
+<2> Name of the volume group snapshot.
+<3> Namespace for the volume group snapshot.
+<4> The `VolumeGroupSnapshotClass` name. This object is created by the administrator and describes how volume group snapshots should be created.
+<5> The name of the label used to group the desired PVCs for the snapshot. In this example, it is "myGroup".
+
+.. Create the `VolumeGroupSnapshot` object by running the following command:
+```bash
+$ oc create -f <volume-group-snapshot-filename>.yaml
+```
+
+.Results
+Individual volume snapshots are created according to how many PVCs were specified as part of the volume group snapshot.
+
+These individual volume snapshots are named with the following format: <hash of VolumeGroupSnaphotContentUUID+volumeHandle>:
+
+.Example individual volume snapshot
+```yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: snapshot-4dc1c53a29538b36e85003503a4bcac5dbde4cff59e81f1e3bb80b6c18c3fd03
+  namespace: default
+  ownerReferences:
+  - apiVersion: groupsnapshot.storage.k8s.io/v1beta2
+    kind: VolumeGroupSnapshot
+    name: my-groupsnapshot
+    uid: ba2d60c5-5082-4279-80c2-daa85f0af354
+  resourceVersion: "124503"
+  uid: c0137282-f161-4e86-92c1-c41d36c6d04c 
+spec:
+  source:
+    persistentVolumeClaimName:pvc-1
+status:
+  volumeGroupSnapshotName: volume-group-snapshot-name
+```
+
+In the preceding example, two individual volume snapshots are created as part of the volume group snapshot.
+
+```bash
+snapshot-4dc1c53a29538b36e85003503a4bcac5dbde4cff59e81f1e3bb80b6c18c3fd03
+snapshot-fbfe59eff570171765df664280910c3bf1a4d56e233a5364cd8cb0152a35965b
+```

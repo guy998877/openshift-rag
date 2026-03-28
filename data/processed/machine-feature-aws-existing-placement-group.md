@@ -1,0 +1,44 @@
+# Elastic Fabric Adapter instances and placement group options
+
+You can deploy compute machines on [Elastic Fabric Adapter](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html) (EFA) instances within an existing AWS placement group.
+
+EFA instances do not require placement groups, and you can use placement groups for purposes other than configuring an EFA. 
+The following example uses an EFA and placement group together to demonstrate a configuration that can improve network performance for machines within the specified placement group.
+
+.Sample EFA instance and placement group configuration
+```yaml
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+kind: AWSMachineTemplate
+# ...
+spec:
+  template:
+    spec:
+      instanceType: <supported_instance_type> # <1>
+      networkInterfaceType: efa # <2>
+      placementGroupName: <placement_group> # <3>
+      placementGroupPartition: <placement_group_partition_number> # <4>
+# ...
+```
+<1> Specifies an instance type that [supports EFAs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html#efa-instance-types).
+<2> Specifies the `efa` network interface type.
+<3> Specifies the name of the existing AWS placement group to deploy machines in.
+<4> Optional: Specifies the partition number of the existing AWS placement group where you want your machines deployed. 
+
+> **NOTE:** Ensure that the link:https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html#limitations-placement-groups[rules and limitations] for the type of placement group that you create are compatible with your intended use case.
+
+////
+The MAPI version of this has additional parameters in the providerSpec:
+
+placement:
+  availabilityZone: <zone> # <3>
+  region: <region> # <4>
+<3> Specifies the zone, for example, `us-east-1a`.
+<4> Specifies the region, for example, `us-east-1`.
+
+Do we need to say anything specific about this, or is this just redundant with the failure domain?
+
+Note: 
+CAPI has networkInterfaceType: efa
+MAPI has networkInterfaceType: EFA
+Capitalization matters!
+////

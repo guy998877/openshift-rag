@@ -1,0 +1,15 @@
+# Configuring an htpasswd identity provider with the CLI
+
+You can create an htpasswd identity provider (IDP) with the OCM CLI (`ocm`) tool.
+
+.Prerequisites
+
+- You have installed and configured the latest version of the OCM CLI (`ocm`).
+
+.Procedure
+
+- Run the following command to create an htpasswd IDP by passing the usernames and passwords in the command-line interface:
+```bash
+$ ocm create idp --type htpasswd --cluster <cluster_name> --name <idp_name> --username <user_name> --password '<password>'
+```
+> **NOTE:** You must include the password within quotes like `'password'` to prevent your password from disrupting the Bash commands. Passwords must include uppercase letters, lowercase letters, and numbers or symbols, specifically, ASCII-standard characters only. The password must be at least 14 characters.

@@ -1,0 +1,30 @@
+# Persistent volume claims
+
+To define storage requirements for your workloads, review the structure of a `PersistentVolumeClaim` (PVC). This object includes a `spec` field to configure the request and a `status` field to monitor the current state of the claim.
+
+.`PersistentVolumeClaim` object definition example
+```yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: gold
+status:
+# ...
+```
+
+where:
+
+`apiVersion`:: Specifies the name of the PVC.
+
+`spec.accessModes`:: Specifies the access mode, defining the read/write and mount permissions.
+
+`requests.storage`:: Specifies the amount of storage available to the PVC.
+
+`storageClassName`:: Specifies the name of the `StorageClass` required by the claim.

@@ -1,0 +1,29 @@
+# Enabling kdump
+
+RHCOS ships with the `kexec-tools` package, but manual configuration is required to enable the `kdump` service.
+
+.Procedure
+
+1. To reserve memory for the crash kernel during the first kernel booting, provide kernel arguments by entering the following command:
+```bash
+# rpm-ostree kargs --append='crashkernel=256M'
+```
+> **NOTE:** For the `ppc64le` platform, the recommended value for `crashkernel` is `crashkernel=2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G`.
+
+1. Optional: To write the crash dump over the network or to some other location, rather than to the default local `/var/crash` location, edit the `/etc/kdump.conf` configuration file.
+> **NOTE:** If your node uses LUKS-encrypted devices, you must use network dumps as kdump does not support saving crash dumps to LUKS-encrypted devices.
+For details on configuring the `kdump` service, see the comments in `/etc/sysconfig/kdump`, `/etc/kdump.conf`, and the `kdump.conf` manual page.
+Also refer to the [RHEL kdump documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/managing_monitoring_and_updating_the_kernel/configuring-kdump-on-the-command-line_managing-monitoring-and-updating-the-kernel#configuring-the-kdump-target_configuring-kdump-on-the-command-line) for further information on configuring the dump target.
+> **IMPORTANT:** If you have multipathing enabled on your primary disk, the dump target must be either an NFS or SSH server and you must exclude the multipath module from your `/etc/kdump.conf` configuration file.
+
+1. Enable the `kdump` systemd service.
+```bash
+# systemctl enable kdump.service
+```
+
+1. Reboot your system.
+```bash
+# systemctl reboot
+```
+
+1. Ensure that kdump has loaded a crash kernel by checking that the `kdump.service` systemd service has started and exited successfully and that the command, `cat /sys/kernel/kexec_crash_loaded`, prints the value `1`.

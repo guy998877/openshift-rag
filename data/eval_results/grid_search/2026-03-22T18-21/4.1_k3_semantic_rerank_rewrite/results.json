@@ -1,0 +1,1195 @@
+[
+  {
+    "id": "cpmso-config-options",
+    "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+    "topic": "machine_management",
+    "gold_doc_ids": [
+      "cpmso-config-options"
+    ],
+    "answer": "To customize the prefix of machine names created by the control plane machine set in OpenShift Container Platform:\n\n1. Edit the `ControlPlaneMachineSet` custom resource (CR) by running:\n```bash\noc edit controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api\n```\n\n2. Edit the `.spec.machineNamePrefix` field in the CR:\n```yaml\nspec:\n  machineNamePrefix: <machine_prefix>\n```\nReplace `<machine_prefix>` with your desired prefix, following lowercase RFC 1123 subdomain requirements (only lowercase alphanumeric characters, hyphens, and periods; must start and end with an alphanumeric character).\n\n3. Save your changes.\n\n**Note:** If you change only the `machineNamePrefix`, you must manually replace your control plane machines for the change to take effect. For more information, see \"Replacing a control plane machine\".",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "cpmso-config-options",
+        "cpmso-overview",
+        "nodes-link-node-machine-bmh"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "cpmso-config-options"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly explains how to customize the machine name prefix in the ControlPlaneMachineSet CR and provides relevant steps and caveats."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": null,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.6666
+    },
+    "elapsed_ms": 11131,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "oadp-creating-alerting-rule",
+    "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+    "topic": "backup_and_restore",
+    "gold_doc_ids": [
+      "oadp-creating-alerting-rule"
+    ],
+    "answer": "To create a PrometheusRule for alerting on OpenShift API Data Protection (OADP) backup failures in your OpenShift environment, follow these steps:\n\n1. **Create a PrometheusRule YAML file** (for example, `4_create_oadp_alert_rule.yaml`) with the following content:\n\n```yaml\napiVersion: monitoring.coreos.com/v1\nkind: PrometheusRule\nmetadata:\n  name: sample-oadp-alert\n  namespace: openshift-adp\nspec:\n  groups:\n  - name: sample-oadp-backup-alert\n    rules:\n    - alert: OADPBackupFailing\n      annotations:\n        description: 'OADP had {{$value | humanize}} backup failures over the last 2 hours.'\n        summary: OADP has issues creating backups\n      expr: |\n        increase(velero_backup_failure_total{job=\"openshift-adp-velero-metrics-svc\"}[2h]) > 0\n      for: 5m\n      labels:\n        severity: warning\n```\n\n2. **Apply the PrometheusRule** by running:\n\n```bash\n$ oc apply -f 4_create_oadp_alert_rule.yaml\n```\n\nThis creates the `PrometheusRule` object in the `openshift-adp` namespace.\n\n**Verification:**\n- After the alert is triggered, you can view it in the OpenShift web console:\n  - In the *Developer* perspective, select the *Observe* menu.\n  - In the *Administrator* perspective, go to *Observe* \u2192 *Alerting* and select *User* in the *Filter* box.\n\n**Note:** You must have appropriate permissions to create resources in the `openshift-adp` namespace.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "oadp-creating-alerting-rule",
+        "performing-a-backup-oadp-rosa-sts",
+        "observability-alerting"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "oadp-creating-alerting-rule"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": null,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": null,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.3333
+    },
+    "elapsed_ms": 13138,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "olm-arch-olm-operator",
+    "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+    "topic": "operators",
+    "gold_doc_ids": [
+      "olm-arch-olm-operator"
+    ],
+    "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "olm-overview",
+        "capi-arch-operator",
+        "arch-olm-operators"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 0.0,
+      "precision@3": 0.0,
+      "recall@5": 0.0,
+      "precision@5": 0.0,
+      "recall@10": 0.0,
+      "precision@10": 0.0,
+      "recall@20": 0.0,
+      "precision@20": 0.0,
+      "mrr": 0.0,
+      "first_hit_rank": null,
+      "gold_found": [],
+      "gold_missed": [
+        "olm-arch-olm-operator"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 0.0,
+        "explanation": "The answer states that the documentation does not cover the topic, so it does not directly address how the OLM Operator determines when to deploy applications defined by CSV resources."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.6667,
+        "explanation": "2/3 relevant"
+      },
+      "avg": 0.5556
+    },
+    "elapsed_ms": 5804,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-nodes-working-master-schedulable",
+    "query": "How do I configure control plane nodes to be schedulable in OpenShift?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-nodes-working-master-schedulable",
+      "nodes-nodes-working-evacuating"
+    ],
+    "answer": "To configure control plane nodes to be schedulable in OpenShift Container Platform:\n\n1. Edit the `schedulers.config.openshift.io` resource:\n   ```bash\n   oc edit schedulers.config.openshift.io cluster\n   ```\n\n2. Set the `spec.mastersSchedulable` field to `true`:\n   ```yaml\n   spec:\n     mastersSchedulable: true\n   ```\n\n3. Save the file to apply the changes.\n\n**Note:** When you configure control plane nodes to be schedulable, additional subscriptions are required because control plane nodes then become compute nodes.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-nodes-working-master-schedulable",
+        "persistent-storage-csi-azure-file-nfs",
+        "nodes-link-node-machine-bmh"
+      ],
+      "recall@1": 0.5,
+      "precision@1": 1.0,
+      "recall@3": 0.5,
+      "precision@3": 0.3333,
+      "recall@5": 0.5,
+      "precision@5": 0.2,
+      "recall@10": 0.5,
+      "precision@10": 0.1,
+      "recall@20": 0.5,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-nodes-working-master-schedulable"
+      ],
+      "gold_missed": [
+        "nodes-nodes-working-evacuating"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly explains how to make control plane nodes schedulable in OpenShift by editing the appropriate resource and setting the correct field."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": "The answer is fully supported by the context, which describes configuring control plane nodes as schedulable by setting `mastersSchedulable: true` and notes the requirement for additional subscriptions."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.4444
+    },
+    "elapsed_ms": 6291,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "velero-obtaining-by-accessing-binary",
+    "query": "How do I set an alias to access the Velero binary in my cluster's Velero deployment?",
+    "topic": "backup_and_restore",
+    "gold_doc_ids": [
+      "velero-obtaining-by-accessing-binary"
+    ],
+    "answer": "Set the needed alias by using the following command:\n```bash\nalias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'\n```",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "velero-obtaining-by-accessing-binary",
+        "oadp-setting-resource-limits-and-requests",
+        "oadp-deleting-backups-using-velero"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "velero-obtaining-by-accessing-binary"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer provides the exact command to set an alias for accessing the Velero binary within the Velero deployment in the cluster."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "The answer is fully supported by the context, as it directly matches the command provided for setting the Velero alias."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.7778
+    },
+    "elapsed_ms": 7244,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-descheduler-installing",
+    "query": "How do I change the descheduler from predictive mode to automatic mode in my OpenShift cluster?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-descheduler-installing"
+    ],
+    "answer": "To change the descheduler from predictive mode to automatic mode in OpenShift Container Platform:\n\n1. Log in to the OpenShift Container Platform web console as a user with the `cluster-admin` role.\n2. Go to *Ecosystem* -> *Installed Operators* and click the *Kube Descheduler Operator*.\n3. Select the *Kube Descheduler* tab and click *Create KubeDescheduler* (or edit the existing instance).\n4. Change the *Mode* field to *Automatic*.\n5. Save the changes.\n\nThis will configure the descheduler to perform actual pod evictions instead of only simulating them.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-descheduler-installing",
+        "nodes-descheduler-uninstalling",
+        "nodes-descheduler-configuring-interval"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-descheduler-installing"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": null,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.1666
+    },
+    "elapsed_ms": 29454,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-nodes-rebooting-affinity",
+    "query": "How do I configure pod anti-affinity to ensure workloads are spread across nodes before rebooting a node?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-nodes-rebooting-affinity"
+    ],
+    "answer": "To configure pod anti-affinity in OpenShift to ensure workloads are distributed across nodes before rebooting a node, follow these steps:\n\n1. Edit the pod specification to add pod anti-affinity rules. For example:\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: with-pod-antiaffinity\nspec:\n  affinity:\n    podAntiAffinity:\n      preferredDuringSchedulingIgnoredDuringExecution:\n      - weight: 100\n        podAffinityTerm:\n          labelSelector:\n            matchExpressions:\n            - key: registry\n              operator: In\n              values:\n              - default\n          topologyKey: kubernetes.io/hostname\n```\n- This configuration ensures that pods with the label `registry=default` prefer not to be scheduled on the same node.\n\n2. Enable the `MatchInterPodAffinity` scheduler predicate in the scheduling policy file.\n\n3. Once the anti-affinity is in place, perform a graceful restart of the node. Pods will be spread across nodes, making node reboots easier and minimizing downtime.\n\n**Note:** Pod anti-affinity can be set to either required or preferred. The example above uses a preferred rule. Adjust the label selectors and topology key as needed for your workloads.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-nodes-rebooting-affinity",
+        "update-pod-anti-affinity",
+        "oadp-configuring-velero-load-affinity"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-nodes-rebooting-affinity"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly explains how to configure pod anti-affinity to spread workloads across nodes, including a YAML example and relevant considerations."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": null,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.6667,
+        "explanation": "2/3 relevant"
+      },
+      "avg": 0.8334
+    },
+    "elapsed_ms": 12258,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-scheduler-profiles-configuring",
+    "query": "How do I configure the scheduler to use the HighNodeUtilization profile in my OpenShift cluster?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-scheduler-profiles-configuring"
+    ],
+    "answer": "To configure the OpenShift scheduler to use the High Node Utilization profile, follow these steps:\n\n**Prerequisites:**  \n- You must have cluster-admin privileges.\n\n**Procedure:**\n\n1. Edit the Scheduler object:\n   ```bash\n   oc edit scheduler cluster\n   ```\n\n2. In the YAML, set the `spec.profile` field to `HighNodeUtilization`:\n   ```yaml\n   apiVersion: config.openshift.io/v1\n   kind: Scheduler\n   metadata:\n     name: cluster\n   spec:\n     mastersSchedulable: false\n     profile: HighNodeUtilization\n   ```\n\n3. Save the file to apply the changes.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-scheduler-profiles-configuring",
+        "nodes-secondary-scheduler-install-console",
+        "nodes-descheduler-configuring-profiles"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-scheduler-profiles-configuring"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly addresses the question by providing clear, step-by-step instructions to configure the scheduler to use the HighNodeUtilization profile in an OpenShift cluster."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "The answer is fully supported by the context, as all steps and details provided are directly referenced in the context."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.7778
+    },
+    "elapsed_ms": 71759,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-cma-autoscaling-custom-metrics-access",
+    "query": "How do I create a custom query for performance metrics in the OpenShift Container Platform web console?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-cma-autoscaling-custom-metrics-access"
+    ],
+    "answer": "To create a custom query for performance metrics in the OpenShift Container Platform web console:\n\n1. Select the *Administrator* perspective in the web console.\n2. Go to *Observe* -> *Metrics*.\n3. Add your PromQL query to the *Expression* field.\n4. To add multiple queries, select *Add Query*.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-cma-autoscaling-custom-metrics-access",
+        "oadp-viewing-metrics-ui",
+        "nodes-cma-autoscaling-keda-controller-edit"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-cma-autoscaling-custom-metrics-access"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": null,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "The answer is fully supported by the context, as each step is directly described in the provided procedures."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.6667,
+        "explanation": "2/3 relevant"
+      },
+      "avg": 0.8334
+    },
+    "elapsed_ms": 8560,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "storage-persistent-storage-fsgroup",
+    "query": "How can I reduce pod timeouts when using a storage volume with many files in OpenShift?",
+    "topic": "storage",
+    "gold_doc_ids": [
+      "storage-persistent-storage-fsGroup",
+      "storage-persistent-storage-iscsi-enforcing-disk-quota",
+      "storage-persistent-storage-volume-format"
+    ],
+    "answer": "To reduce pod timeouts when using a storage volume with a large number of files in OpenShift Container Platform, you can:\n\n1. **Configure the `fsGroup` and `fsGroupChangePolicy` fields** in your pod's `securityContext`.  \n   - Set `fsGroupChangePolicy: OnRootMismatch` to only change permissions and ownership if the root directory does not match the expected permissions, which shortens the time required for these operations.\n\n   Example YAML snippet:\n   ```yaml\n   securityContext:\n     fsGroup: <your-fsgroup-id>\n     fsGroupChangePolicy: OnRootMismatch\n   ```\n\n2. **For SELinux-enabled clusters:**  \n   - Use storage drivers and volume types that support the SELinux mount option (such as RWOP volumes on AWS EBS, Azure Disk, GCP PD, etc.), which avoids recursive relabeling and reduces pod startup times.\n\n**Note:**  \n- The `fsGroupChangePolicy` field has no effect on ephemeral volume types (secret, configMap, emptyDir).\n- For RWO and RWX volumes, recursive relabeling is used by default, but this may change in future OpenShift versions.\n\nCluster-admin privileges may be required to set these options at the namespace level.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "storage-persistent-storage-fsGroup",
+        "storage-persistent-storage-selinuxChangePolicy",
+        "nodes-containers-volumes-about"
+      ],
+      "recall@1": 0.3333,
+      "precision@1": 1.0,
+      "recall@3": 0.3333,
+      "precision@3": 0.3333,
+      "recall@5": 0.3333,
+      "precision@5": 0.2,
+      "recall@10": 0.3333,
+      "precision@10": 0.1,
+      "recall@20": 0.3333,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "storage-persistent-storage-fsGroup"
+      ],
+      "gold_missed": [
+        "storage-persistent-storage-iscsi-enforcing-disk-quota",
+        "storage-persistent-storage-volume-format"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly addresses how to reduce pod timeouts by configuring `fsGroupChangePolicy` and using appropriate storage drivers, which are relevant to the issue of slow pod startup with many files on a storage volume."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": "The answer is fully supported by the context, as it accurately reflects the information provided about using `fsGroup`, `fsGroupChangePolicy`, and SELinux mount options to reduce pod timeouts."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": null,
+        "explanation": "parse error"
+      },
+      "avg": 0.5
+    },
+    "elapsed_ms": 8663,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "odc-discovering-and-identifying-operator-backed-bindable-ser",
+    "query": "How can I identify which Operator-backed services are bindable in the Developer Catalog?",
+    "topic": "applications",
+    "gold_doc_ids": [
+      "odc-discovering-and-identifying-operator-backed-bindable-services"
+    ],
+    "answer": "To identify bindable Operator-backed services in the OpenShift Developer Catalog:\n\n1. In the *Developer* perspective, click *+Add* -> *Developer Catalog* -> *Operator Backed* to see Operator-backed tiles. Services that support service binding features have a *Bindable* badge on their tiles.\n2. On the left pane of the *Operator Backed* page, select *Bindable* to filter and view only bindable services.\n3. Alternatively, click *+Add* -> *Add* and search for Operator-backed services. When you select a bindable service, the *Bindable* badge appears in the side panel.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "odc-discovering-and-identifying-operator-backed-bindable-services",
+        "odc-using-the-developer-catalog-to-add-services-or-components",
+        "op-installing-sbo-operator-using-the-web-console"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "odc-discovering-and-identifying-operator-backed-bindable-services"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": null,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": null,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.3333
+    },
+    "elapsed_ms": 10757,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "accessing-windows-node",
+    "query": "How can I access a Windows node in my OpenShift cluster?",
+    "topic": "support",
+    "gold_doc_ids": [
+      "accessing-windows-node"
+    ],
+    "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nvidia-gpu-prerequisites",
+        "querying-cluster-node-journal-logs",
+        "access-cluster"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 0.0,
+      "precision@3": 0.0,
+      "recall@5": 0.0,
+      "precision@5": 0.0,
+      "recall@10": 0.0,
+      "precision@10": 0.0,
+      "recall@20": 0.0,
+      "precision@20": 0.0,
+      "mrr": 0.0,
+      "first_hit_rank": null,
+      "gold_found": [],
+      "gold_missed": [
+        "accessing-windows-node"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 0.0,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.0,
+        "explanation": "0/3 relevant"
+      },
+      "avg": 0.3333
+    },
+    "elapsed_ms": 14320,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "nodes-pods-configmap-overview",
+    "query": "How can I use a ConfigMap to store and manage configuration data for my applications in OpenShift?",
+    "topic": "nodes",
+    "gold_doc_ids": [
+      "nodes-pods-configmap-overview"
+    ],
+    "answer": "To use a ConfigMap to store and manage configuration data for applications in OpenShift Container Platform:\n\n1. **Create a ConfigMap**: Define a ConfigMap YAML file with your configuration data as key-value pairs. Example:\n   ```yaml\n   kind: ConfigMap\n   apiVersion: v1\n   metadata:\n     name: example-config\n     namespace: my-namespace\n   data:\n     example.property.1: hello\n     example.property.2: world\n     example.property.file: |-\n       property.1=value-1\n       property.2=value-2\n       property.3=value-3\n   ```\n   Apply it with:\n   ```bash\n   oc apply -f <configmap-file>.yaml\n   ```\n\n2. **Consume the ConfigMap in Pods**: You can use the ConfigMap in your pods in several ways:\n   - **Populate environment variables** in containers.\n   - **Set command-line arguments** in a container.\n   - **Populate configuration files** in a volume.\n\n3. **Reference the ConfigMap in your Pod/Deployment YAML**:\n   - For environment variables:\n     ```yaml\n     envFrom:\n       - configMapRef:\n           name: example-config\n     ```\n   - For mounting as files:\n     ```yaml\n     volumes:\n       - name: config-volume\n         configMap:\n           name: example-config\n     containers:\n       - name: my-container\n         volumeMounts:\n           - name: config-volume\n             mountPath: /etc/config\n     ```\n\n**Notes:**\n- The ConfigMap must be created before it can be consumed by pods.\n- ConfigMaps are namespace-scoped and can only be referenced by pods in the same namespace.\n\nThis approach keeps your application configuration decoupled from container images, making your applications more portable and manageable.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-pods-configmap-overview",
+        "nodes-nodes-managing-about",
+        "machineset-vsphere-data-disks"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "nodes-pods-configmap-overview"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer clearly explains how to create, apply, and use a ConfigMap to manage configuration data for applications in OpenShift, directly addressing the question."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "All claims in the answer are supported by the provided context, which explains what ConfigMaps are, how they are used, and how they can be consumed in pods."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.7778
+    },
+    "elapsed_ms": 14480,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "admission-webhook-types",
+    "query": "How can I configure a mutating admission webhook to modify pod specifications in my OpenShift cluster?",
+    "topic": "architecture",
+    "gold_doc_ids": [
+      "admission-webhook-types"
+    ],
+    "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "configuring-dynamic-admission",
+        "pod-short-term-auth-gcp-deploy-pod",
+        "admission-webhooks-about"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 0.0,
+      "precision@3": 0.0,
+      "recall@5": 0.0,
+      "precision@5": 0.0,
+      "recall@10": 0.0,
+      "precision@10": 0.0,
+      "recall@20": 0.0,
+      "precision@20": 0.0,
+      "mrr": 0.0,
+      "first_hit_rank": null,
+      "gold_found": [],
+      "gold_missed": [
+        "admission-webhook-types"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 0.0,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.6667,
+        "explanation": "2/3 relevant"
+      },
+      "avg": 0.5556
+    },
+    "elapsed_ms": 78929,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "oadp-configuring-aws-md5sum",
+    "query": "How do I configure the Backup Storage Location to use a specific checksum algorithm in the Data Protection Application?",
+    "topic": "backup_and_restore",
+    "gold_doc_ids": [
+      "oadp-configuring-aws-md5sum"
+    ],
+    "answer": "To configure the Backup Storage Location (BSL) to use a specific checksum algorithm in the OpenShift Data Protection Application (DPA), set the `checksumAlgorithm` field in the `spec.backupLocations.velero.config` section of your DPA manifest.\n\nSupported values for `checksumAlgorithm` are: `CRC32`, `CRC32C`, `SHA1`, `SHA256`. If you leave it empty, the MD5 checksum check is skipped. If not set, the default is `CRC32`.\n\n**Example:**\n```yaml\napiVersion: oadp.openshift.io/v1alpha1\nkind: DataProtectionApplication\nmetadata:\n  name: test-dpa\n  namespace: openshift-adp\nspec:\n  backupLocations:\n  - name: default\n    velero:\n      config:\n        checksumAlgorithm: \"SHA256\"   # Set your desired algorithm here\n        insecureSkipTLSVerify: \"true\"\n        profile: \"default\"\n        region: <bucket_region>\n        s3ForcePathStyle: \"true\"\n        s3Url: <bucket_url>\n      credential:\n        key: cloud\n        name: cloud-credentials\n      default: true\n      objectStorage:\n        bucket: <bucket_name>\n        prefix: velero\n      provider: aws\n  configuration:\n    velero:\n      defaultPlugins:\n      - openshift\n      - aws\n      - csi\n```\nReplace `<bucket_region>`, `<bucket_url>`, and `<bucket_name>` with your values.\n\n**Note:**  \n- If you are using Noobaa as the object storage provider and do not set `checksumAlgorithm`, an empty value is added by default for BSLs created via the DPA.  \n- This configuration requires the OADP Operator to be installed and your backup location to be set up.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "oadp-configuring-aws-md5sum",
+        "oadp-dpt-use-case-bsl-spec",
+        "oadp-usecase-backup-odf"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "oadp-configuring-aws-md5sum"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly explains how to configure the checksum algorithm for the Backup Storage Location in the Data Protection Application, including an example and relevant notes."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": "The answer is fully supported by the context, as it accurately reflects the configuration steps and options for setting the checksum algorithm in the DPA manifest."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.4444
+    },
+    "elapsed_ms": 55035,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "persistent-storage-csi-snapshots-operator",
+    "query": "What custom resource definitions (CRDs) does the CSI Snapshot Controller Operator create during OpenShift Container Platform installation?",
+    "topic": "storage",
+    "gold_doc_ids": [
+      "persistent-storage-csi-snapshots-operator",
+      "persistent-storage-csi-azure-file-static-provisioning-procedure",
+      "persistent-storage-csi-group-snapshots-overview"
+    ],
+    "answer": "During OpenShift Container Platform installation, the CSI Snapshot Controller Operator creates the following snapshot custom resource definitions (CRDs) in the `snapshot.storage.k8s.io/v1` API group:\n\n- `VolumeSnapshotContent`:  \n  - Not namespaced; for use by a cluster administrator.\n  - Represents a snapshot taken of a volume in the cluster, pointing to a real snapshot in the storage back end.\n\n- `VolumeSnapshot`:  \n  - Namespaced.\n  - Defines a developer request for a snapshot; handled and bound by the CSI snapshot controller.\n\n- `VolumeSnapshotClass`:  \n  - Not namespaced; for use by a cluster administrator.\n  - Specifies attributes and parameters for snapshots, allowing configuration of storage-provider-specific options for dynamically provisioned snapshots.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "nodes-cma-autoscaling-keda-controller-edit",
+        "using-data-protection-test",
+        "persistent-storage-csi-snapshots-operator"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 0.3333,
+      "precision@3": 0.3333,
+      "recall@5": 0.3333,
+      "precision@5": 0.2,
+      "recall@10": 0.3333,
+      "precision@10": 0.1,
+      "recall@20": 0.3333,
+      "precision@20": 0.05,
+      "mrr": 0.3333,
+      "first_hit_rank": 3,
+      "gold_found": [
+        "persistent-storage-csi-snapshots-operator"
+      ],
+      "gold_missed": [
+        "persistent-storage-csi-azure-file-static-provisioning-procedure",
+        "persistent-storage-csi-group-snapshots-overview"
+      ]
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly lists the CRDs created by the CSI Snapshot Controller Operator during OpenShift installation and provides brief descriptions for each."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.4444
+    },
+    "elapsed_ms": 8186,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "impersonation-project-creation",
+    "query": "How do I create a project request on behalf of a different user in OpenShift?",
+    "topic": "applications",
+    "gold_doc_ids": [
+      "impersonation-project-creation"
+    ],
+    "answer": "To create a project request on behalf of another user in OpenShift Container Platform, use the following command:\n\n```bash\noc new-project <project> --as=<user> \\\n    --as-group=system:authenticated --as-group=system:authenticated:oauth\n```\n\nThis impersonates the specified user and the required groups when creating the project request.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "about-project-creation",
+        "authentication-api-impersonation",
+        "impersonation-project-creation"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 0.3333,
+      "first_hit_rank": 3,
+      "gold_found": [
+        "impersonation-project-creation"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer provides the exact command and explanation needed to create a project request on behalf of another user in OpenShift."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "The answer is fully supported by the context, as it directly reflects the procedure and command provided for impersonating a user when creating a project request in OpenShift."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.6667,
+        "explanation": "2/3 relevant"
+      },
+      "avg": 0.8889
+    },
+    "elapsed_ms": 4984,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "oadp-backingup-persistent-volumes",
+    "query": "How do I configure the `VolumeSnapshotClass` CR to enable CSI snapshots for backing up persistent volumes?",
+    "topic": "backup_and_restore",
+    "gold_doc_ids": [
+      "oadp-backingup-persistent-volumes"
+    ],
+    "answer": "To enable Container Storage Interface (CSI) snapshots for backing up persistent volumes in OpenShift, configure your `VolumeSnapshotClass` Custom Resource as follows:\n\n1. Add the required label to the `VolumeSnapshotClass`:\n\n```yaml\napiVersion: snapshot.storage.k8s.io/v1\nkind: VolumeSnapshotClass\nmetadata:\n  name: <volume_snapshot_class_name>\n  labels:\n    velero.io/csi-volumesnapshot-class: \"true\"\n  annotations:\n    snapshot.storage.kubernetes.io/is-default-class: true\ndriver: <csi_driver>\ndeletionPolicy: <deletion_policy_type>\n```\n\n- Replace `<volume_snapshot_class_name>` with your desired name.\n- Set `driver` to your CSI driver.\n- Set `deletionPolicy` to either `Retain` or `Delete` as needed.\n\n**Key requirement:**  \nThe label `velero.io/csi-volumesnapshot-class: \"true\"` must be present to enable CSI snapshots for backup.\n\nAfter configuring this, you can proceed to create a `Backup` Custom Resource.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "oadp-1-3-backing-csi-snapshots",
+        "persistent-storage-csi-snapshots-delete",
+        "oadp-backingup-persistent-volumes"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 0.3333,
+      "first_hit_rank": 3,
+      "gold_found": [
+        "oadp-backingup-persistent-volumes"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly explains how to configure the `VolumeSnapshotClass` CR with the required label and fields to enable CSI snapshots for backing up persistent volumes."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 1.0,
+        "explanation": "The answer is fully supported by the context, as all instructions and requirements mentioned are present in the provided context."
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 1.0,
+        "explanation": "3/3 relevant"
+      },
+      "avg": 1.0
+    },
+    "elapsed_ms": 6263,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "updating-role-arn-oadp-rosa-sts",
+    "query": "How do I update the IAM role ARN in the OADP Operator subscription if I provided an incorrect ARN during installation?",
+    "topic": "backup_and_restore",
+    "gold_doc_ids": [
+      "updating-role-arn-oadp-rosa-sts"
+    ],
+    "answer": "To update the IAM role Amazon Resource Name (ARN) in the OADP Operator subscription after providing an incorrect ARN during installation, follow these steps:\n\n1. **Verify the current IAM role ARN in the subscription:**\n   ```bash\n   oc get sub -o yaml redhat-oadp-operator\n   ```\n   Check the value of the `ROLEARN` environment variable.\n\n2. **Patch the subscription with the correct IAM role ARN:**\n   ```bash\n   oc patch subscription redhat-oadp-operator -p '{\"spec\": {\"config\": {\"env\": [{\"name\": \"ROLEARN\", \"value\": \"<role_arn>\"}]}}}' --type='merge'\n   ```\n   Replace `<role_arn>` with the correct IAM role ARN.\n\n3. **Verify the secret is updated with the correct ARN:**\n   ```bash\n   oc get secret cloud-credentials -o jsonpath='{.data.credentials}' | base64 -d\n   ```\n   Ensure the `role_arn` in the output matches the correct ARN.\n\n4. **(If needed) Update and apply your DataProtectionApplication CR manifest to reference the correct credentials:**\n   ```yaml\n   apiVersion: oadp.openshift.io/v1alpha1\n   kind: DataProtectionApplication\n   metadata:\n     name: <name>\n     namespace: openshift-adp\n   spec:\n     backupLocations:\n     - bucket:\n         config:\n           region: <region>\n         cloudStorageRef:\n           name: <cloud_storage>\n         credential:\n           name: cloud-credentials\n           key: credentials\n         prefix: velero\n         default: true\n     configuration:\n       velero:\n         defaultPlugins:\n         - aws\n         - openshift\n   ```\n   Apply with:\n   ```bash\n   oc create -f <dpa_manifest_file>\n   ```\n\n5. **Verify reconciliation and storage location:**\n   ```bash\n   oc get dpa -n openshift-adp -o yaml\n   oc get backupstoragelocations.velero.io -n openshift-adp\n   ```\n\nYou do **not** need to uninstall and reinstall the OADP Operator to update the IAM role ARN.",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "updating-role-arn-oadp-rosa-sts",
+        "sd-persistent-storage-csi-efs-sts",
+        "persistent-storage-csi-efs-sts"
+      ],
+      "recall@1": 1.0,
+      "precision@1": 1.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 1.0,
+      "first_hit_rank": 1,
+      "gold_found": [
+        "updating-role-arn-oadp-rosa-sts"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": 1.0,
+        "explanation": "The answer directly addresses how to update the IAM role ARN in the OADP Operator subscription after an incorrect ARN was provided during installation, including verification and patching steps."
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": 0.0,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 0.3333,
+        "explanation": "1/3 relevant"
+      },
+      "avg": 0.4444
+    },
+    "elapsed_ms": 10258,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  },
+  {
+    "id": "olm-preparing-multitenant-operators",
+    "query": "How do I create a separate namespace for a tenant Operator in a multitenant cluster?",
+    "topic": "operators",
+    "gold_doc_ids": [
+      "olm-preparing-multitenant-operators"
+    ],
+    "answer": "To create a separate namespace for a tenant Operator in an OpenShift multitenant cluster, define a Namespace resource and apply it. For example, to create a namespace called `team1-operator`:\n\n1. Save the following YAML as `team1-operator.yaml`:\n```yaml\napiVersion: v1\nkind: Namespace\nmetadata:\n  name: team1-operator\n```\n\n2. Create the namespace by running:\n```bash\n$ oc create -f team1-operator.yaml\n```\n\nThis namespace should be separate from the tenant's workload namespace (e.g., `team1`).",
+    "retrieval_metrics": {
+      "retrieved_stems": [
+        "olm-multitenancy-solution",
+        "olm-preparing-multitenant-operators",
+        "olm-policy-scoping-operator-install"
+      ],
+      "recall@1": 0.0,
+      "precision@1": 0.0,
+      "recall@3": 1.0,
+      "precision@3": 0.3333,
+      "recall@5": 1.0,
+      "precision@5": 0.2,
+      "recall@10": 1.0,
+      "precision@10": 0.1,
+      "recall@20": 1.0,
+      "precision@20": 0.05,
+      "mrr": 0.5,
+      "first_hit_rank": 2,
+      "gold_found": [
+        "olm-preparing-multitenant-operators"
+      ],
+      "gold_missed": []
+    },
+    "generation_metrics": {
+      "answer_relevance": {
+        "label": "answer_relevance",
+        "score": null,
+        "explanation": ""
+      },
+      "faithfulness": {
+        "label": "faithfulness",
+        "score": null,
+        "explanation": ""
+      },
+      "context_relevance": {
+        "label": "context_relevance",
+        "score": 1.0,
+        "explanation": "3/3 relevant"
+      },
+      "avg": 1.0
+    },
+    "elapsed_ms": 18912,
+    "config": {
+      "model": "gpt-4.1",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 20
+    }
+  }
+]

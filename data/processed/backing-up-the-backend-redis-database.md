@@ -1,0 +1,89 @@
+//included in backing-up-3scale-api-management-by-using-oadp.adoc assembly
+
+# Backing up the back-end Redis database
+
+Back up the back-end Redis database by configuring Velero annotations and creating a backup CR with the required resources. This helps you preserve your 3scale back-end Redis data for recovery scenarios.
+
+.Prerequisites
+
+- You backed up the Red Hat 3scale API Management operator.
+- You backed up your MySQL database.
+- The Redis queues have been drained before performing the backup.
+
+.Procedure
+
+1. Edit the annotations on the `backend-redis` deployment by running the following command:
+```bash
+$ oc edit deployment backend-redis -n threescale
+```
+```yaml
+annotations:
+post.hook.backup.velero.io/command: >-
+         ["/bin/bash", "-c", "redis-cli CONFIG SET auto-aof-rewrite-percentage
+         100"]
+       pre.hook.backup.velero.io/command: >-
+         ["/bin/bash", "-c", "redis-cli CONFIG SET auto-aof-rewrite-percentage
+         0"]
+```
+
+1. Create a YAML file with the following configuration to back up the Redis database:
+
+```yaml
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: redis-backup
+  namespace: openshift-adp
+spec:
+  csiSnapshotTimeout: 10m0s
+  defaultVolumesToFsBackup: true
+  includedNamespaces:
+  - threescale
+  includedResources:
+  - deployment
+  - pods
+  - replicationcontrollers
+  - persistentvolumes
+  - persistentvolumeclaims
+  itemOperationTimeout: 1h0m0s
+  labelSelector:
+    matchLabels:
+      app: 3scale-api-management
+      threescale_component: backend
+      threescale_component_element: redis
+  snapshotMoveData: false
+  snapshotVolumes: false
+  ttl: 720h0m0s
+```
+`name`:: Specifies the value of the `metadata.name` parameter in the backup. Use this value in the `metadata.backupName` parameter when restoring the Redis database.
+
+1. Back up the Redis database by running the following command:
+```bash
+$ oc create -f redis-backup.yaml
+```
+.Example output
+
+```bash
+backup.velero.io/redis-backup created
+```
+
+.Verification
+
+- Verify that the Redis backup is completed by running the following command:
+```bash
+$ oc get backups.velero.io redis-backup -o yaml
+```
+.Example output
+
+```bash
+status:
+completionTimestamp: "2025-04-17T13:25:19Z"
+errors: 1
+expiration: "2025-05-17T13:25:16Z"
+formatVersion: 1.1.0
+hookStatus: {}
+phase: Completed
+progress: {}
+startTimestamp: "2025-04-17T13:25:16Z"
+version: 1
+```

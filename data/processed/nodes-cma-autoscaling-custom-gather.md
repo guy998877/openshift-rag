@@ -1,0 +1,136 @@
+# Gathering debugging data
+
+The following command runs the `must-gather` tool for the Custom Metrics Autoscaler Operator:
+
+```bash
+$ oc adm must-gather --image="$(oc get packagemanifests openshift-custom-metrics-autoscaler-operator \
+-n openshift-marketplace \
+-o jsonpath='{.status.channels[?(@.name=="stable")].currentCSVDesc.annotations.containerImage}')"
+```
+
+> **NOTE:** The standard OpenShift Container Platform `must-gather` command, `oc adm must-gather`, does not collect Custom Metrics Autoscaler Operator data.
+
+.Prerequisites
+
+- You are logged in to OpenShift Container Platform as a user with the `cluster-admin` role.
+- The OpenShift Container Platform CLI (`oc`) installed.
+
+.Procedure
+
+// Hide note from ROSA/OSD, as restricted is not supported.
+1. Navigate to the directory where you want to store the `must-gather` data.
+> **NOTE:** If your cluster is using a restricted network, you must take additional steps. If your mirror registry has a trusted CA, you must first add the trusted CA to the cluster. For all clusters on restricted networks, you must import the default `must-gather` image as an image stream by running the following command. [source,terminal] ---- $ oc import-image is/must-gather -n openshift ----
+
+1. Perform one of the following:
+--
+- To get only the Custom Metrics Autoscaler Operator `must-gather` data, use the following command:
+```bash
+$ oc adm must-gather --image="$(oc get packagemanifests openshift-custom-metrics-autoscaler-operator \
+-n openshift-marketplace \
+-o jsonpath='{.status.channels[?(@.name=="stable")].currentCSVDesc.annotations.containerImage}')"
+```
+The custom image for the `must-gather` command is pulled directly from the Operator package manifests, so that it works on any cluster where the Custom Metric Autoscaler Operator is available.
+
+- To gather the default `must-gather` data in addition to the Custom Metric Autoscaler Operator information:
+
+.. Use the following command to obtain the Custom Metrics Autoscaler Operator image and set it as an environment variable:
+```bash
+$ IMAGE="$(oc get packagemanifests openshift-custom-metrics-autoscaler-operator \
+  -n openshift-marketplace \
+  -o jsonpath='{.status.channels[?(@.name=="stable")].currentCSVDesc.annotations.containerImage}')"
+```
+
+.. Use the `oc adm must-gather` with the Custom Metrics Autoscaler Operator image:
+```bash
+$ oc adm must-gather --image-stream=openshift/must-gather --image=${IMAGE}
+```
+--
+.Example must-gather output for the Custom Metric Autoscaler
+```bash
+└── openshift-keda
+    ├── apps
+    │   ├── daemonsets.yaml
+    │   ├── deployments.yaml
+    │   ├── replicasets.yaml
+    │   └── statefulsets.yaml
+    ├── apps.openshift.io
+    │   └── deploymentconfigs.yaml
+    ├── autoscaling
+    │   └── horizontalpodautoscalers.yaml
+    ├── batch
+    │   ├── cronjobs.yaml
+    │   └── jobs.yaml
+    ├── build.openshift.io
+    │   ├── buildconfigs.yaml
+    │   └── builds.yaml
+    ├── core
+    │   ├── configmaps.yaml
+    │   ├── endpoints.yaml
+    │   ├── events.yaml
+    │   ├── persistentvolumeclaims.yaml
+    │   ├── pods.yaml
+    │   ├── replicationcontrollers.yaml
+    │   ├── secrets.yaml
+    │   └── services.yaml
+    ├── discovery.k8s.io
+    │   └── endpointslices.yaml
+    ├── image.openshift.io
+    │   └── imagestreams.yaml
+    ├── k8s.ovn.org
+    │   ├── egressfirewalls.yaml
+    │   └── egressqoses.yaml
+    ├── keda.sh
+    │   ├── kedacontrollers
+    │   │   └── keda.yaml
+    │   ├── scaledobjects
+    │   │   └── example-scaledobject.yaml
+    │   └── triggerauthentications
+    │       └── example-triggerauthentication.yaml
+    ├── monitoring.coreos.com
+    │   └── servicemonitors.yaml
+    ├── networking.k8s.io
+    │   └── networkpolicies.yaml
+    ├── openshift-keda.yaml
+    ├── pods
+    │   ├── custom-metrics-autoscaler-operator-58bd9f458-ptgwx
+    │   │   ├── custom-metrics-autoscaler-operator
+    │   │   │   └── custom-metrics-autoscaler-operator
+    │   │   │       └── logs
+    │   │   │           ├── current.log
+    │   │   │           ├── previous.insecure.log
+    │   │   │           └── previous.log
+    │   │   └── custom-metrics-autoscaler-operator-58bd9f458-ptgwx.yaml
+    │   ├── custom-metrics-autoscaler-operator-58bd9f458-thbsh
+    │   │   └── custom-metrics-autoscaler-operator
+    │   │       └── custom-metrics-autoscaler-operator
+    │   │           └── logs
+    │   ├── keda-metrics-apiserver-65c7cc44fd-6wq4g
+    │   │   ├── keda-metrics-apiserver
+    │   │   │   └── keda-metrics-apiserver
+    │   │   │       └── logs
+    │   │   │           ├── current.log
+    │   │   │           ├── previous.insecure.log
+    │   │   │           └── previous.log
+    │   │   └── keda-metrics-apiserver-65c7cc44fd-6wq4g.yaml
+    │   └── keda-operator-776cbb6768-fb6m5
+    │       ├── keda-operator
+    │       │   └── keda-operator
+    │       │       └── logs
+    │       │           ├── current.log
+    │       │           ├── previous.insecure.log
+    │       │           └── previous.log
+    │       └── keda-operator-776cbb6768-fb6m5.yaml
+    ├── policy
+    │   └── poddisruptionbudgets.yaml
+    └── route.openshift.io
+        └── routes.yaml
+```
+
+1. Create a compressed file from the `must-gather` directory that was created in your working directory. For example, on a computer that uses a Linux
+operating system, run the following command:
+```bash
+$ tar cvaf must-gather.tar.gz must-gather.local.5421342344627712289/ <1>
+```
+<1> Replace `must-gather-local.5421342344627712289/` with the actual directory name.
+
+1. Attach the compressed file to your support case on the link:https://access.redhat.com[Red Hat Customer Portal].

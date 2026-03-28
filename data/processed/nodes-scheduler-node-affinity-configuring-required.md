@@ -1,0 +1,45 @@
+# Configuring a required node affinity rule
+
+Required rules *must* be met before a pod can be scheduled on a node.
+
+.Procedure
+
+The following steps demonstrate a simple configuration that creates a node and a pod that the scheduler is required to place on the node.
+
+1. Add a label to a node using the `oc label node` command:
+```bash
+$ oc label node node1 e2e-az-name=e2e-az1
+```
+> **TIP:** You can alternatively apply the following YAML to add the label: [source,yaml] ---- kind: Node apiVersion: v1 metadata: name: <node_name> labels: e2e-az-name: e2e-az1 #... ----
+
+1. Create a pod with a specific label in the pod spec:
+.. Create a YAML file with the following content:
+> **NOTE:** You cannot add an affinity directly to a scheduled pod.
+.Example output
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s1
+spec:
+  affinity: <1>
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: <2>
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: e2e-az-name <3>
+            values:
+            - e2e-az1
+            - e2e-az2
+            operator: In <4>
+#...
+```
+<1> Adds a pod affinity.
+<2> Configures the `requiredDuringSchedulingIgnoredDuringExecution` parameter.
+<3> Specifies the `key` and `values` that must be met. If you want the new pod to be scheduled on the node you edited, use the same `key` and `values` parameters as the label in the node.
+<4> Specifies an `operator`. The operator can be `In`, `NotIn`, `Exists`, or `DoesNotExist`. For example, use the operator `In` to require the label to be in the node.
+
+.. Create the pod:
+```bash
+$ oc create -f <file-name>.yaml
+```

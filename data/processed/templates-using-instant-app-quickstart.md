@@ -1,0 +1,20 @@
+# Using instant app and quick start templates
+
+OpenShift Container Platform provides a number of default instant app and quick start templates to make it easy to quickly get started creating a new application for different languages. Templates are provided for Rails (Ruby), Django (Python), Node.js, CakePHP (PHP), and Dancer (Perl). Your cluster administrator must create these templates in the default, global `openshift` project so you have access to them.
+
+By default, the templates build using a public source repository on GitHub that contains the necessary application code.
+
+.Procedure
+
+1. You can list the available default instant app and quick start templates with:
+```bash
+$ oc get templates -n openshift
+```
+
+1. To modify the source and build your own version of the application:
+.. Fork the repository referenced by the template's default
+`SOURCE_REPOSITORY_URL` parameter.
+.. Override the value of the `SOURCE_REPOSITORY_URL` parameter when creating from the template, specifying your fork instead of the default value.
+By doing this, the build configuration created by the template now points to your fork of the application code, and you can modify the code and rebuild the application at will.
+
+> **NOTE:** Some of the instant app and quick start templates define a database deployment configuration. The configuration they define uses ephemeral storage for the database content. These templates should be used for demonstration purposes only as all database data is lost if the database pod restarts for any reason.

@@ -1,0 +1,44 @@
+# Checking the cluster health
+
+You should check the cluster health often during the update.
+Check for the node status, cluster Operators status and failed pods.
+
+.Procedure
+1. Check the status of the cluster Operators by running the following command:
+```bash
+$ oc get co
+```
+.Example output
+```bash
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+authentication                             4.14.34   True        False         False      4d22h
+baremetal                                  4.14.34   True        False         False      4d22h
+cloud-controller-manager                   4.14.34   True        False         False      4d23h
+cloud-credential                           4.14.34   True        False         False      4d23h
+cluster-autoscaler                         4.14.34   True        False         False      4d22h
+config-operator                            4.14.34   True        False         False      4d22h
+console                                    4.14.34   True        False         False      4d22h
+...
+service-ca                                 4.14.34   True        False         False      4d22h
+storage                                    4.14.34   True        False         False      4d22h
+```
+
+1. Check the status of the cluster nodes:
+```bash
+$ oc get nodes
+```
+.Example output
+```bash
+NAME           STATUS   ROLES                  AGE     VERSION
+ctrl-plane-0   Ready    control-plane,master   4d22h   v1.27.15+6147456
+ctrl-plane-1   Ready    control-plane,master   4d22h   v1.27.15+6147456
+ctrl-plane-2   Ready    control-plane,master   4d22h   v1.27.15+6147456
+worker-0       Ready    mcp-1,worker           4d22h   v1.27.15+6147456
+worker-1       Ready    mcp-2,worker           4d22h   v1.27.15+6147456
+```
+
+1. Check that there are no in-progress or failed pods.
+There should be no pods returned when you run the following command.
+```bash
+$ oc get po -A | grep -E -iv 'running|complete'
+```

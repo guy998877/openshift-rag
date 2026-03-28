@@ -1,0 +1,33 @@
+# Setting up Topology Manager
+
+To use Topology Manager, you must configure an allocation policy in the `KubeletConfig` custom resource (CR) named `cpumanager-enabled`. This file might exist if you have set up CPU Manager. If the file does not exist, you can create the file.
+
+.Prerequisites
+
+- Configure the CPU Manager policy to be `static`.
+
+.Procedure
+
+To activate Topology Manager:
+
+1. Configure the Topology Manager allocation policy in the custom resource.
+```bash
+$ oc edit KubeletConfig cpumanager-enabled
+```
+```yaml
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: cpumanager-enabled
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      custom-kubelet: cpumanager-enabled
+  kubeletConfig:
+     cpuManagerPolicy: static <1>
+     cpuManagerReconcilePeriod: 5s
+     topologyManagerPolicy: single-numa-node <2>
+```
+<1> This parameter must be `static` with a lowercase `s`.
+<2> Specify your selected Topology Manager allocation policy. Here, the policy is `single-numa-node`.
+Acceptable values are: `default`, `best-effort`, `restricted`, `single-numa-node`.

@@ -1,0 +1,417 @@
+{
+  "type": "generation",
+  "source": "ui",
+  "timestamp": "2026-03-22T00:05:52.824213Z",
+  "config": {
+    "n_queries": 5,
+    "model": "gpt-4o-mini",
+    "k_retrieve": 5
+  },
+  "aggregate": {
+    "answer_relevance": 0.8,
+    "faithfulness": 0.8,
+    "context_relevance": 0.36,
+    "recall@5": 0.7,
+    "mrr": 0.8
+  },
+  "results": [
+    {
+      "type": "result",
+      "i": 1,
+      "n": 5,
+      "id": "cpmso-config-options",
+      "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+      "topic": "machine_management",
+      "gold_doc_ids": [
+        "cpmso-config-options"
+      ],
+      "rewritten_query": "How to customize the prefix of machine names created by the control plane machine set in OpenShift Container Platform?",
+      "answer": "To customize the prefix of machine names created by the control plane machine set, follow these steps:\n\n1. Edit the `ControlPlaneMachineSet` CR by running the following command:\n```bash\n$ oc edit controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api\n```\n\n2. Edit the `.spec.machineNamePrefix` field of the `ControlPlaneMachineSet` CR:\n```yaml\napiVersion: machine.openshift.io/v1\nkind: ControlPlaneMachineSet\nmetadata:\n  name: cluster\n  namespace: openshift-machine-api\nspec:\n  machineNamePrefix: <machine_prefix>\n# ...\n```\nReplace `<machine_prefix>` with your desired prefix name that follows the requirements for a lowercase RFC 1123 subdomain.\n\n3. Save your changes.\n\n**IMPORTANT:** If you changed only the value of the `machineNamePrefix` parameter, you must manually replace your control plane machines to propagate this change.",
+      "sources": [
+        {
+          "id": "cpmso-config-options",
+          "title": "Adding a custom prefix to control plane machine names",
+          "content_type": "PROCEDURE",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Adding a custom prefix to control plane machine names\n\nYou can customize the prefix of machine names that the control plane machine set creates.\nThis can be done by editing the `ControlPlaneMachineSet` custom resource (CR).\n\n.Procedure\n\n1. Edit the `ControlPlaneMachineSet` CR by running the follow"
+        },
+        {
+          "id": "cpmso-overview",
+          "title": "Control Plane Machine Set Operator overview",
+          "content_type": "CONCEPT",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Control Plane Machine Set Operator overview\n\nThe Control Plane Machine Set Operator uses the `ControlPlaneMachineSet` custom resource (CR) to automate management of the control plane machine resources within your OpenShift Container Platform cluster.\n\nWhen the state of the cluster control plane ma"
+        },
+        {
+          "id": "machine-delete",
+          "title": "Deleting a specific machine",
+          "content_type": "PROCEDURE",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Deleting a specific machine\n\nYou can delete a specific machine.\n\n> **IMPORTANT:** Do not delete a control plane machine unless your cluster uses a control plane machine set.\n\n.Prerequisites\n\n- Install an OpenShift Container Platform cluster.\n- Install the OpenShift CLI (`oc`).\n- Log in to `oc` as "
+        },
+        {
+          "id": "cpmso-activating",
+          "title": "Activating the control plane machine set custom resource",
+          "content_type": "PROCEDURE",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Activating the control plane machine set custom resource\n\nTo use the control plane machine set, you must ensure that a `ControlPlaneMachineSet` custom resource (CR) with the correct settings for your cluster exists. On a cluster with a generated CR, you must verify that the configuration in the CR"
+        },
+        {
+          "id": "cpmso-openstack-with-az-config",
+          "title": "Configuring RHOSP clusters that have control plane machines with availability zones after an upgrade",
+          "content_type": "PROCEDURE",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Configuring RHOSP clusters that have control plane machines with availability zones after an upgrade\n\nFor some clusters that run on Red Hat OpenStack Platform (RHOSP) that you upgrade, you must manually update machine resources before you can use control plane machine sets if the following configu"
+        }
+      ],
+      "pipeline_log": {
+        "rewrite_ms": 1092,
+        "n_bm25_hits": 50,
+        "n_vector_hits": 50,
+        "retrieval_ms": 1227,
+        "n_reranked": 5,
+        "rerank_ms": 4357,
+        "generate_ms": 3334,
+        "ground_ms": 0,
+        "total_ms": 10010
+      },
+      "answer_relevance": 1.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.2,
+      "ar_explanation": "The answer provides clear steps to customize the prefix of machine names in OpenShift by editing the `ControlPlaneMachineSet` CR and specifies the necessary field to modify.",
+      "faith_explanation": "The answer accurately reflects the procedure for customizing the prefix of machine names and includes the necessary steps and requirements as outlined in the provided context.",
+      "ctx_explanation": "1/5 relevant",
+      "recall_5": 1.0,
+      "mrr": 1.0,
+      "gold_found": [
+        "cpmso-config-options"
+      ],
+      "gold_missed": [],
+      "elapsed_ms": 13309
+    },
+    {
+      "type": "result",
+      "i": 2,
+      "n": 5,
+      "id": "oadp-creating-alerting-rule",
+      "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "oadp-creating-alerting-rule"
+      ],
+      "rewritten_query": "How to create a PrometheusRule for alerting on OpenShift API Data Protection backup failures in my OpenShift environment?",
+      "answer": "To create a `PrometheusRule` for alerting on OpenShift API Data Protection (OADP) backup failures, follow these steps:\n\n1. Create a `PrometheusRule` YAML file with the sample `OADPBackupFailing` alert and save it as `4_create_oadp_alert_rule.yaml`:\n\n```yaml\napiVersion: monitoring.coreos.com/v1\nkind: PrometheusRule\nmetadata:\n  name: sample-oadp-alert\n  namespace: openshift-adp\nspec:\n  groups:\n  - name: sample-oadp-backup-alert\n    rules:\n    - alert: OADPBackupFailing\n      annotations:\n        description: 'OADP had {{$value | humanize}} backup failures over the last 2 hours.'\n        summary: OADP has issues creating backups\n      expr: |\n        increase(velero_backup_failure_total{job=\"openshift-adp-velero-metrics-svc\"}[2h]) > 0\n      for: 5m\n      labels:\n        severity: warning\n```\n\n2. Apply the `4_create_oadp_alert_rule.yaml` file to create the `PrometheusRule` object in the `openshift-adp` namespace:\n\n```bash\n$ oc apply -f 4_create_oadp_alert_rule.yaml\n```\n\nThis will create the alerting rule for OADP backup failures.",
+      "sources": [
+        {
+          "id": "oadp-creating-alerting-rule",
+          "title": "Creating an alerting rule",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Creating an alerting rule\n\nCreate a `PrometheusRule` resource to configure alerting rules for OADP backup operations. This helps you receive notifications when backup failures or other issues occur in your environment.\n\nThe OpenShift Container Platform monitoring stack receives alerts configured b"
+        },
+        {
+          "id": "performing-a-backup-oadp-rosa-sts",
+          "title": "Performing a backup with OADP and OpenShift Container Platform",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Performing a backup with OADP and OpenShift Container Platform\n\nThe following example `hello-world` application has no persistent volumes (PVs) attached. Perform a backup by using OpenShift API for Data Protection (OADP) with OpenShift Container Platform.\n\nEither Data Protection Application (DPA) "
+        },
+        {
+          "id": "observability-alerting",
+          "title": "Alerting",
+          "content_type": "PROCEDURE",
+          "topic": "post_installation_configuration",
+          "source_dir": "post_installation_configuration",
+          "snippet": "# Alerting\n\nOpenShift Container Platform includes a large number of alert rules, which can change from release to release. \n\n## Viewing default alerts\n\nReview all of the alert rules in a cluster.\n\n.Procedure\n\n- To review all the alert rules in a cluster, run the following command:\n```bash\n+\n```\n$ oc"
+        },
+        {
+          "id": "oadp-monitoring-setup",
+          "title": "OADP monitoring setup",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# OADP monitoring setup\n\nSet up OADP monitoring by enabling User Workload Monitoring and configuring the OpenShift Container Platform monitoring stack to retrieve Velero metrics. This helps you create alerting rules, query metrics, and optionally visualize data by using Prometheus-compatible tools s"
+        },
+        {
+          "id": "oadp-backingup-using-kopia",
+          "title": "Backing up applications with File System Backup",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Backing up applications with File System Backup\n\n.Prerequisites\n\n- You must install the OpenShift API for Data Protection (OADP) Operator.\n- You must not disable the default `nodeAgent` installation by setting `spec.configuration.nodeAgent.enable` to `false` in the `DataProtectionApplication` CR.\n"
+        }
+      ],
+      "pipeline_log": {
+        "rewrite_ms": 1094,
+        "n_bm25_hits": 50,
+        "n_vector_hits": 50,
+        "retrieval_ms": 264,
+        "n_reranked": 5,
+        "rerank_ms": 278,
+        "generate_ms": 5947,
+        "ground_ms": 0,
+        "total_ms": 7584
+      },
+      "answer_relevance": 1.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.4,
+      "ar_explanation": "The answer provides a clear step-by-step guide to creating a `PrometheusRule` for alerting on OADP backup failures, including the necessary YAML configuration and command to apply it.",
+      "faith_explanation": "The answer accurately reflects the context provided, including the creation of a `PrometheusRule` for alerting on OADP backup failures and the necessary YAML configuration.",
+      "ctx_explanation": "2/5 relevant",
+      "recall_5": 1.0,
+      "mrr": 1.0,
+      "gold_found": [
+        "oadp-creating-alerting-rule"
+      ],
+      "gold_missed": [],
+      "elapsed_ms": 10428
+    },
+    {
+      "type": "result",
+      "i": 3,
+      "n": 5,
+      "id": "olm-arch-olm-operator",
+      "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+      "topic": "operators",
+      "gold_doc_ids": [
+        "olm-arch-olm-operator"
+      ],
+      "rewritten_query": "How does the OpenShift Lifecycle Manager Operator determine when to deploy applications defined by ClusterServiceVersion resources?",
+      "answer": "The provided documentation does not cover this. Try rephrasing or asking about a related topic.",
+      "sources": [
+        {
+          "id": "olm-overview",
+          "title": "",
+          "content_type": "CONCEPT",
+          "topic": "operators",
+          "source_dir": "operators/understanding",
+          "snippet": "Operator Lifecycle Manager (OLM) Classic helps users install, update, and manage the lifecycle of Kubernetes native applications (Operators) and their associated services running across their OpenShift Container Platform clusters. It is part of the [Operator Framework](https://operatorframework.io/)"
+        },
+        {
+          "id": "arch-olm-operators",
+          "title": "Add-on Operators",
+          "content_type": "CONCEPT",
+          "topic": "architecture",
+          "source_dir": "architecture",
+          "snippet": "# Add-on Operators\n\nOperator Lifecycle Manager (OLM) and the software catalog are default components in OpenShift Container Platform that help manage Kubernetes-native applications as Operators. Together they provide the system for discovering, installing, and managing the optional add-on Operators "
+        },
+        {
+          "id": "olm-software-catalog-overview",
+          "title": "About the software catalog",
+          "content_type": "CONCEPT",
+          "topic": "operators",
+          "source_dir": "operators/understanding",
+          "snippet": "# About the software catalog\n\nThe _software catalog_ is the web console interface in OpenShift Container Platform that cluster administrators use to discover and install Operators. With one click, an Operator can be pulled from its off-cluster source, installed and subscribed on the cluster, and mad"
+        },
+        {
+          "id": "olm-installing-operators-from-software-catalog",
+          "title": "About Operator installation from the software catalog",
+          "content_type": "CONCEPT",
+          "topic": "operators",
+          "source_dir": "operators/admin",
+          "snippet": "# About Operator installation from the software catalog\n\nThe software catalog is a user interface for discovering Operators; it works in conjunction with Operator Lifecycle Manager (OLM), which installs and manages Operators on a cluster.\n\nDuring installation, you must determine the following initia"
+        },
+        {
+          "id": "olm-installplan",
+          "title": "Install plan",
+          "content_type": "CONCEPT",
+          "topic": "operators",
+          "source_dir": "operators/understanding",
+          "snippet": "# Install plan\n\nAn _install plan_, defined by an `InstallPlan` object, describes a set of resources that Operator Lifecycle Manager (OLM) creates to install or upgrade to a specific version of an Operator. The version is defined by a cluster service version (CSV).\n\nTo install an Operator, a cluster "
+        }
+      ],
+      "pipeline_log": {
+        "rewrite_ms": 734,
+        "n_bm25_hits": 50,
+        "n_vector_hits": 50,
+        "retrieval_ms": 253,
+        "n_reranked": 5,
+        "rerank_ms": 364,
+        "generate_ms": 1285,
+        "ground_ms": 0,
+        "total_ms": 2635
+      },
+      "answer_relevance": 0.0,
+      "faithfulness": 0.0,
+      "context_relevance": 0.8,
+      "ar_explanation": "The answer does not directly address the question as it states that the documentation does not provide information on how the OLM Operator determines when to deploy applications defined by CSV resources.",
+      "faith_explanation": "The answer does not provide any information or claims that are supported by the context provided.",
+      "ctx_explanation": "4/5 relevant",
+      "recall_5": 0.0,
+      "mrr": 0.0,
+      "gold_found": [],
+      "gold_missed": [
+        "olm-arch-olm-operator"
+      ],
+      "elapsed_ms": 5548
+    },
+    {
+      "type": "result",
+      "i": 4,
+      "n": 5,
+      "id": "nodes-nodes-working-master-schedulable",
+      "query": "How do I configure control plane nodes to be schedulable in OpenShift?",
+      "topic": "nodes",
+      "gold_doc_ids": [
+        "nodes-nodes-working-master-schedulable",
+        "nodes-nodes-working-evacuating"
+      ],
+      "rewritten_query": "How to configure control plane nodes to be schedulable in OpenShift Container Platform?",
+      "answer": "To configure control plane nodes to be schedulable in OpenShift Container Platform, follow these steps:\n\n1. Edit the `schedulers.config.openshift.io` resource:\n   ```bash\n   $ oc edit schedulers.config.openshift.io cluster\n   ```\n\n2. Configure the `mastersSchedulable` field in the YAML:\n   ```yaml\n   apiVersion: config.openshift.io/v1\n   kind: Scheduler\n   metadata:\n     name: cluster\n   spec:\n     mastersSchedulable: true  # Set to true to allow control plane nodes to be schedulable\n   ```\n\n3. Save the file to apply the changes.\n\n> **IMPORTANT:** When you configure control plane nodes from unschedulable to schedulable, additional subscriptions are required as control plane nodes then become compute nodes.",
+      "sources": [
+        {
+          "id": "nodes-nodes-working-master-schedulable",
+          "title": "Configuring control plane nodes as schedulable",
+          "content_type": "PROCEDURE",
+          "topic": "nodes",
+          "source_dir": "nodes",
+          "snippet": "# Configuring control plane nodes as schedulable\n\n[role=\"_abstract\"] \nYou can configure control plane nodes to be schedulable, meaning that new pods are allowed for placement on the control plane nodes.\n\nBy default, control plane nodes are not schedulable. You can set the control plane nodes to be s"
+        },
+        {
+          "id": "updating-control-plane-only-update",
+          "title": "Performing a Control Plane Only update",
+          "content_type": "PROCEDURE",
+          "topic": "updating",
+          "source_dir": "updating",
+          "snippet": "# Performing a Control Plane Only update\n\nThe following procedure pauses all non-`master` machine config pools and performs updates from OpenShift Container Platform <4.y> to <4.y+1> to <4.y+2>, then unpauses the machine config pools.\nFollowing this procedure reduces the total update duration and th"
+        },
+        {
+          "id": "update-vsphere-virtual-hardware-on-control-plane-nodes",
+          "title": "Updating the virtual hardware for control plane nodes on vSphere",
+          "content_type": "PROCEDURE",
+          "topic": "updating",
+          "source_dir": "updating",
+          "snippet": "# Updating the virtual hardware for control plane nodes on vSphere\n\nTo reduce the risk of downtime, it is recommended that control plane nodes be updated serially. This ensures that the Kubernetes API remains available and etcd retains quorum.\n\n.Prerequisites\n\n- You have cluster administrator permis"
+        },
+        {
+          "id": "cpmso-overview",
+          "title": "Control Plane Machine Set Operator overview",
+          "content_type": "CONCEPT",
+          "topic": "machine_management",
+          "source_dir": "machine_management",
+          "snippet": "# Control Plane Machine Set Operator overview\n\nThe Control Plane Machine Set Operator uses the `ControlPlaneMachineSet` custom resource (CR) to automate management of the control plane machine resources within your OpenShift Container Platform cluster.\n\nWhen the state of the cluster control plane ma"
+        },
+        {
+          "id": "investigating-master-node-installation-issues",
+          "title": "Investigating control plane node installation issues",
+          "content_type": "PROCEDURE",
+          "topic": "support",
+          "source_dir": "support/troubleshooting",
+          "snippet": "# Investigating control plane node installation issues\n\nIf you experience control plane node installation issues, determine the control plane node OpenShift Container Platform software defined network (SDN), and network Operator status. Collect `kubelet.service`, `crio.service` journald unit logs, a"
+        }
+      ],
+      "pipeline_log": {
+        "rewrite_ms": 635,
+        "n_bm25_hits": 50,
+        "n_vector_hits": 50,
+        "retrieval_ms": 297,
+        "n_reranked": 5,
+        "rerank_ms": 223,
+        "generate_ms": 2938,
+        "ground_ms": 0,
+        "total_ms": 4093
+      },
+      "answer_relevance": 1.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.2,
+      "ar_explanation": "The answer provides clear steps to configure control plane nodes to be schedulable in OpenShift, including editing the necessary configuration and the implications of making this change.",
+      "faith_explanation": "The answer correctly describes the steps to configure control plane nodes to be schedulable, which is supported by the context provided.",
+      "ctx_explanation": "1/5 relevant",
+      "recall_5": 0.5,
+      "mrr": 1.0,
+      "gold_found": [
+        "nodes-nodes-working-master-schedulable"
+      ],
+      "gold_missed": [
+        "nodes-nodes-working-evacuating"
+      ],
+      "elapsed_ms": 6963
+    },
+    {
+      "type": "result",
+      "i": 5,
+      "n": 5,
+      "id": "velero-obtaining-by-accessing-binary",
+      "query": "How do I set an alias to access the Velero binary in my cluster's Velero deployment?",
+      "topic": "backup_and_restore",
+      "gold_doc_ids": [
+        "velero-obtaining-by-accessing-binary"
+      ],
+      "rewritten_query": "How to set an alias for accessing the Velero binary in the Velero deployment on OpenShift?",
+      "answer": "Set the needed alias by using the following command:\n```bash\n$ alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'\n```",
+      "sources": [
+        {
+          "id": "velero-obtaining-by-accessing-binary",
+          "title": "Accessing the Velero binary in the Velero deployment in the cluster",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Accessing the Velero binary in the Velero deployment in the cluster\n\nUse a shell command to access the Velero binary in the Velero deployment in the cluster.\n\n.Prerequisites\n\n- Your `DataProtectionApplication` custom resource has a status of `Reconcile complete`.\n\n.Procedure\n\n- Set the needed alia"
+        },
+        {
+          "id": "oadp-setting-resource-limits-and-requests",
+          "title": "Setting Velero CPU and memory resource allocations",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Setting Velero CPU and memory resource allocations\n\nYou set the CPU and memory resource allocations for the `Velero` pod by editing the  `DataProtectionApplication` custom resource (CR) manifest.\n\n.Prerequisites\n\n- You must have the OpenShift API for Data Protection (OADP) Operator installed.\n\n.Pr"
+        },
+        {
+          "id": "oadp-deleting-backups-using-velero",
+          "title": "Deleting a backup by using the Velero CLI",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Deleting a backup by using the Velero CLI\n\nYou can delete a backup by using the Velero CLI.\n\n.Prerequisites\n\n- You have run a backup of your application.\n- You downloaded the Velero CLI and can access the Velero binary in your cluster.\n\n.Procedure\n\n- To delete the backup, run the following Velero "
+        },
+        {
+          "id": "oadp-pod-crash-set-resource-request-velero",
+          "title": "Setting resource requests for a Velero pod",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Setting resource requests for a Velero pod\n\nUse the `configuration.velero.podConfig.resourceAllocations` specification field in the `oadp_v1alpha1_dpa.yaml` file to set specific resource requests for a `Velero` pod.\n\n.Procedure\n\n- Set the `cpu` and `memory` resource requests as shown in the follow"
+        },
+        {
+          "id": "oadp-configuring-velero-load-affinity",
+          "title": "Configuring Velero load affinity",
+          "content_type": "PROCEDURE",
+          "topic": "backup_and_restore",
+          "source_dir": "backup_and_restore",
+          "snippet": "# Configuring Velero load affinity\n\nWith each OADP deployment, there is one Velero pod and its main purpose is to schedule Velero workloads. To schedule the Velero pod, you can use the `velero.podConfig.nodeSelector` and the `velero.loadAffinity` objects in the `DataProtectionApplication` (DPA) cust"
+        }
+      ],
+      "pipeline_log": {
+        "rewrite_ms": 821,
+        "n_bm25_hits": 50,
+        "n_vector_hits": 50,
+        "retrieval_ms": 950,
+        "n_reranked": 5,
+        "rerank_ms": 267,
+        "generate_ms": 989,
+        "ground_ms": 0,
+        "total_ms": 3028
+      },
+      "answer_relevance": 1.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.2,
+      "ar_explanation": "The answer provides a specific command to create an alias for accessing the Velero binary within the Velero deployment in the specified namespace.",
+      "faith_explanation": "The answer correctly states the command to set the alias for accessing the Velero binary, which is explicitly provided in the context.",
+      "ctx_explanation": "1/5 relevant",
+      "recall_5": 1.0,
+      "mrr": 1.0,
+      "gold_found": [
+        "velero-obtaining-by-accessing-binary"
+      ],
+      "gold_missed": [],
+      "elapsed_ms": 5902
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+# Moving the router
+
+You can deploy the router pod to a different compute machine set. By default, the pod is deployed to a worker node.
+
+.Prerequisites
+
+- Configure additional compute machine sets in your OpenShift Container Platform cluster.
+
+.Procedure
+
+1. View the `IngressController` custom resource for the router Operator:
+```bash
+$ oc get ingresscontroller default -n openshift-ingress-operator -o yaml
+```
+The command output resembles the following text:
+```yaml
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  creationTimestamp: 2019-04-18T12:35:39Z
+  finalizers:
+  - ingresscontroller.operator.openshift.io/finalizer-ingresscontroller
+  generation: 1
+  name: default
+  namespace: openshift-ingress-operator
+  resourceVersion: "11341"
+  selfLink: /apis/operator.openshift.io/v1/namespaces/openshift-ingress-operator/ingresscontrollers/default
+  uid: 79509e05-61d6-11e9-bc55-02ce4781844a
+spec: {}
+status:
+  availableReplicas: 2
+  conditions:
+  - lastTransitionTime: 2019-04-18T12:36:15Z
+    status: "True"
+    type: Available
+  domain: apps.<cluster>.example.com
+  endpointPublishingStrategy:
+    type: LoadBalancerService
+  selector: ingresscontroller.operator.openshift.io/deployment-ingresscontroller=default
+```
+
+1. Edit the `ingresscontroller` resource and change the `nodeSelector` to use the `infra` label:
+```bash
+$ oc edit ingresscontroller default -n openshift-ingress-operator
+```
+```yaml
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  creationTimestamp: "2025-03-26T21:15:43Z"
+  finalizers:
+  - ingresscontroller.operator.openshift.io/finalizer-ingresscontroller
+  generation: 1
+  name: default
+# ...
+spec:
+  nodePlacement:
+    nodeSelector: <1>
+      matchLabels:
+        node-role.kubernetes.io/infra: ""
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/infra
+      value: reserved
+# ...
+```
+<1> Add a `nodeSelector` parameter with the appropriate value to the component you want to move. You can use a `nodeSelector` parameter in the format shown or use `<key>: <value>` pairs, based on the value specified for the node. If you added a taint to the infrastructure node, also add a matching toleration.
+
+1. Confirm that the router pod is running on the `infra` node.
+.. View the list of router pods and note the node name of the running pod:
+```bash
+$ oc get pod -n openshift-ingress -o wide
+```
+.Example output
+```bash
+NAME                              READY     STATUS        RESTARTS   AGE       IP           NODE                           NOMINATED NODE   READINESS GATES
+router-default-86798b4b5d-bdlvd   1/1      Running       0          28s       10.130.2.4   ip-10-0-217-226.ec2.internal   <none>           <none>
+router-default-955d875f4-255g8    0/1      Terminating   0          19h       10.129.2.4   ip-10-0-148-172.ec2.internal   <none>           <none>
+```
+In this example, the running pod is on the `ip-10-0-217-226.ec2.internal` node.
+
+.. View the node status of the running pod:
+```bash
+$ oc get node <node_name> <1>
+```
+<1> Specify the `<node_name>` that you obtained from the pod list.
+.Example output
+```bash
+NAME                          STATUS  ROLES         AGE   VERSION
+ip-10-0-217-226.ec2.internal  Ready   infra,worker  17h   v1.34.2
+```
+Because the role list includes `infra`, the pod is running on the correct node.

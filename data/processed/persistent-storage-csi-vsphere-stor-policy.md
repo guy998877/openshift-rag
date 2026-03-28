@@ -1,0 +1,15 @@
+# vSphere storage policy
+
+The vSphere CSI Driver Operator storage class uses vSphere's storage policy. OpenShift Container Platform automatically creates a storage policy that targets datastore configured in cloud configuration:
+```yaml
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: thin-csi
+provisioner: csi.vsphere.vmware.com
+parameters:
+  StoragePolicyName: "$openshift-storage-policy-xxxx"
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: false
+reclaimPolicy: Delete
+```

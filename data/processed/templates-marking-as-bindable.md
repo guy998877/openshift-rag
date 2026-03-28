@@ -1,0 +1,9 @@
+# Marking a template as bindable
+
+The Template Service Broker advertises one service in its catalog for each template object of which it is aware. By default, each of these services is advertised as being bindable, meaning an end user is permitted to bind against the provisioned service.
+
+.Procedure
+
+Template authors can prevent end users from binding against services provisioned from a given template.
+
+- Prevent end user from binding against services provisioned from a given template by adding the annotation `template.openshift.io/bindable: "false"` to the template.

@@ -1,0 +1,3 @@
+# Red Hat Lightspeed Advisor tab
+
+The **Red Hat Lightspeed Advisor** tab uses the Remote Health functionality of the OpenShift Container Platform to identify and mitigate risks to security, performance, availability, and stability. See [Using Red Hat Lightspeed to identify issues with your cluster](https://docs.openshift.com/container-platform/latest/support/getting-support.html) in the {OCP} documentation.

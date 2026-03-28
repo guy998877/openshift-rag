@@ -1,0 +1,27 @@
+# Troubleshooting cluster creation with an AWSEC2QuotaExceeded error
+
+If a cluster creation action fails, you might receive the following error message.
+
+.Example output
+```bash
+Provisioning Error Code:    OCM3042
+Provisioning Error Message: AWS E2C quota limit exceeded. Clean unused load balancers or increase quota and try again.
+```
+
+This error indicates that you have reached the EC2 quota limit for the region mentioned in the error log.
+
+.Procedure
+
+- To fix this issue, try one of the following methods:
+- Request a quota increase from AWS:
+.. Sign in to the [AWS Management Console](https://aws.amazon.com/console/).
+.. Click your user name and select **Service Quotas**.
+.. Under **Manage quotas**, select an AWS service to view available quotas.
+.. If the quota is adjustable, you can choose the button or the name, and then choose **Request quota increase**.
+- Delete unused EC2 instances using the console:
+.. Before you delete an EC2 instance, verify your data by checking that your Amazon EBS volumes will still exist after you delete the unused EC2 instances.
+.. Ensure you have copied any data that you need from your instance store volumes to persistent storage, such as Amazon EBS or Amazon S3.
+.. If you have a CNAME record for your domain that points to your load balancer, point it to a new location and wait for the DNS change to take effect before deleting your load balancer.
+.. Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2/).
+.. On the navigation pane, choose **Instances**.
+.. Select the instance, and choose **Terminate instance**.

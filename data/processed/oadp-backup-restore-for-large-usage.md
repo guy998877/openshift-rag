@@ -1,0 +1,9 @@
+# NodeAgent CPU for large usage
+
+Testing shows that increasing `NodeAgent` CPU can significantly improve backup and restore times when using OpenShift API for Data Protection (OADP).
+
+> **IMPORTANT:** You can tune your OpenShift Container Platform environment based on your performance analysis and preference. Use CPU limits in the workloads when you use Kopia for file system backups. If you do not use CPU limits on the pods, the pods can use excess CPU when it is available. If you specify CPU limits, the pods might be throttled if they exceed their limits. Therefore, the use of CPU limits on the pods is considered an anti-pattern. Ensure that you are accurately specifying CPU requests so that pods can take advantage of excess CPU. Resource allocation is guaranteed based on CPU requests rather than CPU limits. Testing showed that running Kopia with 20 cores and 32 Gi memory supported backup and restore operations of over 100 GB of data, multiple namespaces, or over 2000 pods in a single namespace. Testing detected no CPU limiting or memory saturation with these resource specifications.
+
+In some environments, you might need to adjust Ceph MDS pod resources to avoid pod restarts, which occur when default settings cause resource saturation.
+
+For more information about how to set the pod resources limit in Ceph MDS pods, see [Changing the CPU and memory resources on the rook-ceph pods](https://docs.redhat.com/documentation/en-us/red_hat_openshift_data_foundation/4.15/html/troubleshooting_openshift_data_foundation/changing-resources-for-the-openshift-data-foundation-components_rhodf#changing_the_cpu_and_memory_resources_on_the_rook_ceph_pods).

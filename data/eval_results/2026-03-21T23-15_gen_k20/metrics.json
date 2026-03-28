@@ -1,0 +1,449 @@
+{
+  "type": "generation",
+  "timestamp": "2026-03-21T23:15:47.359376Z",
+  "config": {
+    "k_retrieve": 20,
+    "mode": "hybrid",
+    "use_rerank": false,
+    "model": "gpt-4o-mini",
+    "n_queries": 10,
+    "collection": "openshift_docs_v0"
+  },
+  "aggregate": {
+    "answer_relevance": 0.9,
+    "faithfulness": 0.8,
+    "context_relevance": 0.14,
+    "avg_gen": 0.6133,
+    "recall@5": 0.7833,
+    "mrr": 0.7833,
+    "avg_ms": 18056
+  },
+  "total_seconds": 180.6,
+  "results": [
+    {
+      "id": "cpmso-config-options",
+      "query": "How do I customize the prefix of machine names created by the control plane machine set in OpenShift?",
+      "topic": "machine_management",
+      "elapsed_ms": 20230,
+      "retrieval_metrics": {
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "cpmso-config-options"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides clear, step-by-step instructions on how to customize the prefix of machine names in OpenShift by editing the `ControlPlaneMachineSet` custom resource."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer is fully supported as it accurately reflects the procedure for customizing the machine name prefix in the `ControlPlaneMachineSet` CR as described in the context."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.15,
+          "explanation": "3/20 relevant"
+        },
+        "avg": 0.7167
+      }
+    },
+    {
+      "id": "oadp-creating-alerting-rule",
+      "query": "How do I create a `PrometheusRule` for alerting on OADP backup failures in my OpenShift environment?",
+      "topic": "backup_and_restore",
+      "elapsed_ms": 9523,
+      "retrieval_metrics": {
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "oadp-creating-alerting-rule"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides a clear step-by-step guide on how to create a `PrometheusRule` for alerting on OADP backup failures, including the necessary YAML configuration and command to apply it."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer accurately reflects the context provided, including the creation of a `PrometheusRule` for alerting on OADP backup failures and the specific YAML configuration required."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.1,
+          "explanation": "2/20 relevant"
+        },
+        "avg": 0.7
+      }
+    },
+    {
+      "id": "olm-arch-olm-operator",
+      "query": "How does the OLM Operator determine when to deploy applications defined by CSV resources?",
+      "topic": "operators",
+      "elapsed_ms": 10516,
+      "retrieval_metrics": {
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 0.0,
+        "precision@3": 0.0,
+        "recall@5": 0.0,
+        "precision@5": 0.0,
+        "recall@10": 0.0,
+        "precision@10": 0.0,
+        "recall@20": 0.0,
+        "precision@20": 0.0,
+        "mrr": 0.0,
+        "first_hit_rank": null,
+        "gold_found": [],
+        "gold_missed": [
+          "olm-arch-olm-operator"
+        ]
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 0.0,
+          "explanation": "The answer does not directly address the question as it states that the documentation does not provide information on how the OLM Operator determines when to deploy applications defined by CSV resources."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 0.0,
+          "explanation": "The answer does not make any unsupported claims; it accurately reflects the information provided in the context regarding the Operator Lifecycle Manager (OLM) and its role in managing Operators in OpenShift Container Platform."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.4,
+          "explanation": "8/20 relevant"
+        },
+        "avg": 0.1333
+      }
+    },
+    {
+      "id": "nodes-nodes-working-master-schedulable",
+      "query": "How do I configure control plane nodes to be schedulable in OpenShift?",
+      "topic": "nodes",
+      "elapsed_ms": 19557,
+      "retrieval_metrics": {
+        "recall@1": 0.5,
+        "precision@1": 1.0,
+        "recall@3": 0.5,
+        "precision@3": 0.3333,
+        "recall@5": 0.5,
+        "precision@5": 0.2,
+        "recall@10": 0.5,
+        "precision@10": 0.1,
+        "recall@20": 0.5,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-nodes-working-master-schedulable"
+        ],
+        "gold_missed": [
+          "nodes-nodes-working-evacuating"
+        ]
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides clear steps to configure control plane nodes to be schedulable in OpenShift, including editing the necessary configuration and the implications of making this change."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer correctly describes the steps to configure control plane nodes as schedulable and mentions the requirement for additional subscriptions, which is supported by the context provided."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.05,
+          "explanation": "1/20 relevant"
+        },
+        "avg": 0.6833
+      }
+    },
+    {
+      "id": "velero-obtaining-by-accessing-binary",
+      "query": "How do I set an alias to access the Velero binary in my cluster's Velero deployment?",
+      "topic": "backup_and_restore",
+      "elapsed_ms": 11713,
+      "retrieval_metrics": {
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "velero-obtaining-by-accessing-binary"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides a specific command to create an alias for accessing the Velero binary within the Velero deployment in an OpenShift cluster."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer accurately reflects the command provided in the context for setting an alias to access the Velero binary in the Velero deployment."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.1,
+          "explanation": "2/20 relevant"
+        },
+        "avg": 0.7
+      }
+    },
+    {
+      "id": "nodes-descheduler-installing",
+      "query": "How do I change the descheduler from predictive mode to automatic mode in my OpenShift cluster?",
+      "topic": "nodes",
+      "elapsed_ms": 12862,
+      "retrieval_metrics": {
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-descheduler-installing"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides clear, step-by-step instructions on how to change the descheduler mode in an OpenShift cluster from predictive to automatic."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 0.0,
+          "explanation": "The answer incorrectly states that the `mode` field should be changed to `Automatic`, while the context specifies that the default mode is `Predictive` and does not explicitly mention `Automatic` as a valid mode."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.1,
+          "explanation": "2/20 relevant"
+        },
+        "avg": 0.3667
+      }
+    },
+    {
+      "id": "nodes-nodes-rebooting-affinity",
+      "query": "How do I configure pod anti-affinity to ensure workloads are spread across nodes before rebooting a node?",
+      "topic": "nodes",
+      "elapsed_ms": 14133,
+      "retrieval_metrics": {
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.5,
+        "first_hit_rank": 2,
+        "gold_found": [
+          "nodes-nodes-rebooting-affinity"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides a YAML configuration for pod anti-affinity that helps ensure workloads are distributed across nodes, which is relevant to the question about spreading workloads before rebooting a node."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer is fully supported as it correctly describes how to configure pod anti-affinity in OpenShift to ensure that pods with the specified label are not scheduled on the same node, aligning with the context provided."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.25,
+          "explanation": "5/20 relevant"
+        },
+        "avg": 0.75
+      }
+    },
+    {
+      "id": "nodes-scheduler-profiles-configuring",
+      "query": "How do I configure the scheduler to use the HighNodeUtilization profile in my OpenShift cluster?",
+      "topic": "nodes",
+      "elapsed_ms": 62260,
+      "retrieval_metrics": {
+        "recall@1": 0.0,
+        "precision@1": 0.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 0.3333,
+        "first_hit_rank": 3,
+        "gold_found": [
+          "nodes-scheduler-profiles-configuring"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides clear, step-by-step instructions on how to configure the OpenShift scheduler to use the `HighNodeUtilization` profile, including the necessary command and YAML configuration."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer accurately reflects the steps and requirements for configuring the OpenShift scheduler to use the `HighNodeUtilization` profile as described in the provided context."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.1,
+          "explanation": "2/20 relevant"
+        },
+        "avg": 0.7
+      }
+    },
+    {
+      "id": "nodes-cma-autoscaling-custom-metrics-access",
+      "query": "How do I create a custom query for performance metrics in the OpenShift Container Platform web console?",
+      "topic": "nodes",
+      "elapsed_ms": 8710,
+      "retrieval_metrics": {
+        "recall@1": 1.0,
+        "precision@1": 1.0,
+        "recall@3": 1.0,
+        "precision@3": 0.3333,
+        "recall@5": 1.0,
+        "precision@5": 0.2,
+        "recall@10": 1.0,
+        "precision@10": 0.1,
+        "recall@20": 1.0,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "nodes-cma-autoscaling-custom-metrics-access"
+        ],
+        "gold_missed": []
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides a clear step-by-step guide on how to create a custom query for performance metrics in the OpenShift Container Platform web console."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer is fully supported as it accurately reflects the steps outlined in the provided context for creating a custom query in the OpenShift Container Platform web console."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.1,
+          "explanation": "2/20 relevant"
+        },
+        "avg": 0.7
+      }
+    },
+    {
+      "id": "storage-persistent-storage-fsgroup",
+      "query": "How can I reduce pod timeouts when using a storage volume with many files in OpenShift?",
+      "topic": "storage",
+      "elapsed_ms": 11052,
+      "retrieval_metrics": {
+        "recall@1": 0.3333,
+        "precision@1": 1.0,
+        "recall@3": 0.3333,
+        "precision@3": 0.3333,
+        "recall@5": 0.3333,
+        "precision@5": 0.2,
+        "recall@10": 0.3333,
+        "precision@10": 0.1,
+        "recall@20": 0.3333,
+        "precision@20": 0.05,
+        "mrr": 1.0,
+        "first_hit_rank": 1,
+        "gold_found": [
+          "storage-persistent-storage-fsGroup"
+        ],
+        "gold_missed": [
+          "storage-persistent-storage-iscsi-enforcing-disk-quota",
+          "storage-persistent-storage-volume-format"
+        ]
+      },
+      "generation_metrics": {
+        "answer_relevance": {
+          "label": "answer_relevance",
+          "score": 1.0,
+          "explanation": "The answer provides a relevant solution by suggesting the configuration of `fsGroup` and `fsGroupChangePolicy` to manage permissions and ownership, which can help reduce pod timeouts associated with storage volumes containing many files."
+        },
+        "faithfulness": {
+          "label": "faithfulness",
+          "score": 1.0,
+          "explanation": "The answer accurately reflects the information provided in the context regarding the configuration of `fsGroup` and `fsGroupChangePolicy` to reduce pod timeouts."
+        },
+        "context_relevance": {
+          "label": "context_relevance",
+          "score": 0.05,
+          "explanation": "1/20 relevant"
+        },
+        "avg": 0.6833
+      }
+    }
+  ]
+}

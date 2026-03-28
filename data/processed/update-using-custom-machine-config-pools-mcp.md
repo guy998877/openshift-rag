@@ -1,0 +1,75 @@
+# Creating machine config pools to perform a canary rollout update
+
+To perform a canary rollout update, you must first create one or more custom machine config pools (MCP).
+
+.Procedure
+
+1. List the worker nodes in your cluster by running the following command:
+```bash
+$ oc get -l 'node-role.kubernetes.io/master!=' -o 'jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}' nodes
+```
+.Example output
+```bash
+ci-ln-pwnll6b-f76d1-s8t9n-worker-a-s75z4
+ci-ln-pwnll6b-f76d1-s8t9n-worker-b-dglj2
+ci-ln-pwnll6b-f76d1-s8t9n-worker-c-lldbm
+```
+
+1. For each node that you want to delay, add a custom label to the node by running the following command:
+```bash
+$ oc label node <node_name> node-role.kubernetes.io/<custom_label>=
+```
+For example:
+```bash
+$ oc label node ci-ln-0qv1yp2-f76d1-kl2tq-worker-a-j2ssz node-role.kubernetes.io/workerpool-canary=
+```
+.Example output
+```bash
+node/ci-ln-gtrwm8t-f76d1-spbl7-worker-a-xk76k labeled
+```
+
+1. Create the new MCP:
+
+.. Create an MCP YAML file:
+```yaml
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: workerpool-canary <1>
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - {
+         key: machineconfiguration.openshift.io/role,
+         operator: In,
+         values: [worker,workerpool-canary] <2>
+        }
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/workerpool-canary: "" <3>
+```
+<1> Specify a name for the MCP.
+<2> Specify the `worker` and custom MCP name.
+<3> Specify the custom label you added to the nodes that you want in this pool.
+
+.. Create the `MachineConfigPool` object by running the following command:
+```bash
+$ oc create -f <file_name>
+```
+.Example output
+```bash
+machineconfigpool.machineconfiguration.openshift.io/workerpool-canary created
+```
+
+1. View the list of MCPs in the cluster and their current state by running the following command:
+```bash
+$ oc get machineconfigpool
+```
+.Example output
+```bash
+NAME              CONFIG                                                        UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
+master            rendered-master-b0bb90c4921860f2a5d8a2f8137c1867              True      False      False      3              3                   3                     0                      97m
+workerpool-canary rendered-workerpool-canary-87ba3dec1ad78cb6aecebf7fbb476a36   True      False      False      1              1                   1                     0                      2m42s
+worker            rendered-worker-87ba3dec1ad78cb6aecebf7fbb476a36              True      False      False      2              2                   2                     0                      97m
+```
+The new machine config pool, `workerpool-canary`, is created and the number of nodes to which you added the custom label are shown in the machine counts. The worker MCP machine counts are reduced by the same number. It can take several minutes to update the machine counts. In this example, one node was moved from the `worker` MCP to the `workerpool-canary` MCP.

@@ -1,0 +1,1 @@
+ifdef::aws[= Non-guaranteed Spot Instances and hourly cost limits]

@@ -1,0 +1,15 @@
+# Identity provider configuration
+
+Configuring an identity provider is the first step in setting up users on the cluster. You can manage groups at the organizational level by using an identity provider. 
+
+The identity provider can pull in specific user groups that are maintained at the organizational level, rather than the cluster level. This allows you to add and remove users from groups that follow your organization’s established practices.
+
+> **NOTE:** You must set up a cron job to run frequently to pull any changes into the cluster.
+
+You can use an identity provider to manage access levels for specific groups within your organization. For example, you can perform the following actions to manage access levels: 
+
+- Assign the `cluster-admin` role to teams that require cluster-level privileges.
+- Grant application administrators specific privileges to manage only their respective projects.
+- Provide operational teams with `view` access across the cluster to enable monitoring without allowing modifications.
+
+For information about configuring an identity provider, see "Understanding identity provider configuration".

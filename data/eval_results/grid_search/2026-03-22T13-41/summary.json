@@ -1,0 +1,458 @@
+[
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "hybrid",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 12066,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "hybrid",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7268,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7703,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7540,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "keyword",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7053,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 3,
+      "mode": "keyword",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7100,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "hybrid",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7745,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "hybrid",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 5263,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.4,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 6486,
+      "composite": 0.7
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.36,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7459,
+      "composite": 0.692
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "keyword",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.36,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7612,
+      "composite": 0.692
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "hybrid",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.3333,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 5301,
+      "composite": 0.6867
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "hybrid",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.32,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7090,
+      "composite": 0.684
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "semantic",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.24,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7085,
+      "composite": 0.668
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o-mini",
+      "k": 5,
+      "mode": "keyword",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.8,
+      "faithfulness": 0.8,
+      "context_relevance": 0.24,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 7169,
+      "composite": 0.668
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "hybrid",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.5,
+      "faithfulness": 1.0,
+      "context_relevance": 0.3,
+      "recall@5": 0.7,
+      "mrr": 0.8,
+      "avg_ms": 12663,
+      "composite": 0.66
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "hybrid",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 1.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.2,
+      "recall@5": 0.4,
+      "mrr": 0.4,
+      "avg_ms": 13022,
+      "composite": 0.6
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "semantic",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.6667,
+      "faithfulness": 0.6667,
+      "context_relevance": 0.4444,
+      "recall@5": 0.4,
+      "mrr": 0.4,
+      "avg_ms": 7204,
+      "composite": 0.5156
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "keyword",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.5,
+      "faithfulness": 1.0,
+      "context_relevance": 0.5,
+      "recall@5": 0.2,
+      "mrr": 0.2,
+      "avg_ms": 7325,
+      "composite": 0.48
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "semantic",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.5,
+      "faithfulness": 1.0,
+      "context_relevance": 0.4,
+      "recall@5": 0.2,
+      "mrr": 0.2,
+      "avg_ms": 9432,
+      "composite": 0.46
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "semantic",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.5,
+      "faithfulness": 1.0,
+      "context_relevance": 0.3,
+      "recall@5": 0.2,
+      "mrr": 0.2,
+      "avg_ms": 10925,
+      "composite": 0.44
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "keyword",
+      "rerank": false,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.5,
+      "faithfulness": 1.0,
+      "context_relevance": 0.3,
+      "recall@5": 0.2,
+      "mrr": 0.2,
+      "avg_ms": 10773,
+      "composite": 0.44
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 3,
+      "mode": "keyword",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.0,
+      "faithfulness": null,
+      "context_relevance": null,
+      "recall@5": 0.5,
+      "mrr": 0.6,
+      "avg_ms": 10245,
+      "composite": 0.3667
+    }
+  },
+  {
+    "config": {
+      "model": "gpt-4o",
+      "k": 5,
+      "mode": "keyword",
+      "rerank": true,
+      "rewrite": true,
+      "n_queries": 5
+    },
+    "aggregate": {
+      "answer_relevance": 0.0,
+      "faithfulness": 1.0,
+      "context_relevance": 0.2,
+      "recall@5": 0.2,
+      "mrr": 0.2,
+      "avg_ms": 8975,
+      "composite": 0.32
+    }
+  }
+]

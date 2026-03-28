@@ -1,0 +1,37 @@
+# Verifying that the failed node was deleted
+
+Before proceeding to create a replacement control plane node, verify that the failed node was successfully deleted.
+
+.Procedure
+
+1. Verify that the machine was deleted by running the following command:
+```bash
+$ oc get machines -n openshift-machine-api -o wide
+```
+.Example output
+```bash
+NAME                              PHASE     TYPE   REGION   ZONE   AGE     NODE                                 PROVIDERID                                                                                       STATE
+examplecluster-control-plane-0    Running                          3h11m   openshift-control-plane-0   baremetalhost:///openshift-machine-api/openshift-control-plane-0/da1ebe11-3ff2-41c5-b099-0aa41222964e   externally provisioned
+examplecluster-control-plane-1    Running                          3h11m   openshift-control-plane-1   baremetalhost:///openshift-machine-api/openshift-control-plane-1/d9f9acbc-329c-475e-8d81-03b20280a3e1   externally provisioned
+examplecluster-compute-0          Running                          165m    openshift-compute-0         baremetalhost:///openshift-machine-api/openshift-compute-0/3d685b81-7410-4bb3-80ec-13a31858241f         provisioned
+examplecluster-compute-1          Running                          165m    openshift-compute-1         baremetalhost:///openshift-machine-api/openshift-compute-1/0fdae6eb-2066-4241-91dc-e7ea72ab13b9         provisioned
+```
+
+1. Verify that the node has been deleted by running the following command:
+```bash
+$ oc get nodes
+```
+.Example output
+```bash
+NAME                     STATUS ROLES   AGE   VERSION
+openshift-control-plane-0 Ready master 3h24m v1.34.2
+openshift-control-plane-1 Ready master 3h24m v1.34.2
+openshift-compute-0       Ready worker 176m v1.34.2
+openshift-compute-1       Ready worker 176m v1.34.2
+```
+
+1. Wait for all of the cluster Operators to complete rolling out changes.
+Run the following command to monitor the progress:
+```bash
+$ watch oc get co
+```

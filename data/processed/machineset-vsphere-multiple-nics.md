@@ -1,0 +1,152 @@
+// Module included in the following assemblies:
+//
+// * machine_management/creating_machinesets/creating-machineset-vsphere.adoc
+// * machine_management/control_plane_machine_management/cpmso_provider_configurations/cpmso-config-options-vsphere.adoc
+
+# Configuring multiple network interface controllers by using machine sets
+
+By configuring multiple network interface controllers (NICs), you can provide dedicated network links in the node virtual machines (VMs) for uses such as storage or databases. OpenShift Container Platform clusters on VMware vSphere support connecting up to 10 network NICs to a node.
+
+You can use machine sets to manage this configuration.
+
+- If you want to use multiple NICs in a vSphere cluster that was not configured to do so during installation, you can use machine sets to implement this configuration.
+- If your cluster was set up during installation to use multiple NICs, machine sets that you create can use your existing failure domain configuration.
+- If your failure domain configuration changes, you can use machine sets to make updates that reflect those changes.
+
+tag::controlplane[]
+> **NOTE:** This feature is not compatible with a control plane machine set that uses more than one failure domain.
+end::controlplane[]
+
+.Prerequisites
+
+- You have administrator access to pass:quotes[OpenShift CLI (`oc`)] for an OpenShift Container Platform cluster on vSphere.
+
+.Procedure
+
+1. For a cluster that already uses multiple NICs, obtain the following values from the `Infrastructure` resource by running the following command:
+```bash
+$ oc get infrastructure cluster -o=jsonpath={.spec.platformSpec.vsphere.failureDomains}
+```
+.Required network interface controller values
+|===
+|`Infrastructure` resource value | Placeholder value for sample machine set | Description
+
+|`failureDomain.topology.networks[0]`
+|`<vm_network_name_1>`
+|The name of the first NIC to use.
+
+|`failureDomain.topology.networks[1]`
+|`<vm_network_name_2>`
+|The name of the second NIC to use.
+
+|`failureDomain.topology.networks[<n-1>]`
+|`<vm_network_name_n>`
+|The name of the __n__th NIC to use.
+Collect the name of each NIC in the `Infrastructure` resource.
+
+|`failureDomain.topology.template`
+|`<vm_template_name>`
+|The vSphere VM template to use.
+
+|`failureDomain.topology.datacenter`
+|`<vcenter_data_center_name>`
+|The vCenter data center to deploy the machine set on.
+
+|`failureDomain.topology.datastore`
+|`<vcenter_datastore_name>`
+|The vCenter datastore to deploy the machine set on.
+
+|`failureDomain.topology.folder`
+|`<vcenter_vm_folder_path>`
+|The path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+
+|`failureDomain.topology.computeCluster` + `/Resources`
+|`<vsphere_resource_pool>`
+|The vSphere resource pool for your VMs.
+
+|`failureDomain.server`
+|`<vcenter_server_ip>`
+|The vCenter server IP or fully qualified domain name (FQDN).
+|===
+
+1. In a text editor, open the YAML file for an existing machine set or create a new one.
+
+1. Use a machine set configuration formatted like the following example.
+--
+- For a cluster that currently uses multiple NICs, use the values from the `Infrastructure` resource to populate the values in the machine set custom resource.
+- For a cluster that is not using multiple NICs, populate the values you want to use in the machine set custom resource.
+--
+.Sample machine set
+```yaml
+tag::compute[]
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+# ...
+spec:
+  template:
+    spec:
+      providerSpec:
+        value:
+          network:
+            devices:
+            - networkName: "<vm_network_name_1>"
+            - networkName: "<vm_network_name_2>"
+          template: <vm_template_name>
+          workspace:
+            datacenter: <vcenter_data_center_name>
+            datastore: <vcenter_datastore_name>
+            folder: <vcenter_vm_folder_path>
+            resourcepool: <vsphere_resource_pool>
+            server: <vcenter_server_ip>
+# ...
+end::compute[]
+tag::controlplane[]
+apiVersion: machine.openshift.io/v1
+kind: ControlPlaneMachineSet
+# ...
+spec:
+  template:
+    machines_v1beta1_machine_openshift_io:
+      spec:
+        providerSpec:
+          value:
+            network:
+              devices:
+              - networkName: "<vm_network_name_1>"
+              - networkName: "<vm_network_name_2>"
+            template: <vm_template_name>
+            workspace:
+              datacenter: <vcenter_data_center_name>
+              datastore: <vcenter_datastore_name>
+              folder: <vcenter_vm_folder_path>
+              resourcepool: <vsphere_resource_pool>
+              server: <vcenter_server_ip>
+
+# ...
+end::controlplane[]
+```
+where:
+--
+tag::compute[]
+
+`spec.template.spec.providerSpec.value.network.devices`:: Specifies a list of up to 10 NICs to use.
+`spec.template.spec.providerSpec.value.network.template`:: Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+`spec.template.spec.providerSpec.value.network.workspace.datacenter`:: Specifies the vCenter data center to deploy the machine set on.
+`spec.template.spec.providerSpec.value.network.workspace.datastore`:: Specifies the vCenter datastore to deploy the machine set on.
+`spec.template.spec.providerSpec.value.network.workspace.folder`:: Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+`spec.template.spec.providerSpec.value.network.workspace.resourcepool`:: Specifies the vSphere resource pool for your VMs.
+`spec.template.spec.providerSpec.value.network.workspace.server`:: Specifies the vCenter server IP or fully qualified domain name (FQDN).
+
+end::compute[]
+tag::controlplane[]
+
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.devices`:: Specifies a list of up to 10 NICs to use.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.template`:: Specifies the vSphere VM template to use, such as `user-5ddjd-rhcos`.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.workspace.datacenter`:: Specifies the vCenter data center to deploy the machine set on.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.workspace.datastore`:: Specifies the vCenter datastore to deploy the machine set on.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.workspace.folder`:: Specifies the path to the vSphere VM folder in vCenter, such as `/dc1/vm/user-inst-5ddjd`.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.workspace.resourcepool`:: Specifies the vSphere resource pool for your VMs.
+`spec.template.machines_v1beta1_machine_openshift_io.spec.providerSpec.value.network.workspace.server`:: Specifies the vCenter server IP or fully qualified domain name (FQDN).
+
+end::controlplane[]
+--

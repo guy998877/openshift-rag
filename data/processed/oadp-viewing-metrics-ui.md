@@ -1,0 +1,13 @@
+# Viewing metrics using the Observe UI
+
+Review metrics in the OpenShift Container Platform web console from the *Administrator* or *Developer* perspective, which must have access to the `openshift-adp` project.
+
+.Procedure
+
+- Navigate to the *Observe* -> *Metrics* page:
+- If you are using the *Developer* perspective, follow these steps:
+.. Select *Custom query*, or click the *Show PromQL* link.
+.. Type the query and click *Enter*.
+- If you are using the *Administrator* perspective, type the expression in the text field and select *Run Queries*.
+.OADP metrics query
+image::oadp-metrics-query.png[OADP metrics query]

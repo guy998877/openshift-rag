@@ -1,0 +1,25 @@
+{
+  "config": {
+    "model": "gpt-4o-mini",
+    "k": 5,
+    "mode": "semantic",
+    "rerank": true,
+    "rewrite": true,
+    "n_queries": 40
+  },
+  "aggregate": {
+    "answer_relevance": 0.875,
+    "faithfulness": 0.675,
+    "context_relevance": 0.405,
+    "recall@1": 0.6292,
+    "recall@3": 0.7833,
+    "recall@5": 0.8083,
+    "precision@1": 0.7,
+    "precision@3": 0.3,
+    "precision@5": 0.185,
+    "mrr": 0.7717,
+    "avg_ms": 10049,
+    "composite": 0.707
+  },
+  "total_seconds": 55.0
+}

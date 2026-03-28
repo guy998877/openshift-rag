@@ -1,0 +1,34 @@
+# Resolving error NonAdminBackupStorageLocation cannot be set as default
+
+Resolve the error that occurs when you set a `NonAdminBackupStorageLocation` (NABSL) custom resource (CR) as the default backup storage location. This helps you resolve validation errors and configure backup storage locations correctly.
+
+As a non-admin user, if you have created a NABSL CR in your authorized namespace, you cannot set the NABSL CR as the default backup storage location.
+
+If you set the NABSL CR as the default backup storage location, the NABSL CR fails to validate and the `NonAdminController` (NAC) gives an error message.
+
+```text
+NonAdminBackupStorageLocation cannot be used as a default BSL
+---- 
+
+.Procedure
+
+* To successfully validate and reconcile the NABSL CR, set the `default` field to `false` in the NABSL CR:
++
+[source, yaml]
+```
+apiVersion: oadp.openshift.io/v1alpha1
+kind: NonAdminBackupStorageLocation
+...
+spec:
+  backupStorageLocationSpec:
+    credential:
+      key: cloud
+      name: cloud-credentials-gcp
+    default: false
+    objectStorage:
+      bucket: oad..7l8
+      prefix: velero
+    provider: gcp
+where:
+
+`default` :: Specifies that the `default` backup storage location is set to `false`.

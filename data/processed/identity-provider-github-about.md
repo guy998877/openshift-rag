@@ -1,0 +1,3 @@
+# About GitHub authentication
+
+Configuring [GitHub authentication](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/authorizing-oauth-apps) allows users to log in to OpenShift Container Platform with their GitHub credentials. To prevent anyone with any GitHub user ID from logging in to your OpenShift Container Platform cluster, you can restrict access to only those in specific GitHub organizations.

@@ -1,0 +1,93 @@
+# Understanding how resources are allocated to nodes
+
+OpenShift Container Platform uses a script to determine optimal CPU and memory resources for the node and system components on your nodes. Or, you can manually set these values as needed. Ensuring proper resources for these services can help ensure that your cluster is operating efficiently.
+
+These resource calculations are based on the installed CPU and memory capacity on each node and assigned upon node start up. These resources are reserved for the node and system components in the systemd `system.slice` cgroup, such as CRI-O and kubelet. By default, before the scripts runs, OpenShift Container Platform reserves 500m for CPU and 1 Gi of memory for the node and system components.    
+
+> **NOTE:** The Kubernetes `kubeReserved` parameter is not supported in OpenShift Container Platform.
+
+The script uses the following calculations by default. 
+
+Memory reservation::
+The memory reservation is weighted. For smaller nodes, OpenShift Container Platform reserves a higher percentage of memory. For larger nodes, OpenShift Container Platform reserves a smaller percentage of the remaining capacity. 
+OpenShift Container Platform uses the following calculations to determine how much memory to reserve for node and system components:
+--
+- 25% of the first 4 GiB of memory
+- 20% of the next 4 GiB of memory (up to 8 GiB)
+- 10% of the next 8 GiB of memory (up to 16 GiB)
+- 6% of the next 112 GiB of memory (up to 128 GiB)
+- 2% of any memory above 128 GiB
+--
+For example, on node with 16 GiB of memory, OpenShift Container Platform reserves 2.6 GiB for node and system components, leaving approximately 13.4 GiB for workloads.
+
+CPU reservation::
+OpenShift Container Platform uses the following logic to determine how much CPU to reserve for node and system components:
+--
+- OpenShift Container Platform starts with a base allocation for 1 CPU in fractions of a core (60 millicores = 0.06 CPU core).
+- Then, it increments 12 millicores (0.012 CPU) for every additional core beyond the first.
+- The result is compared against a minimum floor of 0.5 CPU. If the calculated value is less than 0.5, the system enforces a reservation of 0.5 CPU.
+--
+For example, on a 4-core node, 0.5 vCPU is reserved for node and system components, leaving 3.5 vCPUs for workloads. Note that 1000 millicores is equal to 1CPU/vCPU.
+> **NOTE:** Any CPUs specifically reserved using the `reservedSystemCPUs` parameter in a `KubeletConfig` object are not available for allocation using `system-reserved`.
+
+You can manually manage CPU and memory reservations for the node and system components by configuring the `system-reserved` parameter in a `KubeletConfig` object, as described in "Manually allocating resources for nodes".
+
+## How OpenShift Container Platform computes allocated resources
+
+An allocated amount of a resource is computed based on the following formula:
+
+[Allocatable] = [Node Capacity] - [system-reserved] - [Hard-Eviction-Thresholds]
+
+> **NOTE:** The withholding of `Hard-Eviction-Thresholds` from `Allocatable` improves system reliability because the value for `Allocatable` is enforced for pods at the node level.
+
+If `Allocatable` is negative, it is set to `0`.
+
+Each node reports the system resources that are used by the container runtime and kubelet. To simplify configuring the `system-reserved` parameter, view the resource use for the node by using the node summary API. The node summary is available at `/api/v1/nodes/<node>/proxy/stats/summary`. For more information, use the "Node metrics data" link in the _Additional resources_ section.
+
+## How nodes enforce resource constraints
+
+The node is able to limit the total amount of resources that pods can consume based on the configured allocatable value. This feature significantly improves the reliability of the node by preventing pods from using CPU and memory resources that are needed by system services such as the container runtime and node agent. To improve node reliability, administrators should reserve resources based on a target for resource use.
+
+The node enforces resource constraints by using a new cgroup hierarchy that enforces quality of service. All pods are launched in a dedicated cgroup hierarchy that is separate from system daemons.
+
+Administrators should treat system daemons similar to pods that have a guaranteed quality of service. System daemons can burst within their bounding control groups and this behavior must be managed as part of cluster deployments. Reserve CPU and memory resources for system daemons by specifying the amount of CPU and memory resources in `system-reserved`.
+
+> **NOTE:** Enforcing `system-reserved` limits can prevent critical system services from receiving CPU and memory resources. As a result, a critical system service can be ended by the out-of-memory killer. The recommendation is to enforce `system-reserved` only if you have profiled the nodes exhaustively to determine precise estimates and you are confident that critical system services can recover if any process in that group is ended by the out-of-memory killer.
+
+## Understanding Eviction Thresholds
+
+If a node is under memory pressure, it can impact the entire node and all pods running on the node. For example, a system daemon that uses more than its reserved amount of memory can trigger an out-of-memory event. To avoid or reduce the probability of system out-of-memory events, the node provides out-of-resource handling.
+
+You can reserve some memory using the `--eviction-hard` flag. The node attempts to evict
+pods whenever memory availability on the node drops below the absolute value or percentage.
+If system daemons do not exist on a node, pods are limited to the memory
+`capacity - eviction-hard`. For this reason, resources set aside as a buffer for eviction
+before reaching out of memory conditions are not available for pods.
+
+The following is an example to illustrate the impact of node allocatable for memory:
+
+- Node capacity is `32Gi`
+- --system-reserved is `3Gi`
+- --eviction-hard is set to `100Mi`.
+
+For this node, the effective node allocatable value is `28.9Gi`. If the node and system components use all their reservation, the memory available for pods is `28.9Gi`, and kubelet evicts pods when it exceeds this threshold.
+
+If you enforce node allocatable, `28.9Gi`, with top-level cgroups, then pods can never exceed `28.9Gi`. Evictions are not performed unless system daemons consume more than `3.1Gi` of memory.
+
+If system daemons do not use up all their reservation, with the above example,
+pods would face memcg OOM kills from their bounding cgroup before node evictions kick in.
+To better enforce QoS under this situation, the node applies the hard eviction thresholds to
+the top-level cgroup for all pods to be `Node Allocatable + Eviction Hard Thresholds`.
+
+If system daemons do not use up all their reservation, the node will evict pods whenever
+they consume more than `28.9Gi` of memory. If eviction does not occur in time, a pod
+will be OOM killed if pods consume `29Gi` of memory.
+
+## How the scheduler determines resource availability
+
+The scheduler uses the value of `node.Status.Allocatable` instead of
+`node.Status.Capacity` to decide if a node will become a candidate for pod
+scheduling.
+
+By default, the node will report its machine capacity as fully schedulable by
+the cluster.

@@ -1,0 +1,21 @@
+# Identifying an unhealthy etcd member
+
+You can identify if your cluster has an unhealthy etcd member.
+
+.Prerequisites
+
+- You have access to the cluster as a user with the `cluster-admin` role.
+- You have taken an etcd backup. For more information, see "Backing up etcd data".
+
+.Procedure
+
+1. Check the status of the `EtcdMembersAvailable` status condition using the following command:
+```bash
+$ oc get etcd -o=jsonpath='{range .items[0].status.conditions[?(@.type=="EtcdMembersAvailable")]}{.message}{"\n"}{end}'
+```
+
+1. Review the output:
+```bash
+2 of 3 members are available, ip-10-0-131-183.ec2.internal is unhealthy
+```
+This example output shows that the `ip-10-0-131-183.ec2.internal` etcd member is unhealthy.
