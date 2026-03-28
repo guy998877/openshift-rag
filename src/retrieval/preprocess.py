@@ -1,4 +1,5 @@
 """Convert AsciiDoc modules to clean Markdown for embedding."""
+
 import re
 from pathlib import Path
 
@@ -23,7 +24,7 @@ _METADATA_PATTERNS = [
 ]
 
 _ROLE_LINE = re.compile(r'^\[role="[^"]*"\]$')
-_DISCRETE_BLOCK = re.compile(r'^\[(discrete|%collapsible|%header|colophon)[^\]]*\]$')
+_DISCRETE_BLOCK = re.compile(r"^\[(discrete|%collapsible|%header|colophon)[^\]]*\]$")
 
 _IFDEF_RE = re.compile(r"^(ifdef|ifndef)::(.*)\[\]$")
 _ENDIF_RE = re.compile(r"^endif::\S*\[\]$|^endif::\[\]$")
@@ -184,7 +185,7 @@ def _convert_markup(lines: list[str]) -> list[str]:
                 i += 1
             if i < len(lines):
                 i += 1  # consume closing ====
-            block_text = " ".join(l.strip() for l in block_lines if l.strip())
+            block_text = " ".join(line.strip() for line in block_lines if line.strip())
             out.append(f"> **{kind}:** {block_text}")
             continue
 

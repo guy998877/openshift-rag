@@ -10,6 +10,7 @@ Usage:
     python -m eval.collect_so_benchmark --output data/ground_truth/so_queries.json
     python -m eval.collect_so_benchmark --output data/ground_truth/so_queries.json --max 200 --min-score 2
 """
+
 from __future__ import annotations
 
 import argparse
@@ -32,46 +33,46 @@ SO_API_BASE = "https://api.stackexchange.com/2.3"
 
 # Tags that map to OpenShift topic areas (used to classify questions)
 TAG_TO_TOPIC: dict[str, str] = {
-    "openshift":              "general",
-    "openshift-4":            "general",
-    "openshift-origin":       "general",
-    "okd":                    "general",
-    "kubernetes":             "general",
-    "microshift":             "microshift",
-    "crc":                    "general",
-    "openshift-operator":     "operators",
-    "operator-sdk":           "operators",
-    "olm":                    "operators",
-    "openshift-router":       "networking",
-    "openshift-networking":   "networking",
-    "route":                  "networking",
-    "ingress":                "networking",
-    "networkpolicy":          "networking",
-    "openshift-pipeline":     "cicd",
-    "tekton":                 "cicd",
-    "jenkins":                "cicd",
-    "openshift-builds":       "cicd",
-    "openshift-deployment":   "workloads",
-    "deploymentconfig":       "workloads",
-    "pod":                    "workloads",
-    "openshift-rbac":         "authentication",
-    "rbac":                   "authentication",
+    "openshift": "general",
+    "openshift-4": "general",
+    "openshift-origin": "general",
+    "okd": "general",
+    "kubernetes": "general",
+    "microshift": "microshift",
+    "crc": "general",
+    "openshift-operator": "operators",
+    "operator-sdk": "operators",
+    "olm": "operators",
+    "openshift-router": "networking",
+    "openshift-networking": "networking",
+    "route": "networking",
+    "ingress": "networking",
+    "networkpolicy": "networking",
+    "openshift-pipeline": "cicd",
+    "tekton": "cicd",
+    "jenkins": "cicd",
+    "openshift-builds": "cicd",
+    "openshift-deployment": "workloads",
+    "deploymentconfig": "workloads",
+    "pod": "workloads",
+    "openshift-rbac": "authentication",
+    "rbac": "authentication",
     "openshift-authentication": "authentication",
-    "serviceaccount":         "authentication",
-    "openshift-registry":     "registry",
-    "image-registry":         "registry",
-    "openshift-storage":      "storage",
-    "persistent-volume":      "storage",
-    "openshift-monitoring":   "monitoring",
-    "prometheus":             "monitoring",
-    "openshift-logging":      "logging",
-    "elasticsearch":          "logging",
-    "openshift-install":      "installing",
-    "openshift-upgrade":      "upgrading",
-    "cni":                    "networking",
-    "ovn":                    "networking",
-    "rosa":                   "rosa",
-    "openshift-dedicated":    "osd",
+    "serviceaccount": "authentication",
+    "openshift-registry": "registry",
+    "image-registry": "registry",
+    "openshift-storage": "storage",
+    "persistent-volume": "storage",
+    "openshift-monitoring": "monitoring",
+    "prometheus": "monitoring",
+    "openshift-logging": "logging",
+    "elasticsearch": "logging",
+    "openshift-install": "installing",
+    "openshift-upgrade": "upgrading",
+    "cni": "networking",
+    "ovn": "networking",
+    "rosa": "rosa",
+    "openshift-dedicated": "osd",
 }
 
 UNWANTED_PATTERNS = re.compile(
@@ -129,10 +130,10 @@ def fetch_so_questions(
     backoff = 1.0
 
     params: dict = {
-        "site":     "stackoverflow",
-        "tagged":   ";".join(tags),
-        "order":    "desc",
-        "sort":     "votes",
+        "site": "stackoverflow",
+        "tagged": ";".join(tags),
+        "order": "desc",
+        "sort": "votes",
         "pagesize": 100,
     }
     if api_key:
@@ -195,20 +196,19 @@ def build_benchmark(questions: list[dict]) -> list[dict]:
         tags = [t.lower() for t in q.get("tags", [])]
         topic = _infer_topic(tags)
         title = _clean_title(q.get("title", ""))
-        slug = re.sub(r"[^a-z0-9]+", "-", title.lower())[:60].strip("-")
         qid = f"so-{q['question_id']}"
 
         entry = {
-            "id":            qid,
-            "query":         title,
-            "topic":         topic,
-            "content_type":  "REAL_USER",
-            "gold_doc_ids":  [],          # no gold docs — use generation eval only
+            "id": qid,
+            "query": title,
+            "topic": topic,
+            "content_type": "REAL_USER",
+            "gold_doc_ids": [],  # no gold docs — use generation eval only
             "source": {
-                "site":       "stackoverflow",
+                "site": "stackoverflow",
                 "question_id": q["question_id"],
-                "score":      q.get("score", 0),
-                "tags":       tags,
+                "score": q.get("score", 0),
+                "tags": tags,
             },
         }
         benchmark.append(entry)
@@ -243,6 +243,7 @@ def collect(
 
     # Topic distribution
     from collections import Counter
+
     dist = Counter(e["topic"] for e in benchmark)
     print("\nTopic distribution:")
     for topic, count in sorted(dist.items(), key=lambda x: -x[1]):
@@ -258,25 +259,33 @@ if __name__ == "__main__":
         description="Collect OpenShift questions from Stack Overflow as a real-user benchmark.",
     )
     parser.add_argument(
-        "--output", type=Path,
+        "--output",
+        type=Path,
         default=Path("data/ground_truth/so_queries.json"),
         help="Output path for the queries JSON file.",
     )
     parser.add_argument(
-        "--max", type=int, default=150,
+        "--max",
+        type=int,
+        default=150,
         dest="max_questions",
         help="Maximum number of questions to collect (default: 150).",
     )
     parser.add_argument(
-        "--min-score", type=int, default=1,
+        "--min-score",
+        type=int,
+        default=1,
         help="Minimum Stack Overflow score to include (default: 1).",
     )
     parser.add_argument(
-        "--tags", nargs="+", default=["openshift"],
+        "--tags",
+        nargs="+",
+        default=["openshift"],
         help="Stack Overflow tags to search (default: openshift).",
     )
     parser.add_argument(
-        "--api-key", default=None,
+        "--api-key",
+        default=None,
         help="Stack Exchange API key (falls back to SO_API_KEY env var).",
     )
     args = parser.parse_args()

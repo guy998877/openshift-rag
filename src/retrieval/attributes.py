@@ -1,4 +1,5 @@
 """Parse OpenShift AsciiDoc attributes from common-attributes.adoc."""
+
 import re
 from pathlib import Path
 
@@ -52,6 +53,7 @@ def _resolve(val: str, attrs: dict[str, str]) -> str:
     def replacer(m: re.Match) -> str:
         name = m.group(1)
         return attrs.get(name, m.group(0))
+
     return re.sub(r"\{([^}]+)\}", replacer, val)
 
 
