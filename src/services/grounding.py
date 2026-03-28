@@ -1,4 +1,5 @@
 """Post-generation grounding check — verifies answer is supported by context."""
+
 from __future__ import annotations
 
 from langchain_core.documents import Document
@@ -34,7 +35,11 @@ def grounding_check(
         prompt = _GROUND_PROMPT.format(context=context, answer=answer)
         checker = ChatOpenAI(model="gpt-4o-mini", temperature=0)
         response = checker.invoke([{"role": "user", "content": prompt}])
-        first_word = response.content.strip().upper().split()[0] if response.content.strip() else "YES"
+        first_word = (
+            response.content.strip().upper().split()[0]
+            if response.content.strip()
+            else "YES"
+        )
         is_grounded = not first_word.startswith("NO")
         return answer, is_grounded
     except Exception:

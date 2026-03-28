@@ -7,12 +7,12 @@ Strategy:
 - Also tag sibling docs (same topic + overlapping title prefix) as secondary gold
 - Skip docs shorter than 200 chars (too sparse to generate a useful query)
 """
+
 from __future__ import annotations
 
 import json
 import random
 import re
-import sys
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -71,6 +71,7 @@ def generate_benchmark(
 
     # Build metadata map
     from retrieval import discover
+
     modules = discover.discover(docs_root)
     mod_map = {m.filename: m for m in modules}
 
@@ -87,14 +88,16 @@ def generate_benchmark(
         text = md_path.read_text(encoding="utf-8", errors="replace")
         if len(text) < 200:
             continue
-        by_topic[mod.topic].append({
-            "stem": stem,
-            "path": md_path,
-            "topic": mod.topic,
-            "content_type": mod.content_type,
-            "text": text,
-            "title": _extract_title(text) or stem,
-        })
+        by_topic[mod.topic].append(
+            {
+                "stem": stem,
+                "path": md_path,
+                "topic": mod.topic,
+                "content_type": mod.content_type,
+                "text": text,
+                "title": _extract_title(text) or stem,
+            }
+        )
 
     # Stratified sample: proportional to topic size, min 3, max 20
     total_docs = sum(len(v) for v in by_topic.values())
@@ -159,6 +162,7 @@ def generate_benchmark(
 
     # Topic distribution
     from collections import Counter
+
     dist = Counter(e["topic"] for e in benchmark)
     print("\nTopic distribution:")
     for topic, count in sorted(dist.items(), key=lambda x: -x[1]):
@@ -169,7 +173,9 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=Path("data/ground_truth/queries.json"))
+    parser.add_argument(
+        "--output", type=Path, default=Path("data/ground_truth/queries.json")
+    )
     parser.add_argument("--target", type=int, default=100)
     parser.add_argument("--model", default="gpt-4o-mini")
     parser.add_argument("--seed", type=int, default=42)

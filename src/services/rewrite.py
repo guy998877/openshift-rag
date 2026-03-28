@@ -1,4 +1,5 @@
 """LLM-based query rewriting for improved retrieval."""
+
 from __future__ import annotations
 
 from langchain_openai import ChatOpenAI
@@ -18,10 +19,12 @@ def rewrite_query(question: str, llm: ChatOpenAI) -> str:
     """
     try:
         rewriter = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-        response = rewriter.invoke([
-            {"role": "system", "content": _REWRITE_PROMPT},
-            {"role": "user", "content": question},
-        ])
+        response = rewriter.invoke(
+            [
+                {"role": "system", "content": _REWRITE_PROMPT},
+                {"role": "user", "content": question},
+            ]
+        )
         rewritten = response.content.strip()
         return rewritten if rewritten else question
     except Exception:

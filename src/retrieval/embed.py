@@ -1,4 +1,5 @@
 """Batch text embeddings via OpenAI text-embedding-3-small."""
+
 import logging
 import time
 
@@ -39,19 +40,34 @@ def _embed_batch_with_retry(texts: list[str], client: OpenAI) -> list[list[float
                 input=texts,
             )
             # response.data is ordered by index
-            return [item.embedding for item in sorted(response.data, key=lambda x: x.index)]
+            return [
+                item.embedding for item in sorted(response.data, key=lambda x: x.index)
+            ]
         except RateLimitError:
             if attempt == _MAX_RETRIES - 1:
-                logger.error("Rate limit exceeded after %d retries, skipping batch", _MAX_RETRIES)
+                logger.error(
+                    "Rate limit exceeded after %d retries, skipping batch", _MAX_RETRIES
+                )
                 raise
-            logger.warning("Rate limit hit, retrying in %.1fs (attempt %d/%d)", delay, attempt + 1, _MAX_RETRIES)
+            logger.warning(
+                "Rate limit hit, retrying in %.1fs (attempt %d/%d)",
+                delay,
+                attempt + 1,
+                _MAX_RETRIES,
+            )
             time.sleep(delay)
             delay *= 2
         except APIError as e:
             if attempt == _MAX_RETRIES - 1:
                 logger.error("API error after %d retries: %s", _MAX_RETRIES, e)
                 raise
-            logger.warning("API error %s, retrying in %.1fs (attempt %d/%d)", e, delay, attempt + 1, _MAX_RETRIES)
+            logger.warning(
+                "API error %s, retrying in %.1fs (attempt %d/%d)",
+                e,
+                delay,
+                attempt + 1,
+                _MAX_RETRIES,
+            )
             time.sleep(delay)
             delay *= 2
     raise RuntimeError("embed_batch_with_retry exhausted without returning")

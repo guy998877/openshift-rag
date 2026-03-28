@@ -1,7 +1,7 @@
 """CLI entry point for the OpenShift docs ingestion pipeline."""
+
 import argparse
 import logging
-import os
 import sys
 from pathlib import Path
 
@@ -29,7 +29,9 @@ def main() -> None:
     parser.add_argument("--processed-dir", type=Path, default=DEFAULT_PROCESSED_DIR)
     parser.add_argument("--chroma-dir", type=Path, default=DEFAULT_CHROMA_DIR)
     parser.add_argument("--collection", default=DEFAULT_COLLECTION)
-    parser.add_argument("--topics", nargs="+", metavar="TOPIC", help="Override target dirs")
+    parser.add_argument(
+        "--topics", nargs="+", metavar="TOPIC", help="Override target dirs"
+    )
     parser.add_argument(
         "--content-types",
         nargs="+",
@@ -38,9 +40,17 @@ def main() -> None:
         choices=["PROCEDURE", "CONCEPT", "REFERENCE", "ASSEMBLY"],
     )
     parser.add_argument("--skip-embed", action="store_true", help="Preprocess only")
-    parser.add_argument("--skip-store", action="store_true", help="Embed but don't write to Chroma")
-    parser.add_argument("--reprocess", action="store_true", help="Re-run preprocessing even if .md exists")
-    parser.add_argument("--dry-run", action="store_true", help="Discover + report counts only")
+    parser.add_argument(
+        "--skip-store", action="store_true", help="Embed but don't write to Chroma"
+    )
+    parser.add_argument(
+        "--reprocess",
+        action="store_true",
+        help="Re-run preprocessing even if .md exists",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Discover + report counts only"
+    )
     parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     parser.add_argument("--verbose", action="store_true")
 
@@ -91,6 +101,7 @@ def _setup_logging(verbose: bool) -> None:
 
 def _rotating_file_handler() -> logging.Handler:
     from logging.handlers import RotatingFileHandler
+
     log_path = Path("data/pipeline.log")
     log_path.parent.mkdir(parents=True, exist_ok=True)
     return RotatingFileHandler(

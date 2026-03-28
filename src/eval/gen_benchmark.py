@@ -1,4 +1,5 @@
 """Generation benchmark runner — full RAG pipeline + LLM-as-judge evaluation."""
+
 from __future__ import annotations
 
 import json
@@ -10,6 +11,7 @@ from core.config import DEFAULT_CHROMA_DIR, DEFAULT_COLLECTION, DEFAULT_PROCESSE
 
 
 # ── Output helpers ─────────────────────────────────────────────────────────────
+
 
 def _run_dir(output_dir: Path, k: int, timestamp: str) -> Path:
     slug = timestamp[:16].replace(":", "-")
@@ -29,7 +31,8 @@ def _save_run(run_dir: Path, report: dict) -> None:
             "topic": r["topic"],
             "elapsed_ms": r["elapsed_ms"],
             "retrieval_metrics": {
-                k: v for k, v in r["retrieval_metrics"].items()
+                k: v
+                for k, v in r["retrieval_metrics"].items()
                 if k != "retrieved_stems"
             },
             "generation_metrics": r["generation_metrics"],
@@ -50,9 +53,15 @@ def _save_run(run_dir: Path, report: dict) -> None:
                 "retrieved_stems": r["retrieval_metrics"].get("retrieved_stems", []),
                 "recall@5": r["retrieval_metrics"].get("recall@5"),
                 "mrr": r["retrieval_metrics"].get("mrr"),
-                "answer_relevance": r["generation_metrics"].get("answer_relevance", {}).get("score"),
-                "faithfulness": r["generation_metrics"].get("faithfulness", {}).get("score"),
-                "context_relevance": r["generation_metrics"].get("context_relevance", {}).get("score"),
+                "answer_relevance": r["generation_metrics"]
+                .get("answer_relevance", {})
+                .get("score"),
+                "faithfulness": r["generation_metrics"]
+                .get("faithfulness", {})
+                .get("score"),
+                "context_relevance": r["generation_metrics"]
+                .get("context_relevance", {})
+                .get("score"),
                 "avg_gen": r["generation_metrics"].get("avg"),
                 "elapsed_ms": r["elapsed_ms"],
             }
@@ -64,29 +73,33 @@ def _save_run(run_dir: Path, report: dict) -> None:
     for r in report["results"]:
         gm = r["generation_metrics"]
         rm = r["retrieval_metrics"]
-        flat_results.append({
-            "i": r.get("i", 0),
-            "n": n,
-            "id": r["id"],
-            "query": r["query"],
-            "topic": r["topic"],
-            "gold_doc_ids": r.get("gold_doc_ids", []),
-            "rewritten_query": r.get("rewritten_query", ""),
-            "answer": r.get("answer", ""),
-            "sources": r.get("sources", []),
-            "pipeline_log": r.get("pipeline_log", {}),
-            "answer_relevance": gm.get("answer_relevance", {}).get("score"),
-            "faithfulness":     gm.get("faithfulness",     {}).get("score"),
-            "context_relevance":gm.get("context_relevance",{}).get("score"),
-            "ar_explanation":   gm.get("answer_relevance", {}).get("explanation", ""),
-            "faith_explanation":gm.get("faithfulness",     {}).get("explanation", ""),
-            "ctx_explanation":  gm.get("context_relevance",{}).get("explanation", ""),
-            "recall_5":   rm.get("recall@5"),
-            "mrr":        rm.get("mrr"),
-            "gold_found": rm.get("gold_found", []),
-            "gold_missed":rm.get("gold_missed", []),
-            "elapsed_ms": r["elapsed_ms"],
-        })
+        flat_results.append(
+            {
+                "i": r.get("i", 0),
+                "n": n,
+                "id": r["id"],
+                "query": r["query"],
+                "topic": r["topic"],
+                "gold_doc_ids": r.get("gold_doc_ids", []),
+                "rewritten_query": r.get("rewritten_query", ""),
+                "answer": r.get("answer", ""),
+                "sources": r.get("sources", []),
+                "pipeline_log": r.get("pipeline_log", {}),
+                "answer_relevance": gm.get("answer_relevance", {}).get("score"),
+                "faithfulness": gm.get("faithfulness", {}).get("score"),
+                "context_relevance": gm.get("context_relevance", {}).get("score"),
+                "ar_explanation": gm.get("answer_relevance", {}).get("explanation", ""),
+                "faith_explanation": gm.get("faithfulness", {}).get("explanation", ""),
+                "ctx_explanation": gm.get("context_relevance", {}).get(
+                    "explanation", ""
+                ),
+                "recall_5": rm.get("recall@5"),
+                "mrr": rm.get("mrr"),
+                "gold_found": rm.get("gold_found", []),
+                "gold_missed": rm.get("gold_missed", []),
+                "elapsed_ms": r["elapsed_ms"],
+            }
+        )
     run_json = {
         "type": "generation",
         "source": "cli",
@@ -104,6 +117,7 @@ def _save_run(run_dir: Path, report: dict) -> None:
 
 
 # ── Generation benchmark ───────────────────────────────────────────────────────
+
 
 def run_generation_benchmark(
     queries_path: Path,
@@ -178,20 +192,22 @@ def run_generation_benchmark(
 
         elapsed_ms = round((time.monotonic() - t0) * 1000)
 
-        results.append({
-            "i": i,
-            "id": qid,
-            "query": query,
-            "topic": q.get("topic", ""),
-            "gold_doc_ids": gold_ids,
-            "answer": result.answer,
-            "sources": result.sources,
-            "rewritten_query": result.rewritten_query,
-            "pipeline_log": result.pipeline_log,
-            "retrieval_metrics": ret_metrics,
-            "generation_metrics": gen_metrics,
-            "elapsed_ms": elapsed_ms,
-        })
+        results.append(
+            {
+                "i": i,
+                "id": qid,
+                "query": query,
+                "topic": q.get("topic", ""),
+                "gold_doc_ids": gold_ids,
+                "answer": result.answer,
+                "sources": result.sources,
+                "rewritten_query": result.rewritten_query,
+                "pipeline_log": result.pipeline_log,
+                "retrieval_metrics": ret_metrics,
+                "generation_metrics": gen_metrics,
+                "elapsed_ms": elapsed_ms,
+            }
+        )
 
         rel = gen_metrics["answer_relevance"]["score"]
         faith = gen_metrics["faithfulness"]["score"]
@@ -269,6 +285,7 @@ def _aggregate(results: list[dict]) -> dict:
 
 
 # ── Print helper ───────────────────────────────────────────────────────────────
+
 
 def print_generation_summary(report: dict) -> None:
     agg = report["aggregate"]

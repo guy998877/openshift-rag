@@ -1,4 +1,5 @@
 """Cross-encoder re-ranking using sentence-transformers."""
+
 from __future__ import annotations
 
 from langchain_core.documents import Document
@@ -11,6 +12,7 @@ def _get_model():
     global _model
     if _model is None:
         from sentence_transformers import CrossEncoder
+
         _model = CrossEncoder(_MODEL_NAME)
     return _model
 

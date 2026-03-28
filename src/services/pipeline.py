@@ -1,7 +1,7 @@
 """LangChain RAG pipeline for OpenShift docs QA."""
+
 from __future__ import annotations
 
-import os
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -125,8 +125,11 @@ def run_pipeline(
 
     if hybrid and bm25 is not None:
         docs = hybrid_search(
-            search_query, vectorstore, bm25,
-            k_retrieve=50, k_final=50,
+            search_query,
+            vectorstore,
+            bm25,
+            k_retrieve=50,
+            k_final=50,
             filter_kwargs=filter_kwargs or None,
         )
         log["n_bm25_hits"] = len(docs)
@@ -151,14 +154,18 @@ def run_pipeline(
     # 4. Generation
     t0 = time.monotonic()
     context_str = _format_docs(docs)
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", SYSTEM_PROMPT),
-        ("human", "{input}"),
-    ])
-    answer = (prompt | llm | StrOutputParser()).invoke({
-        "input": search_query,
-        "context": context_str,
-    })
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", SYSTEM_PROMPT),
+            ("human", "{input}"),
+        ]
+    )
+    answer = (prompt | llm | StrOutputParser()).invoke(
+        {
+            "input": search_query,
+            "context": context_str,
+        }
+    )
     log["generate_ms"] = round((time.monotonic() - t0) * 1000)
 
     # 5. Grounding check
@@ -184,6 +191,7 @@ def run_pipeline(
 
 # ── Backwards-compatible wrappers ────────────────────────────────────────────
 
+
 def build_chain(
     vectorstore: Chroma,
     model: str = "gpt-4o-mini",
@@ -203,17 +211,18 @@ def build_chain(
 
     retriever = vectorstore.as_retriever(search_kwargs=search_kwargs)
     llm = ChatOpenAI(model=model, temperature=0)
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", SYSTEM_PROMPT),
-        ("human", "{input}"),
-    ])
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", SYSTEM_PROMPT),
+            ("human", "{input}"),
+        ]
+    )
 
-    chain = (
-        RunnablePassthrough.assign(context=lambda x: retriever.invoke(x["input"]))
-        | RunnablePassthrough.assign(
-            answer=lambda x: (
-                prompt | llm | StrOutputParser()
-            ).invoke({"input": x["input"], "context": _format_docs(x["context"])})
+    chain = RunnablePassthrough.assign(
+        context=lambda x: retriever.invoke(x["input"])
+    ) | RunnablePassthrough.assign(
+        answer=lambda x: (prompt | llm | StrOutputParser()).invoke(
+            {"input": x["input"], "context": _format_docs(x["context"])}
         )
     )
     return chain

@@ -1,4 +1,5 @@
 """Extract rich metadata from preprocessed Markdown for ChromaDB storage."""
+
 import re
 
 from core.config import HARDCODED_ATTRS
@@ -8,16 +9,43 @@ _CODE_FENCE_RE = re.compile(r"^```(\w+)?")
 _OC_CMD_RE = re.compile(r"^\$\s+oc\s+(\S+)")
 
 _API_RESOURCES = [
-    "Pod", "Deployment", "StatefulSet", "DaemonSet", "ReplicaSet", "Job", "CronJob",
-    "Node", "Namespace", "Service", "Route", "Ingress", "NetworkPolicy",
-    "ConfigMap", "Secret", "ServiceAccount",
-    "PersistentVolume", "PersistentVolumeClaim", "StorageClass",
-    "MachineSet", "Machine", "MachineConfig", "MachineConfigPool",
-    "ClusterOperator", "ClusterVersion",
-    "Operator", "Subscription", "OperatorGroup", "CatalogSource", "InstallPlan",
+    "Pod",
+    "Deployment",
+    "StatefulSet",
+    "DaemonSet",
+    "ReplicaSet",
+    "Job",
+    "CronJob",
+    "Node",
+    "Namespace",
+    "Service",
+    "Route",
+    "Ingress",
+    "NetworkPolicy",
+    "ConfigMap",
+    "Secret",
+    "ServiceAccount",
+    "PersistentVolume",
+    "PersistentVolumeClaim",
+    "StorageClass",
+    "MachineSet",
+    "Machine",
+    "MachineConfig",
+    "MachineConfigPool",
+    "ClusterOperator",
+    "ClusterVersion",
+    "Operator",
+    "Subscription",
+    "OperatorGroup",
+    "CatalogSource",
+    "InstallPlan",
     "CustomResourceDefinition",
-    "Role", "ClusterRole", "RoleBinding", "ClusterRoleBinding",
-    "LimitRange", "ResourceQuota",
+    "Role",
+    "ClusterRole",
+    "RoleBinding",
+    "ClusterRoleBinding",
+    "LimitRange",
+    "ResourceQuota",
 ]
 _API_RESOURCE_RE = re.compile(
     r"\b(" + "|".join(re.escape(r) for r in _API_RESOURCES) + r")\b"

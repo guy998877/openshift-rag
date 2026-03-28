@@ -1,4 +1,5 @@
 """BM25 index + hybrid BM25/vector search with Reciprocal Rank Fusion."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -31,9 +32,7 @@ class BM25Index:
         scores = self._bm25.get_scores(tokens)
 
         # Pair with stems and sort descending
-        ranked = sorted(
-            zip(self._stems, scores), key=lambda x: x[1], reverse=True
-        )[:k]
+        ranked = sorted(zip(self._stems, scores), key=lambda x: x[1], reverse=True)[:k]
 
         # Normalise scores to [0, 1]
         max_score = ranked[0][1] if ranked else 1.0
@@ -98,7 +97,9 @@ def hybrid_search(
         search_kwargs.update(filter_kwargs)
 
     try:
-        vector_results = vectorstore.similarity_search_with_score(query, **search_kwargs)
+        vector_results = vectorstore.similarity_search_with_score(
+            query, **search_kwargs
+        )
     except Exception:
         vector_results = []
 
@@ -129,20 +130,26 @@ def hybrid_search(
         rrf_scores[stem] = score
 
     # Sort by RRF score descending
-    ranked_stems = sorted(rrf_scores, key=lambda s: rrf_scores[s], reverse=True)[:k_final]
+    ranked_stems = sorted(rrf_scores, key=lambda s: rrf_scores[s], reverse=True)[
+        :k_final
+    ]
 
     # Fetch BM25-only docs from ChromaDB (vector docs already have Document objects)
     bm25_only_stems = [s for s in ranked_stems if s not in vector_docs]
     fetched_docs: dict[str, Document] = {}
     if bm25_only_stems:
         try:
-            result = vectorstore.get(ids=bm25_only_stems, include=["documents", "metadatas"])
+            result = vectorstore.get(
+                ids=bm25_only_stems, include=["documents", "metadatas"]
+            )
             for doc_id, content, metadata in zip(
                 result.get("ids", []),
                 result.get("documents", []),
                 result.get("metadatas", []),
             ):
-                fetched_docs[doc_id] = Document(page_content=content or "", metadata=metadata or {})
+                fetched_docs[doc_id] = Document(
+                    page_content=content or "", metadata=metadata or {}
+                )
         except Exception:
             pass
 

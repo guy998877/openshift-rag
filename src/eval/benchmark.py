@@ -1,4 +1,5 @@
 """RAG benchmark runner — retrieval-only and full (retrieval + generation)."""
+
 from __future__ import annotations
 
 import json
@@ -17,6 +18,7 @@ MODES = ("hybrid", "semantic", "keyword")
 
 # ── Output helpers ────────────────────────────────────────────────────────────
 
+
 def _run_dir(output_dir: Path, mode: str, k: int, timestamp: str) -> Path:
     """Create and return a timestamped subdirectory for one run."""
     # e.g. data/eval_results/2026-03-20T15-29_hybrid_k20
@@ -30,9 +32,7 @@ def _run_dir(output_dir: Path, mode: str, k: int, timestamp: str) -> Path:
 def _save_run(run_dir: Path, report: dict) -> None:
     """Write metrics.json and predictions.jsonl into run_dir."""
     # metrics.json — aggregate + per-query scores, no raw retrieved_stems
-    metrics_report = {
-        k: v for k, v in report.items() if k != "results"
-    }
+    metrics_report = {k: v for k, v in report.items() if k != "results"}
     metrics_report["results"] = [
         {
             "id": r["id"],
@@ -70,6 +70,7 @@ def _save_run(run_dir: Path, report: dict) -> None:
 
 
 # ── Retrieval benchmark ───────────────────────────────────────────────────────
+
 
 def run_retrieval_benchmark(
     queries_path: Path,
@@ -127,7 +128,9 @@ def run_retrieval_benchmark(
         t0 = time.monotonic()
 
         if mode == "hybrid" and bm25 is not None:
-            docs = hybrid_search(query, vs, bm25, k_retrieve=k_retrieve, k_final=k_retrieve)
+            docs = hybrid_search(
+                query, vs, bm25, k_retrieve=k_retrieve, k_final=k_retrieve
+            )
         elif mode == "keyword" and bm25 is not None:
             docs = bm25_search(query, vs, bm25, k=k_retrieve)
         else:
@@ -139,14 +142,16 @@ def run_retrieval_benchmark(
         elapsed_ms = round((time.monotonic() - t0) * 1000)
         metrics = eval_retrieval(docs, gold_ids, k_values=K_VALUES)
 
-        results.append({
-            "id": qid,
-            "query": query,
-            "topic": q.get("topic", ""),
-            "gold_doc_ids": gold_ids,
-            "metrics": metrics,
-            "elapsed_ms": elapsed_ms,
-        })
+        results.append(
+            {
+                "id": qid,
+                "query": query,
+                "topic": q.get("topic", ""),
+                "gold_doc_ids": gold_ids,
+                "metrics": metrics,
+                "elapsed_ms": elapsed_ms,
+            }
+        )
 
         r5 = metrics.get("recall@5", 0)
         mrr = metrics.get("mrr", 0)
@@ -191,16 +196,25 @@ def _aggregate_retrieval(results: list[dict]) -> dict:
         return {}
     agg: dict = {}
     for k in K_VALUES:
-        agg[f"recall@{k}"] = round(sum(r["metrics"].get(f"recall@{k}", 0) for r in results) / n, 4)
-        agg[f"precision@{k}"] = round(sum(r["metrics"].get(f"precision@{k}", 0) for r in results) / n, 4)
+        agg[f"recall@{k}"] = round(
+            sum(r["metrics"].get(f"recall@{k}", 0) for r in results) / n, 4
+        )
+        agg[f"precision@{k}"] = round(
+            sum(r["metrics"].get(f"precision@{k}", 0) for r in results) / n, 4
+        )
     agg["mrr"] = round(sum(r["metrics"].get("mrr", 0) for r in results) / n, 4)
-    agg["any_hit@5"] = round(sum(1 for r in results if r["metrics"].get("recall@5", 0) > 0) / n, 4)
-    agg["any_hit@10"] = round(sum(1 for r in results if r["metrics"].get("recall@10", 0) > 0) / n, 4)
+    agg["any_hit@5"] = round(
+        sum(1 for r in results if r["metrics"].get("recall@5", 0) > 0) / n, 4
+    )
+    agg["any_hit@10"] = round(
+        sum(1 for r in results if r["metrics"].get("recall@10", 0) > 0) / n, 4
+    )
     agg["avg_ms"] = round(sum(r["elapsed_ms"] for r in results) / n)
     return agg
 
 
 # ── Print helpers ─────────────────────────────────────────────────────────────
+
 
 def print_retrieval_summary(report: dict) -> None:
     agg = report["aggregate"]
@@ -208,8 +222,10 @@ def print_retrieval_summary(report: dict) -> None:
     print("\n" + "=" * 65)
     print(f"  RETRIEVAL BENCHMARK  —  {report['timestamp'][:19]}")
     print("=" * 65)
-    print(f"  mode={cfg.get('mode')}  rerank={cfg.get('use_rerank')}  "
-          f"k_retrieve={cfg.get('k_retrieve')}  n_queries={cfg.get('n_queries')}")
+    print(
+        f"  mode={cfg.get('mode')}  rerank={cfg.get('use_rerank')}  "
+        f"k_retrieve={cfg.get('k_retrieve')}  n_queries={cfg.get('n_queries')}"
+    )
     print("-" * 65)
     for k in K_VALUES:
         print(f"  recall@{k:<4}    {agg.get(f'recall@{k}', 0):.4f}")
@@ -218,14 +234,17 @@ def print_retrieval_summary(report: dict) -> None:
         print(f"  precision@{k:<2}   {agg.get(f'precision@{k}', 0):.4f}")
     print()
     print(f"  MRR             {agg.get('mrr', 0):.4f}")
-    print(f"  any_hit@5       {agg.get('any_hit@5', 0):.4f}   "
-          f"({round(agg.get('any_hit@5', 0) * len(report['results']))}/{len(report['results'])} queries)")
+    print(
+        f"  any_hit@5       {agg.get('any_hit@5', 0):.4f}   "
+        f"({round(agg.get('any_hit@5', 0) * len(report['results']))}/{len(report['results'])} queries)"
+    )
     print(f"  any_hit@10      {agg.get('any_hit@10', 0):.4f}")
     print(f"  avg latency     {agg.get('avg_ms')}ms")
     print(f"  total time      {report.get('total_seconds')}s")
     print("=" * 65)
 
     from collections import defaultdict
+
     by_topic: dict[str, list] = defaultdict(list)
     for r in report["results"]:
         by_topic[r["topic"]].append(r["metrics"].get("recall@5", 0))
@@ -241,10 +260,14 @@ def compare_retrieval_reports(baseline: dict, current: dict) -> None:
     b, c = baseline["aggregate"], current["aggregate"]
     print("\n" + "=" * 65)
     print("  REGRESSION COMPARISON")
-    print(f"  Baseline: {baseline['timestamp'][:19]}  "
-          f"mode={baseline['config'].get('mode')}  rerank={baseline['config'].get('use_rerank')}")
-    print(f"  Current:  {current['timestamp'][:19]}  "
-          f"mode={current['config'].get('mode')}  rerank={current['config'].get('use_rerank')}")
+    print(
+        f"  Baseline: {baseline['timestamp'][:19]}  "
+        f"mode={baseline['config'].get('mode')}  rerank={baseline['config'].get('use_rerank')}"
+    )
+    print(
+        f"  Current:  {current['timestamp'][:19]}  "
+        f"mode={current['config'].get('mode')}  rerank={current['config'].get('use_rerank')}"
+    )
     print("=" * 65)
 
     def _row(label, key, higher_is_better=True):
@@ -252,13 +275,15 @@ def compare_retrieval_reports(baseline: dict, current: dict) -> None:
         delta = cv - bv
         flag = ""
         if abs(delta) >= 0.02:
-            flag = "  ✓ improved" if (delta > 0) == higher_is_better else "  ✗ REGRESSED"
+            flag = (
+                "  ✓ improved" if (delta > 0) == higher_is_better else "  ✗ REGRESSED"
+            )
         print(f"  {label:<18} {bv:.4f} → {cv:.4f}  ({delta:+.4f}){flag}")
 
     for k in K_VALUES:
         _row(f"recall@{k}", f"recall@{k}")
-    _row("MRR",          "mrr")
-    _row("any_hit@5",    "any_hit@5")
-    _row("precision@5",  "precision@5")
-    _row("avg_ms",       "avg_ms", higher_is_better=False)
+    _row("MRR", "mrr")
+    _row("any_hit@5", "any_hit@5")
+    _row("precision@5", "precision@5")
+    _row("avg_ms", "avg_ms", higher_is_better=False)
     print("=" * 65)

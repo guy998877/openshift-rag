@@ -1,4 +1,5 @@
 """Generation evaluation — LLM-as-judge (reference-free, binary scoring)."""
+
 from __future__ import annotations
 
 from langchain_core.documents import Document
@@ -39,6 +40,7 @@ D2: NO
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
 
+
 def _invoke(prompt: str, llm: ChatOpenAI) -> str:
     try:
         resp = llm.invoke([{"role": "user", "content": prompt}])
@@ -63,6 +65,7 @@ def _explanation(text: str) -> str:
 
 
 # ── Public evaluators ─────────────────────────────────────────────────────────
+
 
 def eval_answer_relevance(query: str, answer: str, llm: ChatOpenAI) -> dict:
     """Binary: does the answer directly address the question?"""
@@ -97,7 +100,11 @@ def eval_context_relevance(query: str, docs: list[Document], llm: ChatOpenAI) ->
     """Fractional: what share of retrieved chunks are relevant to the query?"""
     try:
         if not docs:
-            return {"label": "context_relevance", "score": None, "explanation": "no docs"}
+            return {
+                "label": "context_relevance",
+                "score": None,
+                "explanation": "no docs",
+            }
 
         docs_block = "\n\n".join(
             f"D{i}: {doc.page_content[:400]}" for i, doc in enumerate(docs, 1)
@@ -121,7 +128,11 @@ def eval_context_relevance(query: str, docs: list[Document], llm: ChatOpenAI) ->
                 parsed += 1
 
         if parsed == 0:
-            return {"label": "context_relevance", "score": None, "explanation": "parse error"}
+            return {
+                "label": "context_relevance",
+                "score": None,
+                "explanation": "parse error",
+            }
 
         score = round(yes_count / len(docs), 4)
         return {

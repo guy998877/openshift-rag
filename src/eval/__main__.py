@@ -1,4 +1,5 @@
 """CLI for the RAG evaluation benchmark."""
+
 from __future__ import annotations
 
 import argparse
@@ -17,53 +18,78 @@ def main() -> None:
         description="Evaluate OpenShift RAG retrieval quality.",
     )
     parser.add_argument(
-        "--queries", type=Path, default=Path("./data/ground_truth/queries.json"),
+        "--queries",
+        type=Path,
+        default=Path("./data/ground_truth/queries.json"),
         help="Benchmark queries file (default: data/ground_truth/queries.json)",
     )
     parser.add_argument(
-        "--output-dir", type=Path, default=Path("./data/eval_results"), metavar="DIR",
+        "--output-dir",
+        type=Path,
+        default=Path("./data/eval_results"),
+        metavar="DIR",
         help="Parent directory for run output (default: data/eval_results). "
-             "A timestamped subdirectory is created automatically.",
+        "A timestamped subdirectory is created automatically.",
     )
     parser.add_argument(
-        "--no-save", action="store_true",
+        "--no-save",
+        action="store_true",
         help="Skip saving results to disk (print summary only)",
     )
     parser.add_argument(
-        "--baseline", type=Path, default=None, metavar="PATH",
+        "--baseline",
+        type=Path,
+        default=None,
+        metavar="PATH",
         help="Path to a metrics.json from a previous run for regression comparison",
     )
     parser.add_argument(
-        "--k", type=int, default=20, metavar="K",
+        "--k",
+        type=int,
+        default=20,
+        metavar="K",
         help="Docs to retrieve per query (default: 20)",
     )
     parser.add_argument(
-        "--n", type=int, default=None, metavar="N",
+        "--n",
+        type=int,
+        default=None,
+        metavar="N",
         help="Number of queries to evaluate (default: all)",
     )
     parser.add_argument(
-        "--mode", default="hybrid", choices=["hybrid", "semantic", "keyword"],
+        "--mode",
+        default="hybrid",
+        choices=["hybrid", "semantic", "keyword"],
         help="Retrieval mode: hybrid (default) | semantic (vector only) | keyword (BM25 only)",
     )
     parser.add_argument(
-        "--rerank", action="store_true",
+        "--rerank",
+        action="store_true",
         help="Apply cross-encoder reranking after retrieval",
     )
     parser.add_argument(
-        "--chroma-dir", type=Path, default=Path("./chroma_db"),
+        "--chroma-dir",
+        type=Path,
+        default=Path("./chroma_db"),
     )
     parser.add_argument(
-        "--collection", default="openshift_docs_v0",
+        "--collection",
+        default="openshift_docs_v0",
     )
     parser.add_argument(
-        "--processed-dir", type=Path, default=Path("./data/processed"),
+        "--processed-dir",
+        type=Path,
+        default=Path("./data/processed"),
     )
     parser.add_argument(
-        "--gen", action="store_true",
+        "--gen",
+        action="store_true",
         help="Run generation evaluation (LLM-as-judge) instead of retrieval-only",
     )
     parser.add_argument(
-        "--model", default="gpt-4o-mini",
+        "--model",
+        default="gpt-4o-mini",
         help="Model for generation + judging (default: gpt-4o-mini)",
     )
 
@@ -139,7 +165,9 @@ def _compare_gen_reports(baseline: dict, current: dict) -> None:
         delta = cv - bv
         flag = ""
         if abs(delta) >= 0.02:
-            flag = "  ✓ improved" if (delta > 0) == higher_is_better else "  ✗ REGRESSED"
+            flag = (
+                "  ✓ improved" if (delta > 0) == higher_is_better else "  ✗ REGRESSED"
+            )
         print(f"  {label:<22} {bv:.4f} → {cv:.4f}  ({delta:+.4f}){flag}")
 
     _row("answer_relevance", "answer_relevance")

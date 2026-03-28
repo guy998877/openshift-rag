@@ -1,4 +1,5 @@
 """ChromaDB upsert operations."""
+
 import logging
 from pathlib import Path
 

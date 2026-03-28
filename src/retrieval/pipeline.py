@@ -1,4 +1,5 @@
 """Orchestrates all ingestion stages."""
+
 import json
 import logging
 from dataclasses import dataclass
@@ -100,7 +101,9 @@ def run(cfg: PipelineConfig, openai_client: OpenAI | None = None) -> PipelineRes
             reason = str(e)
             logger.error("Preprocess failed for %s: %s", mod.filename, reason)
             result.skipped += 1
-            result.skip_log.append({"file": mod.filename, "stage": "preprocess", "reason": reason})
+            result.skip_log.append(
+                {"file": mod.filename, "stage": "preprocess", "reason": reason}
+            )
 
     logger.info("Preprocessed: %d | Skipped: %d", result.processed, result.skipped)
 
@@ -130,24 +133,32 @@ def run(cfg: PipelineConfig, openai_client: OpenAI | None = None) -> PipelineRes
         batch_metas = ready_metas[start:end]
 
         try:
-            vectors = embed.embed_texts(batch_texts, openai_client, batch_size=len(batch_texts))
+            vectors = embed.embed_texts(
+                batch_texts, openai_client, batch_size=len(batch_texts)
+            )
         except Exception as e:
             logger.error("Embedding batch %d-%d failed: %s", start, end, e)
             for m in batch_modules:
                 result.skipped += 1
-                result.skip_log.append({"file": m.filename, "stage": "embed", "reason": str(e)})
+                result.skip_log.append(
+                    {"file": m.filename, "stage": "embed", "reason": str(e)}
+                )
             continue
 
         if cfg.skip_store or collection is None:
             continue
 
-        n = store.upsert_batch(collection, batch_modules, batch_texts, vectors, batch_titles, batch_metas)
+        n = store.upsert_batch(
+            collection, batch_modules, batch_texts, vectors, batch_titles, batch_metas
+        )
         result.stored += n
         if n < len(batch_modules):
             skipped_in_batch = len(batch_modules) - n
             result.skipped += skipped_in_batch
             for m in batch_modules[n:]:
-                result.skip_log.append({"file": m.filename, "stage": "store", "reason": "upsert failed"})
+                result.skip_log.append(
+                    {"file": m.filename, "stage": "store", "reason": "upsert failed"}
+                )
 
     logger.info(
         "Done. Processed: %d | Skipped: %d | Stored: %d",
@@ -179,13 +190,14 @@ def _write_skip_log(cfg: PipelineConfig, skip_log: list[dict]) -> None:
 
 def _print_dry_run_stats(modules: list[ModuleInfo]) -> None:
     from collections import Counter
+
     type_counts = Counter(m.content_type for m in modules)
     topic_counts = Counter(m.topic for m in modules)
-    print(f"\n=== Dry Run ===")
+    print("\n=== Dry Run ===")
     print(f"Total modules: {len(modules)}")
-    print(f"\nBy content type:")
+    print("\nBy content type:")
     for ct, n in sorted(type_counts.items()):
         print(f"  {ct}: {n}")
-    print(f"\nBy topic:")
+    print("\nBy topic:")
     for topic, n in sorted(topic_counts.items(), key=lambda x: -x[1]):
         print(f"  {topic}: {n}")

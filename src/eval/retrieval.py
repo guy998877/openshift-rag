@@ -12,6 +12,7 @@ precision@k     fraction of top-k retrieved docs that are gold docs
 All metrics are computed solely from doc stems vs gold_doc_ids, so the
 eval is deterministic, cheap, and can run at 100-query scale in seconds.
 """
+
 from __future__ import annotations
 
 from langchain_core.documents import Document
@@ -48,7 +49,9 @@ def eval_retrieval(
     for k in k_values:
         top = retrieved_stems[:k]
         hits = [s for s in top if s in gold_set]
-        metrics[f"recall@{k}"] = round(len(hits) / len(gold_set), 4) if gold_set else 0.0
+        metrics[f"recall@{k}"] = (
+            round(len(hits) / len(gold_set), 4) if gold_set else 0.0
+        )
         metrics[f"precision@{k}"] = round(len(hits) / k, 4) if k > 0 else 0.0
 
     # MRR — rank of first gold doc (1-indexed)

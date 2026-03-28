@@ -1,4 +1,5 @@
 """Discover modules referenced by assemblies in TARGET_DIRS."""
+
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -61,13 +62,15 @@ def discover(
         if content_type not in content_types:
             continue
         topic = src_dirs[0].split("/")[0] if src_dirs else ""
-        results.append(ModuleInfo(
-            path=mod_path,
-            filename=fname,
-            content_type=content_type,
-            source_dirs=src_dirs,
-            topic=topic,
-        ))
+        results.append(
+            ModuleInfo(
+                path=mod_path,
+                filename=fname,
+                content_type=content_type,
+                source_dirs=src_dirs,
+                topic=topic,
+            )
+        )
 
     return results
 
