@@ -23,9 +23,6 @@ FROM python:3.13-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
-# Install uv (needed by entrypoint to run commands)
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
-
 WORKDIR /app
 
 # Copy venv, source, and model cache from builder
@@ -35,16 +32,22 @@ COPY --from=builder /app/src/ src/
 COPY --from=builder /app/wsgi.py .
 COPY --from=builder /root/.cache/huggingface /root/.cache/huggingface
 
-# Copy docs corpus (needed for auto-ingestion)
-COPY openshift-docs/ openshift-docs/
+# Copy pre-built ingestion data (baked into image — no runtime ingestion needed)
+COPY chroma_db/ chroma_db/
+COPY data/processed/ data/processed/
 
 # Copy ground truth data (needed for eval endpoints)
 COPY data/ground_truth/ data/ground_truth/
 
-# Copy entrypoint
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
+# Copy docs corpus (needed for file viewer)
+COPY openshift-docs/ openshift-docs/
 
 EXPOSE 8000
 
-ENTRYPOINT ["bash", "entrypoint.sh"]
+CMD [".venv/bin/gunicorn", "wsgi:app", \
+     "--bind", "0.0.0.0:8000", \
+     "--workers", "2", \
+     "--threads", "4", \
+     "--timeout", "300", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-"]

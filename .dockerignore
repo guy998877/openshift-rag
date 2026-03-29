@@ -4,7 +4,6 @@ __pycache__/
 *.pyc
 *.pyo
 *.egg-info/
-chroma_db/
 data/eval_results/
 data/pipeline.log
 data/skipped.jsonl
