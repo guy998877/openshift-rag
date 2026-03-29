@@ -1,0 +1,15 @@
+.venv/
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+data/eval_results/
+data/pipeline.log
+data/skipped.jsonl
+.env
+.github/
+tests/
+assets/
+CLAUDE.md
+prd.md
