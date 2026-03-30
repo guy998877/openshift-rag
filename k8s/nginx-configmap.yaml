@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+
+        # Forward traffic to rag-app via Kubernetes Service DNS
+        # (different pod — communication goes through the cluster network)
+        location / {
+            proxy_pass http://rag-app:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_read_timeout 300s;
+            proxy_send_timeout 300s;
+        }
+
+        location /healthz {
+            return 200 "ok\n";
+            add_header Content-Type text/plain;
+        }
+    }
