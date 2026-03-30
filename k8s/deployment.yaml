@@ -12,23 +12,6 @@ spec:
       labels:
         app: rag-app
     spec:
-      initContainers:
-        - name: seed-chroma
-          image: rag-openshift-doco:local
-          imagePullPolicy: Never
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              if [ ! -f /chroma-pvc/chroma.sqlite3 ]; then
-                echo "Seeding ChromaDB from image..."
-                cp -r /app/chroma_db/. /chroma-pvc/
-                echo "Done."
-              else
-                echo "ChromaDB already initialized, skipping seed."
-              fi
-          volumeMounts:
-            - name: chroma-storage
-              mountPath: /chroma-pvc
       containers:
         - name: rag-app
           image: rag-openshift-doco:local
@@ -41,9 +24,6 @@ spec:
                 secretKeyRef:
                   name: rag-app-secrets
                   key: OPENAI_API_KEY
-          volumeMounts:
-            - name: chroma-storage
-              mountPath: /app/chroma_db
           startupProbe:
             httpGet:
               path: /healthz
@@ -55,10 +35,6 @@ spec:
               path: /healthz
               port: 8000
             periodSeconds: 10
-      volumes:
-        - name: chroma-storage
-          persistentVolumeClaim:
-            claimName: chroma-db-pvc
 ---
 apiVersion: apps/v1
 kind: Deployment
